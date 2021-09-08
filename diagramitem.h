@@ -69,6 +69,7 @@ class QPolygonF;
 QT_END_NAMESPACE
 
 class Arrow;
+class DiagramTextItem;
 
 //! [0]
 class DiagramItem : public QGraphicsPolygonItem
@@ -96,6 +97,7 @@ private:
     QPolygonF myPolygon;
     QMenu *myContextMenu;
     QList<Arrow *> arrows;
+    DiagramTextItem *m_textItem;
 };
 //! [0]
 

@@ -50,6 +50,7 @@
 
 #include "diagramitem.h"
 #include "arrow.h"
+#include "diagramtextitem.h"
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneContextMenuEvent>
@@ -95,6 +96,16 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+
+    // Add child text.
+    if (myDiagramType == Step) {
+        m_textItem = new DiagramTextItem(this);
+        m_textItem->setPlainText("Oupa van Zijl");
+        m_textItem->setX(boundingRect().center().x() - m_textItem->boundingRect().width() / 2);
+    }
+    else {
+        m_textItem = nullptr;
+    }
 }
 //! [0]
 
