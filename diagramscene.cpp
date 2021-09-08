@@ -51,6 +51,7 @@
 #include "diagramscene.h"
 #include "arrow.h"
 
+#include <QDebug>
 #include <QDomDocument>
 #include <QTextCursor>
 #include <QTextStream>
@@ -115,6 +116,47 @@ void DiagramScene::setFont(const QFont &font)
         //At this point the selection can change so the first selected item might not be a DiagramTextItem
         if (item)
             item->setFont(myFont);
+    }
+}
+
+void DiagramScene::open(QIODevice *device)
+{
+    QString errorStr;
+    int errorLine;
+    int errorColumn;
+
+    QDomDocument domDocument;
+    if (!domDocument.setContent(device, true, &errorStr, &errorLine,
+                                &errorColumn)) {
+//        QMessageBox::information(window(), tr("DOM Bookmarks"),
+//                                 tr("Parse error at line %1, column %2:\n%3")
+//                                 .arg(errorLine)
+//                                 .arg(errorColumn)
+//                                 .arg(errorStr));
+//        return false;
+    }
+
+    QDomElement root = domDocument.documentElement();
+    if (root.tagName() != "genealogy") {
+//        QMessageBox::information(window(), tr("DOM Bookmarks"),
+//                                 tr("The file is not an genealogy file."));
+        return;
+    }
+
+    clear();
+
+    QDomElement child = root.firstChildElement("item");
+    while (!child.isNull()) {
+        parseItemElement(child);
+        child = child.nextSiblingElement("item");
+    }
+}
+
+void DiagramScene::print()
+{
+    qDebug() << "Total items:" << items().count();
+    for (auto item: items()) {
+        qDebug() << "   " << item;
     }
 }
 
@@ -262,5 +304,16 @@ bool DiagramScene::isItemChange(int type)
             return true;
     }
     return false;
+}
+
+void DiagramScene::parseItemElement(const QDomElement &element)
+{
+    auto item = new DiagramItem(DiagramItem::Step, myItemMenu);
+    item->setBrush(myItemColor);
+    addItem(item);
+    auto x = element.attribute("x").toDouble();
+    auto y = element.attribute("y").toDouble();
+    item->setPos(x, y);
+    emit itemInserted(item);
 }
 //! [14]

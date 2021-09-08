@@ -64,6 +64,7 @@ class QGraphicsLineItem;
 class QFont;
 class QGraphicsTextItem;
 class QColor;
+class QDomElement;
 QT_END_NAMESPACE
 
 //! [0]
@@ -83,6 +84,8 @@ public:
     void setTextColor(const QColor &color);
     void setItemColor(const QColor &color);
     void setFont(const QFont &font);
+    void open(QIODevice *device);
+    void print();
     void save(QIODevice *device);
 
 public slots:
@@ -102,6 +105,7 @@ protected:
 
 private:
     bool isItemChange(int type);
+    void parseItemElement(const QDomElement& element);
 
     DiagramItem::DiagramType myItemType;
     QMenu *myItemMenu;

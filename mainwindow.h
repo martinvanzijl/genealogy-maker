@@ -101,6 +101,7 @@ private slots:
     void handleFontChange();
     void itemSelected(QGraphicsItem *item);
     void about();
+    void open();
     void save();
 
 private:
@@ -122,6 +123,7 @@ private:
     QAction *exitAction;
     QAction *addAction;
     QAction *deleteAction;
+    QAction *openAction;
     QAction *saveAction;
 
     QAction *toFrontAction;

@@ -326,6 +326,32 @@ void MainWindow::about()
                           "use of the graphics framework."));
 }
 
+void MainWindow::open()
+{
+//    QString fileName =
+//            QFileDialog::getOpenFileName(this, tr("Open Bookmark File"),
+//                                         QDir::currentPath(),
+//                                         tr("XBEL Files (*.xbel *.xml)"));
+//    if (fileName.isEmpty())
+//        return;
+
+    QString fileName = "save.xml";
+
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(this, tr("Genealogy Maker"),
+                             tr("Cannot read file %1:\n%2.")
+                             .arg(fileName)
+                             .arg(file.errorString()));
+        return;
+    }
+
+    scene->open(&file);
+
+    // debug
+    //scene->print();
+}
+
 void MainWindow::save()
 {
     QString fileName = "save.xml";
@@ -429,6 +455,11 @@ void MainWindow::createActions()
     exitAction->setStatusTip(tr("Quit Scenediagram example"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
+    openAction = new QAction(tr("Open"), this);
+    openAction->setShortcuts(QKeySequence::Open);
+    openAction->setStatusTip(tr("Open diagram"));
+    connect(openAction, SIGNAL(triggered()), this, SLOT(open()));
+
     saveAction = new QAction(tr("Save"), this);
     saveAction->setShortcuts(QKeySequence::Save);
     saveAction->setStatusTip(tr("Save diagram"));
@@ -460,6 +491,7 @@ void MainWindow::createActions()
 void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
+    fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addSeparator();
     fileMenu->addAction(exitAction);
