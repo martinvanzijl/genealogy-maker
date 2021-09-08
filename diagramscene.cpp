@@ -51,7 +51,9 @@
 #include "diagramscene.h"
 #include "arrow.h"
 
+#include <QDomDocument>
 #include <QTextCursor>
+#include <QTextStream>
 #include <QGraphicsSceneMouseEvent>
 
 //! [0]
@@ -114,6 +116,25 @@ void DiagramScene::setFont(const QFont &font)
         if (item)
             item->setFont(myFont);
     }
+}
+
+void DiagramScene::save(QIODevice *device)
+{
+    const int indentSize = 4;
+
+    QTextStream out(device);
+    QDomDocument domDocument;
+    QDomElement rootElement = domDocument.createElement("genealogy");
+
+    for (auto item: items()) {
+        QDomElement itemElement = domDocument.createElement("item");
+        itemElement.setAttribute("x", item->pos().x());
+        itemElement.setAttribute("y", item->pos().y());
+        rootElement.appendChild(itemElement);
+    }
+
+    domDocument.appendChild(rootElement);
+    domDocument.save(out, indentSize);
 }
 //! [4]
 

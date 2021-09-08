@@ -1,4 +1,4 @@
-QT += widgets
+QT += widgets xml
 
 HEADERS	    =   mainwindow.h \
 		diagramitem.h \

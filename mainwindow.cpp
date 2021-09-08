@@ -325,6 +325,22 @@ void MainWindow::about()
                        tr("The <b>Diagram Scene</b> example shows "
                           "use of the graphics framework."));
 }
+
+void MainWindow::save()
+{
+    QString fileName = "save.xml";
+
+    QFile file(fileName);
+     if (!file.open(QFile::WriteOnly | QFile::Text)) {
+         QMessageBox::warning(this, tr("Genealogy Maker"),
+                              tr("Cannot write file %1:\n%2.")
+                              .arg(fileName)
+                              .arg(file.errorString()));
+         return;
+     }
+
+    scene->save(&file);
+}
 //! [20]
 
 //! [21]
@@ -413,6 +429,11 @@ void MainWindow::createActions()
     exitAction->setStatusTip(tr("Quit Scenediagram example"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
+    saveAction = new QAction(tr("Save"), this);
+    saveAction->setShortcuts(QKeySequence::Save);
+    saveAction->setStatusTip(tr("Save diagram"));
+    connect(saveAction, SIGNAL(triggered()), this, SLOT(save()));
+
     boldAction = new QAction(tr("Bold"), this);
     boldAction->setCheckable(true);
     QPixmap pixmap(":/images/bold.png");
@@ -439,6 +460,8 @@ void MainWindow::createActions()
 void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
+    fileMenu->addAction(saveAction);
+    fileMenu->addSeparator();
     fileMenu->addAction(exitAction);
 
     itemMenu = menuBar()->addMenu(tr("&Item"));

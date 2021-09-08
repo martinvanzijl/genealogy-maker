@@ -83,6 +83,7 @@ public:
     void setTextColor(const QColor &color);
     void setItemColor(const QColor &color);
     void setFont(const QFont &font);
+    void save(QIODevice *device);
 
 public slots:
     void setMode(Mode mode);
