@@ -87,6 +87,7 @@ public:
     void addArrow(Arrow *arrow);
     QPixmap image() const;
     int type() const override { return Type;}
+    QList<Arrow *> getArrows() const;
 
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;

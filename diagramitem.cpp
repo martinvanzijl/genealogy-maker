@@ -150,6 +150,11 @@ QPixmap DiagramItem::image() const
 
     return pixmap;
 }
+
+QList<Arrow *> DiagramItem::getArrows() const
+{
+    return arrows;
+}
 //! [4]
 
 //! [5]

@@ -167,12 +167,31 @@ void DiagramScene::save(QIODevice *device)
     QTextStream out(device);
     QDomDocument domDocument;
     QDomElement rootElement = domDocument.createElement("genealogy");
+    QList<Arrow *> arrows;
 
+    //
+    // Save persons.
+    //
     for (auto item: items()) {
+        DiagramItem *diagramItem = dynamic_cast<DiagramItem*> (item);
+
         QDomElement itemElement = domDocument.createElement("item");
         itemElement.setAttribute("x", item->pos().x());
         itemElement.setAttribute("y", item->pos().y());
         rootElement.appendChild(itemElement);
+
+        if (diagramItem) {
+            arrows << diagramItem->getArrows();
+        }
+    }
+
+    //
+    // Save relationships.
+    //
+    auto arrowSet = QSet<Arrow *>::fromList(arrows);
+    for (auto arrow: arrowSet) {
+        QDomElement element = domDocument.createElement("relationship");
+        rootElement.appendChild(element);
     }
 
     domDocument.appendChild(rootElement);
