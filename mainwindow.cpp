@@ -332,14 +332,13 @@ void MainWindow::about()
 
 void MainWindow::open()
 {
-//    QString fileName =
-//            QFileDialog::getOpenFileName(this, tr("Open Bookmark File"),
-//                                         QDir::currentPath(),
-//                                         tr("XBEL Files (*.xbel *.xml)"));
-//    if (fileName.isEmpty())
-//        return;
+    QString fileName =
+            QFileDialog::getOpenFileName(this, tr("Open Genealogy File"),
+                                         QDir::currentPath(),
+                                         tr("Genealogy XML Files (*.xml)"));
 
-    QString fileName = "save.xml";
+    if (fileName.isEmpty())
+        return;
 
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
@@ -351,14 +350,21 @@ void MainWindow::open()
     }
 
     scene->open(&file);
-
-    // debug
-    //scene->print();
 }
 
 void MainWindow::save()
 {
-    QString fileName = "save.xml";
+    QString fileName =
+            QFileDialog::getSaveFileName(this, tr("Save Genealogy File"),
+                                         QDir::currentPath(),
+                                         tr("Genealogy XML Files (*.xml)"));
+
+    if (fileName.isEmpty())
+        return;
+
+    if (!fileName.endsWith(".xml")) {
+        fileName += ".xml";
+    }
 
     QFile file(fileName);
      if (!file.open(QFile::WriteOnly | QFile::Text)) {
