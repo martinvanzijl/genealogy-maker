@@ -152,6 +152,7 @@ private:
     QToolButton *fontColorToolButton;
     QToolButton *fillColorToolButton;
     QToolButton *lineColorToolButton;
+    QToolButton *linePointerButton;
     QAction *boldAction;
     QAction *underlineAction;
     QAction *italicAction;

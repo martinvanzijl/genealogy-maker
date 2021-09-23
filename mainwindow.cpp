@@ -57,6 +57,7 @@
 #include <QtWidgets>
 
 const int InsertTextButton = 10;
+const int InsertArrowButton = 11;
 
 //! [0]
 MainWindow::MainWindow()
@@ -122,7 +123,10 @@ void MainWindow::buttonGroupClicked(int id)
     }
     if (id == InsertTextButton) {
         scene->setMode(DiagramScene::InsertText);
-    } else {
+    } else if (id == InsertArrowButton)  {
+        linePointerButton->click();
+    }
+    else {
         scene->setItemType(DiagramItem::DiagramType(id));
         scene->setMode(DiagramScene::InsertItem);
     }
@@ -377,22 +381,42 @@ void MainWindow::createToolBox()
     connect(buttonGroup, SIGNAL(buttonClicked(int)),
             this, SLOT(buttonGroupClicked(int)));
     QGridLayout *layout = new QGridLayout;
-    layout->addWidget(createCellWidget(tr("Conditional"), DiagramItem::Conditional), 0, 0);
-    layout->addWidget(createCellWidget(tr("Process"), DiagramItem::Step),0, 1);
-    layout->addWidget(createCellWidget(tr("Input/Output"), DiagramItem::Io), 1, 0);
-//! [21]
 
-    QToolButton *textButton = new QToolButton;
-    textButton->setCheckable(true);
-    buttonGroup->addButton(textButton, InsertTextButton);
-    textButton->setIcon(QIcon(QPixmap(":/images/textpointer.png")));
-    textButton->setIconSize(QSize(50, 50));
+    //
+    // "Person" button
+    //
+    //layout->addWidget(createCellWidget(tr("Conditional"), DiagramItem::Conditional), 0, 0);
+    layout->addWidget(createCellWidget(tr("Person"), DiagramItem::Step), 0, 0);
+    //layout->addWidget(createCellWidget(tr("Input/Output"), DiagramItem::Io), 1, 0);
+
+    //
+    // "Relationship" button
+    //
+    QToolButton *arrowButton = new QToolButton;
+    arrowButton->setCheckable(true);
+    buttonGroup->addButton(arrowButton, InsertArrowButton);
+    arrowButton->setIcon(QIcon(QPixmap(":/images/linepointer.png")));
+    arrowButton->setIconSize(QSize(50, 50));
     QGridLayout *textLayout = new QGridLayout;
-    textLayout->addWidget(textButton, 0, 0, Qt::AlignHCenter);
-    textLayout->addWidget(new QLabel(tr("Text")), 1, 0, Qt::AlignCenter);
+    textLayout->addWidget(arrowButton, 0, 0, Qt::AlignHCenter);
+    textLayout->addWidget(new QLabel(tr("Relationship")), 1, 0, Qt::AlignCenter);
     QWidget *textWidget = new QWidget;
     textWidget->setLayout(textLayout);
-    layout->addWidget(textWidget, 1, 1);
+    layout->addWidget(textWidget, 0, 1);
+
+//! [21]
+
+//    QToolButton *textButton = new QToolButton;
+//    textButton->setCheckable(true);
+//    buttonGroup->addButton(textButton, InsertTextButton);
+//    textButton->setIcon(QIcon(QPixmap(":/images/textpointer.png")));
+//    textButton->setIconSize(QSize(50, 50));
+//    QGridLayout *textLayout = new QGridLayout;
+//    textLayout->addWidget(textButton, 0, 0, Qt::AlignHCenter);
+//    textLayout->addWidget(new QLabel(tr("Text")), 1, 0, Qt::AlignCenter);
+//    QWidget *textWidget = new QWidget;
+//    textWidget->setLayout(textLayout);
+//    layout->addWidget(textWidget, 1, 1);
 
     layout->setRowStretch(3, 10);
     layout->setColumnStretch(2, 10);
@@ -425,7 +449,7 @@ void MainWindow::createToolBox()
     toolBox = new QToolBox;
     toolBox->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Ignored));
     toolBox->setMinimumWidth(itemWidget->sizeHint().width());
-    toolBox->addItem(itemWidget, tr("Basic Flowchart Shapes"));
+    toolBox->addItem(itemWidget, tr("Add Items"));
     toolBox->addItem(backgroundWidget, tr("Backgrounds"));
 }
 //! [22]
@@ -574,7 +598,7 @@ void MainWindow::createToolbars()
     pointerButton->setCheckable(true);
     pointerButton->setChecked(true);
     pointerButton->setIcon(QIcon(":/images/pointer.png"));
-    QToolButton *linePointerButton = new QToolButton;
+    linePointerButton = new QToolButton;
     linePointerButton->setCheckable(true);
     linePointerButton->setIcon(QIcon(":/images/linepointer.png"));
 
