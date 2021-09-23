@@ -88,6 +88,8 @@ public:
     QPixmap image() const;
     int type() const override { return Type;}
     QList<Arrow *> getArrows() const;
+    QString id() const;
+    void setId(QString value);
 
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;

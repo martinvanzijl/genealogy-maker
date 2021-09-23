@@ -70,6 +70,8 @@ class QFont;
 class QToolButton;
 class QAbstractButton;
 class QGraphicsView;
+class QTreeWidget;
+class QTreeWidgetItem;
 QT_END_NAMESPACE
 
 //! [0]
@@ -104,6 +106,7 @@ private slots:
     void about();
     void open();
     void save();
+    void onTreeItemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
     void createToolBox();
@@ -160,6 +163,8 @@ private:
     QAction *textAction;
     QAction *fillAction;
     QAction *lineAction;
+
+    QTreeWidget *tree;
 };
 //! [0]
 

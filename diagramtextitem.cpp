@@ -58,6 +58,11 @@ DiagramTextItem::DiagramTextItem(QGraphicsItem *parent)
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemIsSelectable);
 }
+
+QString DiagramTextItem::text() const
+{
+    return toPlainText();
+}
 //! [0]
 
 //! [1]

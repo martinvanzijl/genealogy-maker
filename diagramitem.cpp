@@ -155,6 +155,22 @@ QList<Arrow *> DiagramItem::getArrows() const
 {
     return arrows;
 }
+
+QString DiagramItem::id() const
+{
+    if (m_textItem) {
+        return m_textItem->text();
+    }
+
+    return "NO_ID";
+}
+
+void DiagramItem::setId(QString value)
+{
+    if (m_textItem) {
+        m_textItem->setPlainText(value);
+    }
+}
 //! [4]
 
 //! [5]

@@ -87,6 +87,7 @@ public:
     void open(QIODevice *device);
     void print();
     void save(QIODevice *device);
+    DiagramItem *itemWithId(const QString &id);
 
 public slots:
     void setMode(Mode mode);
@@ -106,6 +107,7 @@ protected:
 private:
     bool isItemChange(int type);
     void parseItemElement(const QDomElement& element);
+    void parseArrowElement(const QDomElement& element);
 
     DiagramItem::DiagramType myItemType;
     QMenu *myItemMenu;
@@ -118,6 +120,8 @@ private:
     QColor myTextColor;
     QColor myItemColor;
     QColor myLineColor;
+
+    QMap<QString, DiagramItem *> m_itemsDict;
 };
 //! [0]
 

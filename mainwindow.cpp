@@ -204,6 +204,11 @@ void MainWindow::itemInserted(DiagramItem *item)
     pointerTypeGroup->button(int(DiagramScene::MoveItem))->setChecked(true);
     scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
     buttonGroup->button(int(item->diagramType()))->setChecked(false);
+
+    // Add item to list view.
+    QStringList list;
+    list << item->id();
+    tree->addTopLevelItem(new QTreeWidgetItem(list));
 }
 //! [7]
 
@@ -378,6 +383,15 @@ void MainWindow::save()
      scene->save(&file);
 }
 
+void MainWindow::onTreeItemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+    QString id = item->text(column);
+    auto diagramItem = scene->itemWithId(id);
+    if (diagramItem) {
+        view->centerOn(diagramItem);
+    }
+}
+
 void MainWindow::moveToCenter()
 {
     //
@@ -461,6 +475,16 @@ void MainWindow::createToolBox()
     QWidget *backgroundWidget = new QWidget;
     backgroundWidget->setLayout(backgroundLayout);
 
+    //
+    // Tree view.
+    //
+    QGridLayout *treeViewLayout = new QGridLayout;
+    tree = new QTreeWidget(this);
+    tree->setHeaderLabel("Person");
+    connect(tree, &QTreeWidget::itemDoubleClicked, this, &MainWindow::onTreeItemDoubleClicked);
+    treeViewLayout->addWidget(tree);
+    QWidget *treeViewWidget = new QWidget;
+    treeViewWidget->setLayout(treeViewLayout);
 
 //! [22]
     toolBox = new QToolBox;
@@ -468,6 +492,7 @@ void MainWindow::createToolBox()
     toolBox->setMinimumWidth(itemWidget->sizeHint().width());
     toolBox->addItem(itemWidget, tr("Add Items"));
     toolBox->addItem(backgroundWidget, tr("Backgrounds"));
+    toolBox->addItem(treeViewWidget, tr("Tree View"));
 }
 //! [22]
 

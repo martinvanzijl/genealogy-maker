@@ -72,6 +72,7 @@ public:
     DiagramTextItem(QGraphicsItem *parent = 0);
 
     int type() const override { return Type; }
+    QString text() const;
 
 signals:
     void lostFocus(DiagramTextItem *item);

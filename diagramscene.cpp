@@ -150,6 +150,12 @@ void DiagramScene::open(QIODevice *device)
         parseItemElement(child);
         child = child.nextSiblingElement("item");
     }
+
+    child = root.firstChildElement("relationship");
+    while (!child.isNull()) {
+        parseArrowElement(child);
+        child = child.nextSiblingElement("relationship");
+    }
 }
 
 void DiagramScene::print()
@@ -175,12 +181,13 @@ void DiagramScene::save(QIODevice *device)
     for (auto item: items()) {
         DiagramItem *diagramItem = dynamic_cast<DiagramItem*> (item);
 
-        QDomElement itemElement = domDocument.createElement("item");
-        itemElement.setAttribute("x", item->pos().x());
-        itemElement.setAttribute("y", item->pos().y());
-        rootElement.appendChild(itemElement);
-
         if (diagramItem) {
+            QDomElement itemElement = domDocument.createElement("item");
+            itemElement.setAttribute("x", item->pos().x());
+            itemElement.setAttribute("y", item->pos().y());
+            itemElement.setAttribute("id", diagramItem->id());
+            rootElement.appendChild(itemElement);
+
             arrows << diagramItem->getArrows();
         }
     }
@@ -191,12 +198,20 @@ void DiagramScene::save(QIODevice *device)
     auto arrowSet = QSet<Arrow *>::fromList(arrows);
     for (auto arrow: arrowSet) {
         QDomElement element = domDocument.createElement("relationship");
+        element.setAttribute("from", arrow->startItem()->id());
+        element.setAttribute("to", arrow->endItem()->id());
         rootElement.appendChild(element);
     }
 
     domDocument.appendChild(rootElement);
     domDocument.save(out, indentSize);
 }
+
+DiagramItem *DiagramScene::itemWithId(const QString &id)
+{
+    return m_itemsDict[id];
+}
+
 //! [4]
 
 void DiagramScene::setMode(Mode mode)
@@ -332,7 +347,29 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     addItem(item);
     auto x = element.attribute("x").toDouble();
     auto y = element.attribute("y").toDouble();
+    auto id = element.attribute("id", "NO_ID");
     item->setPos(x, y);
+    item->setId(id);
     emit itemInserted(item);
+
+    m_itemsDict[id] = item;
+}
+
+void DiagramScene::parseArrowElement(const QDomElement &element)
+{
+    auto fromId = element.attribute("from");
+    auto toId = element.attribute("to");
+    auto startItem = m_itemsDict[fromId];
+    auto endItem = m_itemsDict[toId];
+
+    if (startItem && endItem) {
+        Arrow *arrow = new Arrow(startItem, endItem);
+        arrow->setColor(myLineColor);
+        startItem->addArrow(arrow);
+        endItem->addArrow(arrow);
+        arrow->setZValue(-1000.0);
+        addItem(arrow);
+        arrow->updatePosition();
+    }
 }
 //! [14]
