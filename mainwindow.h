@@ -79,6 +79,7 @@ class MainWindow : public QMainWindow
 
 public:
    MainWindow();
+   void moveToCenter();
 
 private slots:
     void backgroundButtonGroupClicked(QAbstractButton *button);

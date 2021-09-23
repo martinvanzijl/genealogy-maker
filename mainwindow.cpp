@@ -375,7 +375,18 @@ void MainWindow::save()
          return;
      }
 
-    scene->save(&file);
+     scene->save(&file);
+}
+
+void MainWindow::moveToCenter()
+{
+    //
+    // Center the window on the screen.
+    //
+    auto geometry = QApplication::desktop()->screenGeometry();
+    auto halfSize = size() / 2.0;
+    QPoint offset(halfSize.width(), halfSize.height());
+    move(geometry.center() - offset);
 }
 //! [20]
 
