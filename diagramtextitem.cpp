@@ -51,16 +51,30 @@
 #include "diagramtextitem.h"
 #include "diagramscene.h"
 
+#include <QTextCursor>
+
 DiagramTextItem::DiagramTextItem(QGraphicsItem *parent)
     : QGraphicsTextItem(parent)
 {
     //setFlag(QGraphicsItem::ItemIsMovable);
-    setFlag(QGraphicsItem::ItemIsSelectable);
+    //setFlag(QGraphicsItem::ItemIsSelectable);
 }
 
 QString DiagramTextItem::text() const
 {
     return toPlainText();
+}
+
+void DiagramTextItem::startEditing()
+{
+    if (textInteractionFlags() == Qt::NoTextInteraction) {
+        setTextInteractionFlags(Qt::TextEditorInteraction);
+    }
+    setFocus();
+    auto cursor = textCursor();
+    cursor.movePosition(QTextCursor::End);
+    cursor.select(QTextCursor::Document);
+    setTextCursor(cursor);
 }
 
 QVariant DiagramTextItem::itemChange(GraphicsItemChange change,
@@ -73,6 +87,9 @@ QVariant DiagramTextItem::itemChange(GraphicsItemChange change,
 
 void DiagramTextItem::focusOutEvent(QFocusEvent *event)
 {
+    auto cursor = textCursor();
+    cursor.clearSelection();
+    setTextCursor(cursor);
     setTextInteractionFlags(Qt::NoTextInteraction);
     emit lostFocus(this);
     QGraphicsTextItem::focusOutEvent(event);

@@ -303,8 +303,14 @@ void DiagramScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
     } else if (myMode == MoveItem) {
         QGraphicsScene::mouseMoveEvent(mouseEvent);
 
-        // Check for marriage.
+        // Check for moving text: move rectangle also.
         auto draggedItem = mouseGrabberItem();
+        if (draggedItem && draggedItem->type() == DiagramTextItem::Type) {
+            draggedItem->parentItem()->setSelected(true);
+        }
+
+        // Check for marriage.
+        //auto draggedItem = mouseGrabberItem();
         if (draggedItem && draggedItem->type() == DiagramItem::Type) {
             auto pos = mouseEvent->scenePos();
             QList<QGraphicsItem *> list = items(pos);

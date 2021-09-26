@@ -204,7 +204,7 @@ void DiagramItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 }
 //! [5]
 
-//! [6]
+
 QVariant DiagramItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemPositionChange) {
@@ -215,4 +215,12 @@ QVariant DiagramItem::itemChange(GraphicsItemChange change, const QVariant &valu
 
     return value;
 }
-//! [6]
+
+void DiagramItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event);
+
+    //if (m_textItem->isUnderMouse()) {
+        m_textItem->startEditing();
+    //}
+}
