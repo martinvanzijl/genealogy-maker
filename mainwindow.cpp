@@ -196,9 +196,14 @@ void MainWindow::itemInserted(DiagramItem *item)
     buttonGroup->button(int(item->diagramType()))->setChecked(false);
 
     // Add item to list view.
+    auto id = item->id();
     QStringList list;
-    list << item->id();
-    tree->addTopLevelItem(new QTreeWidgetItem(list));
+    list << item->name();
+    auto treeItem = new QTreeWidgetItem(list);
+    tree->addTopLevelItem(treeItem);
+    treeItem->setData(0, Qt::UserRole, id);
+    treeItems[id] = treeItem;
+    connect(item->textItem(), &DiagramTextItem::textEdited, this, &MainWindow::onItemTextEdited);
 }
 
 void MainWindow::currentFontChanged(const QFont &)
@@ -348,7 +353,7 @@ void MainWindow::save()
 
 void MainWindow::onTreeItemDoubleClicked(QTreeWidgetItem *item, int column)
 {
-    QString id = item->text(column);
+    QUuid id = item->data(0, Qt::UserRole).toUuid();
     auto diagramItem = scene->itemWithId(id);
     if (diagramItem) {
         view->centerOn(diagramItem);
@@ -364,6 +369,21 @@ void MainWindow::moveToCenter()
     auto halfSize = size() / 2.0;
     QPoint offset(halfSize.width(), halfSize.height());
     move(geometry.center() - offset);
+}
+
+void MainWindow::onItemTextEdited(QGraphicsItem *item)
+{
+    auto parent = item->parentItem();
+
+    if (parent) {
+        auto person = qgraphicsitem_cast<DiagramItem *>(parent);
+        if (person) {
+            auto treeItem = treeItems[person->id()];
+            if (treeItem) {
+                treeItem->setText(0, person->name());
+            }
+        }
+    }
 }
 //! [20]
 

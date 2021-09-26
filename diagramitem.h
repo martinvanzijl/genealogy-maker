@@ -53,6 +53,7 @@
 
 #include <QGraphicsPixmapItem>
 #include <QList>
+#include <QUuid>
 
 QT_BEGIN_NAMESPACE
 class QPixmap;
@@ -88,10 +89,13 @@ public:
     QPixmap image() const;
     int type() const override { return Type;}
     QList<Arrow *> getArrows() const;
-    QString id() const;
-    void setId(QString value);
+    QString name() const;
+    void setName(QString value);
     void setHighlighted(bool value);
     void marryTo(DiagramItem *spouse);
+    QUuid id() const;
+    void setId(const QUuid& value);
+    DiagramTextItem *textItem();
 
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
@@ -104,6 +108,7 @@ private:
     QMenu *myContextMenu;
     QList<Arrow *> arrows;
     DiagramTextItem *m_textItem;
+    QUuid m_id;
 };
 //! [0]
 

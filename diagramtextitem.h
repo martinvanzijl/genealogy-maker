@@ -78,6 +78,7 @@ public:
 signals:
     void lostFocus(DiagramTextItem *item);
     void selectedChange(QGraphicsItem *item);
+    void textEdited(QGraphicsItem *item);
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;

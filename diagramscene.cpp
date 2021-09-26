@@ -71,6 +71,7 @@ DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
     myTextColor = Qt::black;
     myLineColor = Qt::black;
     m_highlightedItem = nullptr;
+    m_nextId = 1;
 }
 //! [0]
 
@@ -187,7 +188,8 @@ void DiagramScene::save(QIODevice *device)
             QDomElement itemElement = domDocument.createElement("item");
             itemElement.setAttribute("x", item->pos().x());
             itemElement.setAttribute("y", item->pos().y());
-            itemElement.setAttribute("id", diagramItem->id());
+            itemElement.setAttribute("name", diagramItem->name());
+            itemElement.setAttribute("id", diagramItem->id().toString());
             rootElement.appendChild(itemElement);
 
             arrows << diagramItem->getArrows();
@@ -200,8 +202,8 @@ void DiagramScene::save(QIODevice *device)
     auto arrowSet = QSet<Arrow *>::fromList(arrows);
     for (auto arrow: arrowSet) {
         QDomElement element = domDocument.createElement("relationship");
-        element.setAttribute("from", arrow->startItem()->id());
-        element.setAttribute("to", arrow->endItem()->id());
+        element.setAttribute("from", arrow->startItem()->id().toString());
+        element.setAttribute("to", arrow->endItem()->id().toString());
         rootElement.appendChild(element);
     }
 
@@ -209,7 +211,7 @@ void DiagramScene::save(QIODevice *device)
     domDocument.save(out, indentSize);
 }
 
-DiagramItem *DiagramScene::itemWithId(const QString &id)
+DiagramItem *DiagramScene::itemWithId(const QUuid& id)
 {
     return m_itemsDict[id];
 }
@@ -258,14 +260,18 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
     DiagramItem *item;
     switch (myMode) {
-        case InsertItem:
-            item = new DiagramItem(myItemType, myItemMenu);
-            item->setBrush(myItemColor);
-            addItem(item);
-            item->setPos(mouseEvent->scenePos());
-            m_itemsDict[item->id()] = item;
-            emit itemInserted(item);
-            break;
+    case InsertItem:
+    {
+        item = new DiagramItem(myItemType, myItemMenu);
+        item->setBrush(myItemColor);
+        addItem(item);
+        item->setPos(mouseEvent->scenePos());
+        auto id = QUuid::createUuid();
+        item->setId(id);
+        m_itemsDict[id] = item;
+        emit itemInserted(item);
+        break;
+    }
 
         case InsertLine:
             line = new QGraphicsLineItem(QLineF(mouseEvent->scenePos(),
@@ -383,8 +389,8 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
             auto draggedItem = mouseGrabberItem();
             if (draggedItem && draggedItem->type() == DiagramItem::Type) {
                 auto item = qgraphicsitem_cast<DiagramItem *>(draggedItem);
-                auto name1 = item->id();
-                auto name2 = m_highlightedItem->id();
+                auto name1 = item->name();
+                auto name2 = m_highlightedItem->name();
 
                 QMessageBox msgBox;
                 msgBox.setWindowTitle("Confirm");
@@ -423,8 +429,10 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     addItem(item);
     auto x = element.attribute("x").toDouble();
     auto y = element.attribute("y").toDouble();
-    auto id = element.attribute("id", "NO_ID");
+    auto name = element.attribute("name");
+    auto id = QUuid(element.attribute("id"));
     item->setPos(x, y);
+    item->setName(name);
     item->setId(id);
     emit itemInserted(item);
 

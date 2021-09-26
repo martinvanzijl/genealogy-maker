@@ -93,6 +93,8 @@ void DiagramTextItem::focusOutEvent(QFocusEvent *event)
     setTextInteractionFlags(Qt::NoTextInteraction);
     emit lostFocus(this);
     QGraphicsTextItem::focusOutEvent(event);
+
+    emit textEdited(this);
 }
 
 void DiagramTextItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

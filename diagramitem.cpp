@@ -56,6 +56,7 @@
 #include <QGraphicsSceneContextMenuEvent>
 #include <QMenu>
 #include <QPainter>
+#include <QUuid>
 
 //! [0]
 DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
@@ -65,7 +66,7 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     myDiagramType = diagramType;
     myContextMenu = contextMenu;
 
-    QPainterPath path;
+//    QPainterPath path;
     switch (myDiagramType) {
     //        case StartEnd:
     //            path.moveTo(200, 50);
@@ -161,16 +162,16 @@ QList<Arrow *> DiagramItem::getArrows() const
     return arrows;
 }
 
-QString DiagramItem::id() const
+QString DiagramItem::name() const
 {
     if (m_textItem) {
         return m_textItem->text();
     }
 
-    return "NO_ID";
+    return "NO_NAME";
 }
 
-void DiagramItem::setId(QString value)
+void DiagramItem::setName(QString value)
 {
     if (m_textItem) {
         m_textItem->setPlainText(value);
@@ -192,6 +193,21 @@ void DiagramItem::marryTo(DiagramItem *spouse)
     auto spouseX = pos().x() + boundingRect().width();
     auto spouseY = pos().y();
     spouse->setPos(spouseX, spouseY);
+}
+
+QUuid DiagramItem::id() const
+{
+    return m_id;
+}
+
+void DiagramItem::setId(const QUuid& value)
+{
+    m_id = value;
+}
+
+DiagramTextItem *DiagramItem::textItem()
+{
+    return m_textItem;
 }
 //! [4]
 
@@ -222,5 +238,5 @@ void DiagramItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
     //if (m_textItem->isUnderMouse()) {
         m_textItem->startEditing();
-    //}
+        //}
 }

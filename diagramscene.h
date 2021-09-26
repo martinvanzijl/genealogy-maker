@@ -87,7 +87,7 @@ public:
     void open(QIODevice *device);
     void print();
     void save(QIODevice *device);
-    DiagramItem *itemWithId(const QString &id);
+    DiagramItem *itemWithId(const QUuid &id);
     bool isEmpty() const;
     QGraphicsItem *firstItem() const;
 
@@ -126,8 +126,9 @@ private:
     QColor myItemColor;
     QColor myLineColor;
 
-    QMap<QString, DiagramItem *> m_itemsDict;
+    QMap<QUuid, DiagramItem *> m_itemsDict;
     DiagramItem *m_highlightedItem;
+    long m_nextId;
 };
 //! [0]
 

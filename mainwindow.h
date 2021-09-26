@@ -83,6 +83,9 @@ public:
    MainWindow();
    void moveToCenter();
 
+public slots:
+    void onItemTextEdited(QGraphicsItem *item);
+
 private slots:
     void backgroundButtonGroupClicked(QAbstractButton *button);
     void buttonGroupClicked(int id);
@@ -165,6 +168,7 @@ private:
     QAction *lineAction;
 
     QTreeWidget *tree;
+    QMap<QUuid, QTreeWidgetItem *> treeItems;
 };
 //! [0]
 
