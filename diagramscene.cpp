@@ -263,30 +263,31 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
             item->setBrush(myItemColor);
             addItem(item);
             item->setPos(mouseEvent->scenePos());
+            m_itemsDict[item->id()] = item;
             emit itemInserted(item);
             break;
-//! [6] //! [7]
+
         case InsertLine:
             line = new QGraphicsLineItem(QLineF(mouseEvent->scenePos(),
                                         mouseEvent->scenePos()));
             line->setPen(QPen(myLineColor, 2));
             addItem(line);
             break;
-//! [7] //! [8]
-        case InsertText:
-            textItem = new DiagramTextItem();
-            textItem->setFont(myFont);
-            textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
-            textItem->setZValue(1000.0);
-            connect(textItem, SIGNAL(lostFocus(DiagramTextItem*)),
-                    this, SLOT(editorLostFocus(DiagramTextItem*)));
-            connect(textItem, SIGNAL(selectedChange(QGraphicsItem*)),
-                    this, SIGNAL(itemSelected(QGraphicsItem*)));
-            addItem(textItem);
-            textItem->setDefaultTextColor(myTextColor);
-            textItem->setPos(mouseEvent->scenePos());
-            emit textInserted(textItem);
-//! [8] //! [9]
+
+//        case InsertText:
+//            textItem = new DiagramTextItem();
+//            textItem->setFont(myFont);
+//            textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
+//            textItem->setZValue(1000.0);
+//            connect(textItem, SIGNAL(lostFocus(DiagramTextItem*)),
+//                    this, SLOT(editorLostFocus(DiagramTextItem*)));
+//            connect(textItem, SIGNAL(selectedChange(QGraphicsItem*)),
+//                    this, SIGNAL(itemSelected(QGraphicsItem*)));
+//            addItem(textItem);
+//            textItem->setDefaultTextColor(myTextColor);
+//            textItem->setPos(mouseEvent->scenePos());
+//            emit textInserted(textItem);
+
     default:
         ;
     }
