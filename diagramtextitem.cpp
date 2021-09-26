@@ -87,13 +87,17 @@ QVariant DiagramTextItem::itemChange(GraphicsItemChange change,
 
 void DiagramTextItem::focusOutEvent(QFocusEvent *event)
 {
+    // Clear selection.
     auto cursor = textCursor();
     cursor.clearSelection();
     setTextCursor(cursor);
+
+    // Lose focus.
     setTextInteractionFlags(Qt::NoTextInteraction);
     emit lostFocus(this);
     QGraphicsTextItem::focusOutEvent(event);
 
+    // Send signal.
     emit textEdited(this);
 }
 
@@ -104,4 +108,15 @@ void DiagramTextItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     }
     QGraphicsTextItem::mouseDoubleClickEvent(event);
     setFocus();
+}
+
+void DiagramTextItem::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Escape) {
+        // Stop editing.
+        clearFocus();
+    }
+    else {
+        QGraphicsTextItem::keyPressEvent(event);
+    }
 }
