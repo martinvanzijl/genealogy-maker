@@ -212,6 +212,16 @@ DiagramItem *DiagramScene::itemWithId(const QString &id)
     return m_itemsDict[id];
 }
 
+bool DiagramScene::isEmpty() const
+{
+    return items().isEmpty();
+}
+
+QGraphicsItem *DiagramScene::firstItem() const
+{
+    return items().first();
+}
+
 //! [4]
 
 void DiagramScene::setMode(Mode mode)

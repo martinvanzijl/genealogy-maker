@@ -88,6 +88,8 @@ public:
     void print();
     void save(QIODevice *device);
     DiagramItem *itemWithId(const QString &id);
+    bool isEmpty() const;
+    QGraphicsItem *firstItem() const;
 
 public slots:
     void setMode(Mode mode);

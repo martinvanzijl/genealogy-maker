@@ -59,7 +59,6 @@
 const int InsertTextButton = 10;
 const int InsertArrowButton = 11;
 
-//! [0]
 MainWindow::MainWindow()
 {
     createActions();
@@ -88,9 +87,7 @@ MainWindow::MainWindow()
     setWindowTitle(tr("Genealogy Maker - Qt Version"));
     setUnifiedTitleAndToolBarOnMac(true);
 }
-//! [0]
 
-//! [1]
 void MainWindow::backgroundButtonGroupClicked(QAbstractButton *button)
 {
     QList<QAbstractButton *> buttons = backgroundButtonGroup->buttons();
@@ -111,9 +108,7 @@ void MainWindow::backgroundButtonGroupClicked(QAbstractButton *button)
     scene->update();
     view->update();
 }
-//! [1]
 
-//! [2]
 void MainWindow::buttonGroupClicked(int id)
 {
     QList<QAbstractButton *> buttons = buttonGroup->buttons();
@@ -131,9 +126,7 @@ void MainWindow::buttonGroupClicked(int id)
         scene->setMode(DiagramScene::InsertItem);
     }
 }
-//! [2]
 
-//! [3]
 void MainWindow::deleteItem()
 {
     foreach (QGraphicsItem *item, scene->selectedItems()) {
@@ -153,16 +146,12 @@ void MainWindow::deleteItem()
          delete item;
      }
 }
-//! [3]
 
-//! [4]
 void MainWindow::pointerGroupClicked(int)
 {
     scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
 }
-//! [4]
 
-//! [5]
 void MainWindow::bringToFront()
 {
     if (scene->selectedItems().isEmpty())
@@ -178,9 +167,7 @@ void MainWindow::bringToFront()
     }
     selectedItem->setZValue(zValue);
 }
-//! [5]
 
-//! [6]
 void MainWindow::sendToBack()
 {
     if (scene->selectedItems().isEmpty())
@@ -196,9 +183,7 @@ void MainWindow::sendToBack()
     }
     selectedItem->setZValue(zValue);
 }
-//! [6]
 
-//! [7]
 void MainWindow::itemInserted(DiagramItem *item)
 {
     pointerTypeGroup->button(int(DiagramScene::MoveItem))->setChecked(true);
@@ -210,31 +195,23 @@ void MainWindow::itemInserted(DiagramItem *item)
     list << item->id();
     tree->addTopLevelItem(new QTreeWidgetItem(list));
 }
-//! [7]
 
-//! [8]
 void MainWindow::textInserted(QGraphicsTextItem *)
 {
     buttonGroup->button(InsertTextButton)->setChecked(false);
     scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
 }
-//! [8]
 
-//! [9]
 void MainWindow::currentFontChanged(const QFont &)
 {
     handleFontChange();
 }
-//! [9]
 
-//! [10]
 void MainWindow::fontSizeChanged(const QString &)
 {
     handleFontChange();
 }
-//! [10]
 
-//! [11]
 void MainWindow::sceneScaleChanged(const QString &scale)
 {
     double newScale = scale.left(scale.indexOf(tr("%"))).toDouble() / 100.0;
@@ -243,9 +220,7 @@ void MainWindow::sceneScaleChanged(const QString &scale)
     view->translate(oldMatrix.dx(), oldMatrix.dy());
     view->scale(newScale, newScale);
 }
-//! [11]
 
-//! [12]
 void MainWindow::textColorChanged()
 {
     textAction = qobject_cast<QAction *>(sender());
@@ -254,9 +229,7 @@ void MainWindow::textColorChanged()
                                      qvariant_cast<QColor>(textAction->data())));
     textButtonTriggered();
 }
-//! [12]
 
-//! [13]
 void MainWindow::itemColorChanged()
 {
     fillAction = qobject_cast<QAction *>(sender());
@@ -265,9 +238,7 @@ void MainWindow::itemColorChanged()
                                      qvariant_cast<QColor>(fillAction->data())));
     fillButtonTriggered();
 }
-//! [13]
 
-//! [14]
 void MainWindow::lineColorChanged()
 {
     lineAction = qobject_cast<QAction *>(sender());
@@ -276,30 +247,22 @@ void MainWindow::lineColorChanged()
                                      qvariant_cast<QColor>(lineAction->data())));
     lineButtonTriggered();
 }
-//! [14]
 
-//! [15]
 void MainWindow::textButtonTriggered()
 {
     scene->setTextColor(qvariant_cast<QColor>(textAction->data()));
 }
-//! [15]
 
-//! [16]
 void MainWindow::fillButtonTriggered()
 {
     scene->setItemColor(qvariant_cast<QColor>(fillAction->data()));
 }
-//! [16]
 
-//! [17]
 void MainWindow::lineButtonTriggered()
 {
     scene->setLineColor(qvariant_cast<QColor>(lineAction->data()));
 }
-//! [17]
 
-//! [18]
 void MainWindow::handleFontChange()
 {
     QFont font = fontCombo->currentFont();
@@ -310,9 +273,7 @@ void MainWindow::handleFontChange()
 
     scene->setFont(font);
 }
-//! [18]
 
-//! [19]
 void MainWindow::itemSelected(QGraphicsItem *item)
 {
     DiagramTextItem *textItem =
@@ -325,9 +286,7 @@ void MainWindow::itemSelected(QGraphicsItem *item)
     italicAction->setChecked(font.italic());
     underlineAction->setChecked(font.underline());
 }
-//! [19]
 
-//! [20]
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About Diagram Scene"),
@@ -355,6 +314,11 @@ void MainWindow::open()
     }
 
     scene->open(&file);
+
+    // Scroll to first item.
+    if (!scene->isEmpty()) {
+        view->centerOn(scene->firstItem());
+    }
 }
 
 void MainWindow::save()
@@ -428,6 +392,7 @@ void MainWindow::createToolBox()
     buttonGroup->addButton(arrowButton, InsertArrowButton);
     arrowButton->setIcon(QIcon(QPixmap(":/images/linepointer.png")));
     arrowButton->setIconSize(QSize(50, 50));
+    arrowButton->setToolTip("Add Relationship");
     QGridLayout *textLayout = new QGridLayout;
     textLayout->addWidget(arrowButton, 0, 0, Qt::AlignHCenter);
     textLayout->addWidget(new QLabel(tr("Relationship")), 1, 0, Qt::AlignCenter);
@@ -698,6 +663,7 @@ QWidget *MainWindow::createCellWidget(const QString &text, DiagramItem::DiagramT
     button->setIcon(icon);
     button->setIconSize(QSize(50, 50));
     button->setCheckable(true);
+    button->setToolTip(QString("Add ") + text);
     buttonGroup->addButton(button, int(type));
 
     QGridLayout *layout = new QGridLayout;
