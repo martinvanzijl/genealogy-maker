@@ -116,7 +116,7 @@ private:
     QWidget *createBackgroundCellWidget(const QString &text,
                                         const QString &image);
     QWidget *createCellWidget(const QString &text,
-                              DiagramItem::DiagramType type);
+                              DiagramItem::DiagramType type, QKeySequence shortcut);
     QMenu *createColorMenu(const char *slot, QColor defaultColor);
     QIcon createColorToolButtonIcon(const QString &image, QColor color);
     QIcon createColorIcon(QColor color);
@@ -157,6 +157,7 @@ private:
     QToolButton *fillColorToolButton;
     QToolButton *lineColorToolButton;
     QToolButton *linePointerButton;
+    QToolButton *arrowButton;
     QAction *boldAction;
     QAction *underlineAction;
     QAction *italicAction;

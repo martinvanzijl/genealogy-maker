@@ -86,6 +86,8 @@ MainWindow::MainWindow()
     setCentralWidget(widget);
     setWindowTitle(tr("Genealogy Maker - Qt Version"));
     setUnifiedTitleAndToolBarOnMac(true);
+
+    view->setFocus();
 }
 
 void MainWindow::backgroundButtonGroupClicked(QAbstractButton *button)
@@ -113,8 +115,7 @@ void MainWindow::buttonGroupClicked(int id)
 {
     QList<QAbstractButton *> buttons = buttonGroup->buttons();
     foreach (QAbstractButton *button, buttons) {
-        if (buttonGroup->button(id) != button)
-            button->setChecked(false);
+        button->setChecked(buttonGroup->button(id) == button);
     }
     if (id == InsertTextButton) {
         scene->setMode(DiagramScene::InsertText);
@@ -150,6 +151,15 @@ void MainWindow::deleteItem()
 void MainWindow::pointerGroupClicked(int)
 {
     scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
+
+    // Update button group.
+    QList<QAbstractButton *> buttons = buttonGroup->buttons();
+    foreach (QAbstractButton *button, buttons) {
+        button->setChecked(false);
+    }
+    if (pointerTypeGroup->checkedButton() == linePointerButton) {
+        arrowButton->setChecked(true);
+    }
 }
 
 void MainWindow::bringToFront()
@@ -381,18 +391,19 @@ void MainWindow::createToolBox()
     // "Person" button
     //
     //layout->addWidget(createCellWidget(tr("Conditional"), DiagramItem::Conditional), 0, 0);
-    layout->addWidget(createCellWidget(tr("Person"), DiagramItem::Step), 0, 0);
+    layout->addWidget(createCellWidget(tr("Person"), DiagramItem::Step, tr("P")), 0, 0);
     //layout->addWidget(createCellWidget(tr("Input/Output"), DiagramItem::Io), 1, 0);
 
     //
     // "Relationship" button
     //
-    QToolButton *arrowButton = new QToolButton;
+    arrowButton = new QToolButton;
     arrowButton->setCheckable(true);
     buttonGroup->addButton(arrowButton, InsertArrowButton);
     arrowButton->setIcon(QIcon(QPixmap(":/images/linepointer.png")));
     arrowButton->setIconSize(QSize(50, 50));
     arrowButton->setToolTip("Add Relationship");
+    arrowButton->setShortcut(tr("R"));
     QGridLayout *textLayout = new QGridLayout;
     textLayout->addWidget(arrowButton, 0, 0, Qt::AlignHCenter);
     textLayout->addWidget(new QLabel(tr("Relationship")), 1, 0, Qt::AlignCenter);
@@ -653,9 +664,8 @@ QWidget *MainWindow::createBackgroundCellWidget(const QString &text, const QStri
 //! [28]
 
 //! [29]
-QWidget *MainWindow::createCellWidget(const QString &text, DiagramItem::DiagramType type)
+QWidget *MainWindow::createCellWidget(const QString &text, DiagramItem::DiagramType type, QKeySequence shortcut)
 {
-
     DiagramItem item(type, itemMenu);
     QIcon icon(item.image());
 
@@ -664,6 +674,7 @@ QWidget *MainWindow::createCellWidget(const QString &text, DiagramItem::DiagramT
     button->setIconSize(QSize(50, 50));
     button->setCheckable(true);
     button->setToolTip(QString("Add ") + text);
+    button->setShortcut(shortcut);
     buttonGroup->addButton(button, int(type));
 
     QGridLayout *layout = new QGridLayout;
