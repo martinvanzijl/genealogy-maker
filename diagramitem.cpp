@@ -67,30 +67,34 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
 
     QPainterPath path;
     switch (myDiagramType) {
-        case StartEnd:
-            path.moveTo(200, 50);
-            path.arcTo(150, 0, 50, 50, 0, 90);
-            path.arcTo(50, 0, 50, 50, 90, 90);
-            path.arcTo(50, 50, 50, 50, 180, 90);
-            path.arcTo(150, 50, 50, 50, 270, 90);
-            path.lineTo(200, 25);
-            myPolygon = path.toFillPolygon();
-            break;
-        case Conditional:
-            myPolygon << QPointF(-100, 0) << QPointF(0, 100)
-                      << QPointF(100, 0) << QPointF(0, -100)
-                      << QPointF(-100, 0);
-            break;
-        case Step:
-            myPolygon << QPointF(-100, -100) << QPointF(100, -100)
-                      << QPointF(100, 100) << QPointF(-100, 100)
-                      << QPointF(-100, -100);
-            break;
-        default:
-            myPolygon << QPointF(-120, -80) << QPointF(-70, 80)
-                      << QPointF(120, 80) << QPointF(70, -80)
-                      << QPointF(-120, -80);
-            break;
+    //        case StartEnd:
+    //            path.moveTo(200, 50);
+    //            path.arcTo(150, 0, 50, 50, 0, 90);
+    //            path.arcTo(50, 0, 50, 50, 90, 90);
+    //            path.arcTo(50, 50, 50, 50, 180, 90);
+    //            path.arcTo(150, 50, 50, 50, 270, 90);
+    //            path.lineTo(200, 25);
+    //            myPolygon = path.toFillPolygon();
+    //            break;
+    //        case Conditional:
+    //            myPolygon << QPointF(-100, 0) << QPointF(0, 100)
+    //                      << QPointF(100, 0) << QPointF(0, -100)
+    //                      << QPointF(-100, 0);
+    //            break;
+    case Step:
+    {
+        int height = 25;
+        int width = 100;
+        myPolygon << QPointF(-width, -height) << QPointF(width, -height)
+                  << QPointF(width, height) << QPointF(-width, height)
+                  << QPointF(-width, -height);
+        break;
+    }
+    default:
+        myPolygon << QPointF(-120, -80) << QPointF(-70, 80)
+                  << QPointF(120, 80) << QPointF(70, -80)
+                  << QPointF(-120, -80);
+        break;
     }
     setPolygon(myPolygon);
     setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -100,8 +104,9 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     // Add child text.
     if (myDiagramType == Step) {
         m_textItem = new DiagramTextItem(this);
-        m_textItem->setPlainText("Oupa van Zijl");
+        m_textItem->setPlainText("New Person");
         m_textItem->setX(boundingRect().center().x() - m_textItem->boundingRect().width() / 2);
+        m_textItem->setY(boundingRect().center().y() - m_textItem->boundingRect().height() / 2);
     }
     else {
         m_textItem = nullptr;
