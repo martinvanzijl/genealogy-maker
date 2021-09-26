@@ -320,18 +320,32 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 //! [11] //! [12]
 
         if (startItems.count() > 0 && endItems.count() > 0 &&
-            startItems.first()->type() == DiagramItem::Type &&
-            endItems.first()->type() == DiagramItem::Type &&
             startItems.first() != endItems.first()) {
-            DiagramItem *startItem = qgraphicsitem_cast<DiagramItem *>(startItems.first());
-            DiagramItem *endItem = qgraphicsitem_cast<DiagramItem *>(endItems.first());
-            Arrow *arrow = new Arrow(startItem, endItem);
-            arrow->setColor(myLineColor);
-            startItem->addArrow(arrow);
-            endItem->addArrow(arrow);
-            arrow->setZValue(-1000.0);
-            addItem(arrow);
-            arrow->updatePosition();
+
+            // If we release on a text item, use the parent rectangle item instead.
+            auto firstItemToCast = startItems.first();
+            if (firstItemToCast->type() == DiagramTextItem::Type) {
+                firstItemToCast = firstItemToCast->parentItem();
+            }
+            auto endItemToCast = endItems.first();
+            if (endItemToCast->type() == DiagramTextItem::Type) {
+                endItemToCast = endItemToCast->parentItem();
+            }
+
+            // Now create the arrow.
+            if (firstItemToCast->type() == DiagramItem::Type &&
+                endItemToCast->type() == DiagramItem::Type)
+            {
+                DiagramItem *startItem = qgraphicsitem_cast<DiagramItem *>(firstItemToCast);
+                DiagramItem *endItem = qgraphicsitem_cast<DiagramItem *>(endItemToCast);
+                Arrow *arrow = new Arrow(startItem, endItem);
+                arrow->setColor(myLineColor);
+                startItem->addArrow(arrow);
+                endItem->addArrow(arrow);
+                arrow->setZValue(-1000.0);
+                addItem(arrow);
+                arrow->updatePosition();
+            }
         }
     }
 //! [12] //! [13]
