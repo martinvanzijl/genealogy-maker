@@ -90,6 +90,8 @@ public:
     QList<Arrow *> getArrows() const;
     QString id() const;
     void setId(QString value);
+    void setHighlighted(bool value);
+    void marryTo(DiagramItem *spouse);
 
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;

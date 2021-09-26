@@ -176,6 +176,23 @@ void DiagramItem::setId(QString value)
         m_textItem->setPlainText(value);
     }
 }
+
+void DiagramItem::setHighlighted(bool value)
+{
+    if (value) {
+        setPen(QPen(Qt::red, 2));
+    }
+    else {
+        setPen(QPen(Qt::black, 1));
+    }
+}
+
+void DiagramItem::marryTo(DiagramItem *spouse)
+{
+    auto spouseX = pos().x() + boundingRect().width();
+    auto spouseY = pos().y();
+    spouse->setPos(spouseX, spouseY);
+}
 //! [4]
 
 //! [5]

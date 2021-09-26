@@ -56,6 +56,7 @@
 #include <QTextCursor>
 #include <QTextStream>
 #include <QGraphicsSceneMouseEvent>
+#include <QMessageBox>
 
 //! [0]
 DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
@@ -69,6 +70,7 @@ DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
     myItemColor = Qt::white;
     myTextColor = Qt::black;
     myLineColor = Qt::black;
+    m_highlightedItem = nullptr;
 }
 //! [0]
 
@@ -300,11 +302,33 @@ void DiagramScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
         line->setLine(newLine);
     } else if (myMode == MoveItem) {
         QGraphicsScene::mouseMoveEvent(mouseEvent);
+
+        // Check for marriage.
+        auto draggedItem = mouseGrabberItem();
+        if (draggedItem && draggedItem->type() == DiagramItem::Type) {
+            auto pos = mouseEvent->scenePos();
+            QList<QGraphicsItem *> list = items(pos);
+
+            bool found = false;
+            for (auto item: list) {
+                if (item != draggedItem) {
+                    if (item->type() == DiagramItem::Type) {
+                        found = true;
+                        highlight(qgraphicsitem_cast<DiagramItem *>(item));
+                        break;
+                    }
+                }
+            }
+
+            // Nothing found, so unlighlight all.
+            if (!found) {
+                unHighlightAll();
+            }
+        }
     }
 }
 //! [10]
 
-//! [11]
 void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     if (line != 0 && myMode == InsertLine) {
@@ -317,7 +341,6 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
         removeItem(line);
         delete line;
-//! [11] //! [12]
 
         if (startItems.count() > 0 && endItems.count() > 0 &&
             startItems.first() != endItems.first()) {
@@ -348,11 +371,33 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
             }
         }
     }
-//! [12] //! [13]
+    else if (myMode == MoveItem) {
+        if (m_highlightedItem) {
+            auto draggedItem = mouseGrabberItem();
+            if (draggedItem && draggedItem->type() == DiagramItem::Type) {
+                auto item = qgraphicsitem_cast<DiagramItem *>(draggedItem);
+                auto name1 = item->id();
+                auto name2 = m_highlightedItem->id();
+
+                QMessageBox msgBox;
+                msgBox.setWindowTitle("Confirm");
+                msgBox.setText(QString("Marry %1 and %2?").arg(name1, name2));
+                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+                msgBox.setDefaultButton(QMessageBox::Yes);
+                int ret = msgBox.exec();
+
+                if (ret == QMessageBox::Yes) {
+                    marry(item, m_highlightedItem);
+                }
+            }
+        }
+
+        unHighlightAll();
+    }
+
     line = 0;
     QGraphicsScene::mouseReleaseEvent(mouseEvent);
 }
-//! [13]
 
 //! [14]
 bool DiagramScene::isItemChange(int type)
@@ -395,5 +440,29 @@ void DiagramScene::parseArrowElement(const QDomElement &element)
         addItem(arrow);
         arrow->updatePosition();
     }
+}
+
+void DiagramScene::highlight(DiagramItem *item)
+{
+    unHighlightAll();
+
+    m_highlightedItem = item;
+    if (m_highlightedItem) {
+        m_highlightedItem->setHighlighted(true);
+    }
+}
+
+void DiagramScene::unHighlightAll()
+{
+    if (m_highlightedItem) {
+        m_highlightedItem->setHighlighted(false);
+    }
+
+    m_highlightedItem = nullptr;
+}
+
+void DiagramScene::marry(DiagramItem *item1, DiagramItem *item2)
+{
+    item1->marryTo(item2);
 }
 //! [14]

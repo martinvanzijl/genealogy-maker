@@ -110,6 +110,9 @@ private:
     bool isItemChange(int type);
     void parseItemElement(const QDomElement& element);
     void parseArrowElement(const QDomElement& element);
+    void highlight(DiagramItem *item);
+    void unHighlightAll();
+    void marry(DiagramItem *item1, DiagramItem *item2);
 
     DiagramItem::DiagramType myItemType;
     QMenu *myItemMenu;
@@ -124,6 +127,7 @@ private:
     QColor myLineColor;
 
     QMap<QString, DiagramItem *> m_itemsDict;
+    DiagramItem *m_highlightedItem;
 };
 //! [0]
 
