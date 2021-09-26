@@ -91,7 +91,6 @@ private slots:
     void bringToFront();
     void sendToBack();
     void itemInserted(DiagramItem *item);
-    void textInserted(QGraphicsTextItem *item);
     void currentFontChanged(const QFont &font);
     void fontSizeChanged(const QString &size);
     void sceneScaleChanged(const QString &scale);

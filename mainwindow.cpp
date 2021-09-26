@@ -56,7 +56,6 @@
 
 #include <QtWidgets>
 
-const int InsertTextButton = 10;
 const int InsertArrowButton = 11;
 
 MainWindow::MainWindow()
@@ -69,8 +68,6 @@ MainWindow::MainWindow()
     scene->setSceneRect(QRectF(0, 0, 5000, 5000));
     connect(scene, SIGNAL(itemInserted(DiagramItem*)),
             this, SLOT(itemInserted(DiagramItem*)));
-    connect(scene, SIGNAL(textInserted(QGraphicsTextItem*)),
-            this, SLOT(textInserted(QGraphicsTextItem*)));
     connect(scene, SIGNAL(itemSelected(QGraphicsItem*)),
             this, SLOT(itemSelected(QGraphicsItem*)));
     createToolbars();
@@ -117,9 +114,7 @@ void MainWindow::buttonGroupClicked(int id)
     foreach (QAbstractButton *button, buttons) {
         button->setChecked(buttonGroup->button(id) == button);
     }
-    if (id == InsertTextButton) {
-        scene->setMode(DiagramScene::InsertText);
-    } else if (id == InsertArrowButton)  {
+    if (id == InsertArrowButton)  {
         linePointerButton->click();
     }
     else {
@@ -204,12 +199,6 @@ void MainWindow::itemInserted(DiagramItem *item)
     QStringList list;
     list << item->id();
     tree->addTopLevelItem(new QTreeWidgetItem(list));
-}
-
-void MainWindow::textInserted(QGraphicsTextItem *)
-{
-    buttonGroup->button(InsertTextButton)->setChecked(false);
-    scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
 }
 
 void MainWindow::currentFontChanged(const QFont &)
