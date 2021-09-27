@@ -112,6 +112,7 @@ private slots:
     void selectAll();
     void selectNone();
     void print();
+    void alignItemsHorizontally();
 
 private:
     void createToolBox();
@@ -140,6 +141,7 @@ private:
     QAction *aboutAction;
     QAction *selectAllAction;
     QAction *selectNoneAction;
+    QAction *alignHorizontallyAction;
 
     QAction *printAction;
 

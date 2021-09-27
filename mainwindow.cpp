@@ -392,6 +392,26 @@ void MainWindow::print()
     }
 }
 
+void MainWindow::alignItemsHorizontally()
+{
+    auto items = scene->selectedItems();
+    auto count = items.count();
+    if (count < 2) {
+        return;
+    }
+
+    QPointF center;
+    for (auto item: items) {
+        center += item->pos();
+    }
+
+    center = center / count;
+
+    for (auto item: items) {
+        item->setPos(center.x(), item->pos().y());
+    }
+}
+
 void MainWindow::moveToCenter()
 {
     //
@@ -581,6 +601,9 @@ void MainWindow::createActions()
     selectNoneAction = new QAction(tr("Select None"), this);
     selectNoneAction->setShortcut(tr("Ctrl+Shift+A"));
     connect(selectNoneAction, SIGNAL(triggered()), this, SLOT(selectNone()));
+
+    alignHorizontallyAction = new QAction(tr("Align Horizontally"), this);
+    connect(alignHorizontallyAction, SIGNAL(triggered()), this, SLOT(alignItemsHorizontally()));
 }
 
 //! [24]
@@ -602,6 +625,8 @@ void MainWindow::createMenus()
     itemMenu->addSeparator();
     itemMenu->addAction(selectAllAction);
     itemMenu->addAction(selectNoneAction);
+    itemMenu->addSeparator();
+    itemMenu->addAction(alignHorizontallyAction);
 
     aboutMenu = menuBar()->addMenu(tr("&Help"));
     aboutMenu->addAction(aboutAction);
