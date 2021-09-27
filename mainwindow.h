@@ -111,6 +111,7 @@ private slots:
     void onTreeItemDoubleClicked(QTreeWidgetItem *item, int column);
     void selectAll();
     void selectNone();
+    void print();
 
 private:
     void createToolBox();
@@ -139,6 +140,8 @@ private:
     QAction *aboutAction;
     QAction *selectAllAction;
     QAction *selectNoneAction;
+
+    QAction *printAction;
 
     QMenu *fileMenu;
     QMenu *itemMenu;

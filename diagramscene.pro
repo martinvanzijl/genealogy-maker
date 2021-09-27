@@ -1,4 +1,4 @@
-QT += widgets xml
+QT += printsupport widgets xml
 
 HEADERS	    =   mainwindow.h \
 		diagramitem.h \

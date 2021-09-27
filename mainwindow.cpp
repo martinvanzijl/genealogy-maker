@@ -56,6 +56,8 @@
 #include "mygraphicsview.h"
 
 #include <QtWidgets>
+#include <QPrinter>
+#include <QPrintDialog>
 
 const int InsertArrowButton = 11;
 
@@ -374,6 +376,22 @@ void MainWindow::selectNone()
     scene->clearSelection();
 }
 
+void MainWindow::print()
+{
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setPaperSize(QPrinter::A4);
+
+    QPrintDialog printDialog(&printer, this);
+    if (printDialog.exec() == QDialog::Accepted) {
+        QPainter painter(&printer);
+        //scene->render(&painter);
+        QRectF destRect;
+        int MARGIN = 10;
+        QRectF sourceRect = scene->itemsBoundingRect().adjusted(-MARGIN, -MARGIN, MARGIN, MARGIN);
+        scene->render(&painter, destRect, sourceRect);
+    }
+}
+
 void MainWindow::moveToCenter()
 {
     //
@@ -530,6 +548,11 @@ void MainWindow::createActions()
     saveAction->setStatusTip(tr("Save diagram"));
     connect(saveAction, SIGNAL(triggered()), this, SLOT(save()));
 
+    printAction = new QAction(tr("Print..."), this);
+    printAction->setShortcuts(QKeySequence::Print);
+    printAction->setStatusTip(tr("Print diagram"));
+    connect(printAction, SIGNAL(triggered()), this, SLOT(print()));
+
     boldAction = new QAction(tr("Bold"), this);
     boldAction->setCheckable(true);
     QPixmap pixmap(":/images/bold.png");
@@ -566,6 +589,8 @@ void MainWindow::createMenus()
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
+    fileMenu->addSeparator();
+    fileMenu->addAction(printAction);
     fileMenu->addSeparator();
     fileMenu->addAction(exitAction);
 
