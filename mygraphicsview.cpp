@@ -6,6 +6,7 @@
 
 #include <QEvent>
 #include <QMouseEvent>
+#include <QDebug>
 
 MyGraphicsView::MyGraphicsView(QGraphicsScene *scene, QWidget *owner) :
     QGraphicsView(scene, owner)
@@ -36,6 +37,16 @@ bool MyGraphicsView::eventFilter(QObject *object, QEvent *event) {
             setDragMode(QGraphicsView::DragMode::ScrollHandDrag);
 
             // Emit a left mouse click (the default button for the drag mode)
+            QMouseEvent* pressEvent = new QMouseEvent(QEvent::GraphicsSceneMousePress,
+                                                      mouse_event->pos(), Qt::MouseButton::LeftButton,
+                                                      Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
+            mousePressEvent(pressEvent);
+        }
+        else if (mouse_event->button() == Qt::LeftButton) {
+            // Use the middle mouse button for rectangle-select.
+            setDragMode(QGraphicsView::DragMode::RubberBandDrag);
+
+            // Emit a left mouse click again, now that the mode is set.
             QMouseEvent* pressEvent = new QMouseEvent(QEvent::GraphicsSceneMousePress,
                                                       mouse_event->pos(), Qt::MouseButton::LeftButton,
                                                       Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
