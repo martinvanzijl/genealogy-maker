@@ -53,6 +53,7 @@
 #include "diagramscene.h"
 #include "diagramtextitem.h"
 #include "mainwindow.h"
+#include "mygraphicsview.h"
 
 #include <QtWidgets>
 
@@ -74,7 +75,8 @@ MainWindow::MainWindow()
 
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(toolBox);
-    view = new QGraphicsView(scene);
+    view = new MyGraphicsView(scene);
+    connect(scene, SIGNAL(mouseReleased()), view, SLOT(onMouseReleased()));
     layout->addWidget(view);
 
     QWidget *widget = new QWidget;
@@ -353,6 +355,8 @@ void MainWindow::save()
 
 void MainWindow::onTreeItemDoubleClicked(QTreeWidgetItem *item, int column)
 {
+    Q_UNUSED(column);
+
     QUuid id = item->data(0, Qt::UserRole).toUuid();
     auto diagramItem = scene->itemWithId(id);
     if (diagramItem) {

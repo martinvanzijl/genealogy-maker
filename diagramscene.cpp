@@ -410,6 +410,8 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
     line = 0;
     QGraphicsScene::mouseReleaseEvent(mouseEvent);
+
+    emit mouseReleased();
 }
 
 //! [14]
