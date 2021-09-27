@@ -90,6 +90,7 @@ public:
     DiagramItem *itemWithId(const QUuid &id);
     bool isEmpty() const;
     QGraphicsItem *firstItem() const;
+    void selectAll();
 
 public slots:
     void setMode(Mode mode);

@@ -364,6 +364,16 @@ void MainWindow::onTreeItemDoubleClicked(QTreeWidgetItem *item, int column)
     }
 }
 
+void MainWindow::selectAll()
+{
+    scene->selectAll();
+}
+
+void MainWindow::selectNone()
+{
+    scene->clearSelection();
+}
+
 void MainWindow::moveToCenter()
 {
     //
@@ -540,6 +550,14 @@ void MainWindow::createActions()
     aboutAction = new QAction(tr("A&bout"), this);
     aboutAction->setShortcut(tr("F1"));
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
+
+    selectAllAction = new QAction(tr("Select All"), this);
+    selectAllAction->setShortcut(tr("Ctrl+A"));
+    connect(selectAllAction, SIGNAL(triggered()), this, SLOT(selectAll()));
+
+    selectNoneAction = new QAction(tr("Select None"), this);
+    selectNoneAction->setShortcut(tr("Ctrl+Shift+A"));
+    connect(selectNoneAction, SIGNAL(triggered()), this, SLOT(selectNone()));
 }
 
 //! [24]
@@ -556,6 +574,9 @@ void MainWindow::createMenus()
     itemMenu->addSeparator();
     itemMenu->addAction(toFrontAction);
     itemMenu->addAction(sendBackAction);
+    itemMenu->addSeparator();
+    itemMenu->addAction(selectAllAction);
+    itemMenu->addAction(selectNoneAction);
 
     aboutMenu = menuBar()->addMenu(tr("&Help"));
     aboutMenu->addAction(aboutAction);

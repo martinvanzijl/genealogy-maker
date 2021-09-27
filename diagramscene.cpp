@@ -226,6 +226,13 @@ QGraphicsItem *DiagramScene::firstItem() const
     return items().first();
 }
 
+void DiagramScene::selectAll()
+{
+    for (auto item: items()) {
+        item->setSelected(true);
+    }
+}
+
 //! [4]
 
 void DiagramScene::setMode(Mode mode)
