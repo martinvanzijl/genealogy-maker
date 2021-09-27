@@ -14,6 +14,10 @@ public slots:
 
 private:
     bool eventFilter(QObject* object, QEvent* event) override;
+    void wheelEvent(QWheelEvent *event) override;
+
+signals:
+    void mouseWheelZoomed();
 };
 
 #endif // MYGRAPHICSVIEW_H

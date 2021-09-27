@@ -54,6 +54,7 @@
 #include "diagramtextitem.h"
 #include "mainwindow.h"
 #include "mygraphicsview.h"
+#include "percentvalidator.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -79,6 +80,7 @@ MainWindow::MainWindow()
     layout->addWidget(toolBox);
     view = new MyGraphicsView(scene);
     connect(scene, SIGNAL(mouseReleased()), view, SLOT(onMouseReleased()));
+    connect(view, SIGNAL(mouseWheelZoomed()), this, SLOT(onMouseWheelZoomed()));
     layout->addWidget(view);
 
     QWidget *widget = new QWidget;
@@ -89,6 +91,8 @@ MainWindow::MainWindow()
     setUnifiedTitleAndToolBarOnMac(true);
 
     view->setFocus();
+
+    scaleTextEditedByUser = false;
 }
 
 void MainWindow::backgroundButtonGroupClicked(QAbstractButton *button)
@@ -220,13 +224,26 @@ void MainWindow::fontSizeChanged(const QString &)
     handleFontChange();
 }
 
-void MainWindow::sceneScaleChanged(const QString &scale)
+void MainWindow::sceneScaleActivated(const QString &scale)
 {
     double newScale = scale.left(scale.indexOf(tr("%"))).toDouble() / 100.0;
     QMatrix oldMatrix = view->matrix();
     view->resetMatrix();
     view->translate(oldMatrix.dx(), oldMatrix.dy());
     view->scale(newScale, newScale);
+}
+
+void MainWindow::sceneScaleEditingFinished()
+{
+    if (scaleTextEditedByUser) {
+        sceneScaleActivated(sceneScaleCombo->currentText());
+    }
+    scaleTextEditedByUser = false;
+}
+
+void MainWindow::sceneScaleTextEdited(const QString &scale)
+{
+    scaleTextEditedByUser = true;
 }
 
 void MainWindow::textColorChanged()
@@ -410,6 +427,15 @@ void MainWindow::alignItemsHorizontally()
     for (auto item: items) {
         item->setPos(center.x(), item->pos().y());
     }
+}
+
+void MainWindow::onMouseWheelZoomed()
+{
+    double scale = view->matrix().m11();
+    double percent = scale * 100.0;
+    QString text = QString::number((int)percent) + "%";
+    sceneScaleCombo->setCurrentText(text);
+
 }
 
 void MainWindow::moveToCenter()
@@ -715,8 +741,15 @@ void MainWindow::createToolbars()
     scales << tr("50%") << tr("75%") << tr("100%") << tr("125%") << tr("150%");
     sceneScaleCombo->addItems(scales);
     sceneScaleCombo->setCurrentIndex(2);
-    connect(sceneScaleCombo, SIGNAL(currentIndexChanged(QString)),
-            this, SLOT(sceneScaleChanged(QString)));
+    connect(sceneScaleCombo, SIGNAL(activated(QString)),
+            this, SLOT(sceneScaleActivated(QString)));
+    sceneScaleCombo->setEditable(true);
+    sceneScaleCombo->setValidator(new PercentValidator(25, 200, this));
+    sceneScaleCombo->setInsertPolicy(QComboBox::NoInsert);
+    connect(sceneScaleCombo->lineEdit(), SIGNAL(editingFinished()),
+            this, SLOT(sceneScaleEditingFinished()));
+    connect(sceneScaleCombo->lineEdit(), SIGNAL(textEdited(QString)),
+            this, SLOT(sceneScaleTextEdited(QString)));
 
     pointerToolbar = addToolBar(tr("Pointer type"));
     pointerToolbar->addWidget(pointerButton);

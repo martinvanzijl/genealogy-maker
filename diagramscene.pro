@@ -5,14 +5,16 @@ HEADERS	    =   mainwindow.h \
 		diagramscene.h \
 		arrow.h \
 		diagramtextitem.h \
-                mygraphicsview.h
+		mygraphicsview.h \
+		percentvalidator.h
 SOURCES	    =   mainwindow.cpp \
 		diagramitem.cpp \
 		main.cpp \
 		arrow.cpp \
 		diagramtextitem.cpp \
 		diagramscene.cpp \
-                mygraphicsview.cpp
+		mygraphicsview.cpp \
+		percentvalidator.cpp
 RESOURCES   =	diagramscene.qrc
 
 

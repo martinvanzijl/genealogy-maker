@@ -96,7 +96,9 @@ private slots:
     void itemInserted(DiagramItem *item);
     void currentFontChanged(const QFont &font);
     void fontSizeChanged(const QString &size);
-    void sceneScaleChanged(const QString &scale);
+    void sceneScaleActivated(const QString &scale);
+    void sceneScaleEditingFinished();
+    void sceneScaleTextEdited(const QString &scale);
     void textColorChanged();
     void itemColorChanged();
     void lineColorChanged();
@@ -113,7 +115,7 @@ private slots:
     void selectNone();
     void print();
     void alignItemsHorizontally();
-
+    void onMouseWheelZoomed();
 private:
     void createToolBox();
     void createActions();
@@ -178,6 +180,8 @@ private:
 
     QTreeWidget *tree;
     QMap<QUuid, QTreeWidgetItem *> treeItems;
+
+    bool scaleTextEditedByUser;
 };
 //! [0]
 
