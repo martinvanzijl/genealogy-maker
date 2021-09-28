@@ -96,6 +96,7 @@ public:
     QUuid id() const;
     void setId(const QUuid& value);
     DiagramTextItem *textItem();
+    void editName();
 
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;

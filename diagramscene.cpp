@@ -265,18 +265,22 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     if (mouseEvent->button() != Qt::LeftButton)
         return;
 
-    DiagramItem *item;
+    DiagramItem *item = nullptr;
     switch (myMode) {
     case InsertItem:
     {
+        // Create person.
         item = new DiagramItem(myItemType, myItemMenu);
         item->setBrush(myItemColor);
         addItem(item);
         item->setPos(mouseEvent->scenePos());
+
+        // Assign ID.
         auto id = QUuid::createUuid();
         item->setId(id);
         m_itemsDict[id] = item;
         emit itemInserted(item);
+
         break;
     }
 
@@ -315,6 +319,12 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         ;
     }
     QGraphicsScene::mousePressEvent(mouseEvent);
+
+    // If we added an item, then immediately edit the name.
+    if (item)
+    {
+        item->editName();
+    }
 }
 //! [9]
 

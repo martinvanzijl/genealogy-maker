@@ -209,6 +209,11 @@ DiagramTextItem *DiagramItem::textItem()
 {
     return m_textItem;
 }
+
+void DiagramItem::editName()
+{
+    m_textItem->startEditing();
+}
 //! [4]
 
 //! [5]
