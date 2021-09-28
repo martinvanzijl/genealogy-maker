@@ -74,6 +74,7 @@ class QGraphicsView;
 class QTreeWidget;
 class QTreeWidgetItem;
 class QUndoStack;
+class MoveItemsUndo;
 QT_END_NAMESPACE
 
 //! [0]
@@ -119,6 +120,8 @@ private slots:
     void alignItemsHorizontally();
     void onMouseWheelZoomed();
     void onArrowAdded(Arrow *arrow);
+    void onItemsAboutToMove();
+    void onItemsFinishedMoving();
 private:
     void createToolBox();
     void createActions();
@@ -189,6 +192,7 @@ private:
     QUndoStack *undoStack;
     QAction *undoAction;
     QAction *redoAction;
+    MoveItemsUndo *moveItemsUndo;
 };
 //! [0]
 

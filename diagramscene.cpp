@@ -301,6 +301,16 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 //            textItem->setPos(mouseEvent->scenePos());
 //            emit textInserted(textItem);
 
+//    case MoveItem:
+//    {
+//        auto draggedItem = mouseGrabberItem();
+//        if (draggedItem)
+//        {
+//            emit itemsAboutToMove();
+//        }
+//        break;
+//    }
+
     default:
         ;
     }
@@ -315,16 +325,23 @@ void DiagramScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
         QLineF newLine(line->line().p1(), mouseEvent->scenePos());
         line->setLine(newLine);
     } else if (myMode == MoveItem) {
+
+        // Handle undo.
+        auto draggedItem = mouseGrabberItem();
+        if (draggedItem && !m_busyMoving) {
+            m_busyMoving = true;
+            emit itemsAboutToMove();
+        }
+
+        // Normal event.
         QGraphicsScene::mouseMoveEvent(mouseEvent);
 
         // Check for moving text: move rectangle also.
-        auto draggedItem = mouseGrabberItem();
         if (draggedItem && draggedItem->type() == DiagramTextItem::Type) {
             draggedItem->parentItem()->setSelected(true);
         }
 
         // Check for marriage.
-        //auto draggedItem = mouseGrabberItem();
         if (draggedItem && draggedItem->type() == DiagramItem::Type) {
             auto pos = mouseEvent->scenePos();
             QList<QGraphicsItem *> list = items(pos);
@@ -394,6 +411,11 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
         }
     }
     else if (myMode == MoveItem) {
+        if (m_busyMoving) {
+            m_busyMoving = false;
+            emit itemsFinishedMoving();
+        }
+
         if (m_highlightedItem) {
             auto draggedItem = mouseGrabberItem();
             if (draggedItem && draggedItem->type() == DiagramItem::Type) {

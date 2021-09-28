@@ -103,6 +103,8 @@ signals:
     void itemSelected(QGraphicsItem *item);
     void mouseReleased();
     void arrowAdded(Arrow *arrow);
+    void itemsAboutToMove();
+    void itemsFinishedMoving();
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
@@ -132,6 +134,7 @@ private:
     QMap<QUuid, DiagramItem *> m_itemsDict;
     DiagramItem *m_highlightedItem;
     long m_nextId;
+    bool m_busyMoving;
 };
 //! [0]
 

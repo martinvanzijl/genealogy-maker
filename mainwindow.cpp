@@ -58,6 +58,8 @@
 #include "undo/addarrowundo.h"
 #include "undo/additemundo.h"
 #include "undo/deleteitemsundo.h"
+#include "undo/moveitemsundo.h"
+
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -87,6 +89,8 @@ MainWindow::MainWindow()
     view = new MyGraphicsView(scene);
     connect(scene, SIGNAL(mouseReleased()), view, SLOT(onMouseReleased()));
     connect(scene, SIGNAL(arrowAdded(Arrow*)), this, SLOT(onArrowAdded(Arrow*)));
+    connect(scene, SIGNAL(itemsAboutToMove()), this, SLOT(onItemsAboutToMove()));
+    connect(scene, SIGNAL(itemsFinishedMoving()), this, SLOT(onItemsFinishedMoving()));
     connect(view, SIGNAL(mouseWheelZoomed()), this, SLOT(onMouseWheelZoomed()));
     layout->addWidget(view);
 
@@ -100,6 +104,7 @@ MainWindow::MainWindow()
     view->setFocus();
 
     scaleTextEditedByUser = false;
+    moveItemsUndo = nullptr;
 }
 
 void MainWindow::backgroundButtonGroupClicked(QAbstractButton *button)
@@ -459,6 +464,23 @@ void MainWindow::onMouseWheelZoomed()
 void MainWindow::onArrowAdded(Arrow *arrow)
 {
     undoStack->push(new AddArrowUndo(scene, arrow));
+}
+
+void MainWindow::onItemsAboutToMove()
+{
+    auto items = scene->selectedItems();
+    if (!items.empty()) {
+        moveItemsUndo = new MoveItemsUndo(scene, items);
+    }
+}
+
+void MainWindow::onItemsFinishedMoving()
+{
+    if (moveItemsUndo) {
+        moveItemsUndo->storeAfterState();
+        undoStack->push(moveItemsUndo);
+        moveItemsUndo = nullptr;
+    }
 }
 
 void MainWindow::moveToCenter()

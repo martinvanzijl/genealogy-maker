@@ -9,7 +9,8 @@ HEADERS	    =   mainwindow.h \
 		percentvalidator.h \
     undo/additemundo.h \
     undo/deleteitemsundo.h \
-    undo/addarrowundo.h
+    undo/addarrowundo.h \
+    undo/moveitemsundo.h
 SOURCES	    =   mainwindow.cpp \
 		diagramitem.cpp \
 		main.cpp \
@@ -20,7 +21,8 @@ SOURCES	    =   mainwindow.cpp \
 		percentvalidator.cpp \
     undo/additemundo.cpp \
     undo/deleteitemsundo.cpp \
-    undo/addarrowundo.cpp
+    undo/addarrowundo.cpp \
+    undo/moveitemsundo.cpp
 RESOURCES   =	diagramscene.qrc
 
 
