@@ -118,6 +118,7 @@ private slots:
     void selectNone();
     void print();
     void alignItemsHorizontally();
+    void alignItemsVertically();
     void onMouseWheelZoomed();
     void onArrowAdded(Arrow *arrow);
     void onItemsAboutToMove();
@@ -134,6 +135,7 @@ private:
     QMenu *createColorMenu(const char *slot, QColor defaultColor);
     QIcon createColorToolButtonIcon(const QString &image, QColor color);
     QIcon createColorIcon(QColor color);
+    QString saveFileDir();
 
     DiagramScene *scene;
     QGraphicsView *view;
@@ -150,6 +152,7 @@ private:
     QAction *selectAllAction;
     QAction *selectNoneAction;
     QAction *alignHorizontallyAction;
+    QAction *alignVerticallyAction;
 
     QAction *printAction;
 

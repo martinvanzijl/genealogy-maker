@@ -346,7 +346,7 @@ void MainWindow::open()
 {
     QString fileName =
             QFileDialog::getOpenFileName(this, tr("Open Genealogy File"),
-                                         QDir::currentPath(),
+                                         saveFileDir(),
                                          tr("Genealogy XML Files (*.xml)"));
 
     if (fileName.isEmpty())
@@ -373,7 +373,7 @@ void MainWindow::save()
 {
     QString fileName =
             QFileDialog::getSaveFileName(this, tr("Save Genealogy File"),
-                                         QDir::currentPath(),
+                                         saveFileDir(),
                                          tr("Genealogy XML Files (*.xml)"));
 
     if (fileName.isEmpty())
@@ -449,6 +449,26 @@ void MainWindow::alignItemsHorizontally()
 
     for (auto item: items) {
         item->setPos(center.x(), item->pos().y());
+    }
+}
+
+void MainWindow::alignItemsVertically()
+{
+    auto items = scene->selectedItems();
+    auto count = items.count();
+    if (count < 2) {
+        return;
+    }
+
+    QPointF center;
+    for (auto item: items) {
+        center += item->pos();
+    }
+
+    center = center / count;
+
+    for (auto item: items) {
+        item->setPos(item->pos().x(), center.y());
     }
 }
 
@@ -680,6 +700,9 @@ void MainWindow::createActions()
 
     alignHorizontallyAction = new QAction(tr("Align Horizontally"), this);
     connect(alignHorizontallyAction, SIGNAL(triggered()), this, SLOT(alignItemsHorizontally()));
+
+    alignVerticallyAction = new QAction(tr("Align Vertically"), this);
+    connect(alignVerticallyAction, SIGNAL(triggered()), this, SLOT(alignItemsVertically()));
 }
 
 //! [24]
@@ -707,6 +730,7 @@ void MainWindow::createMenus()
     itemMenu->addAction(selectNoneAction);
     itemMenu->addSeparator();
     itemMenu->addAction(alignHorizontallyAction);
+    itemMenu->addAction(alignVerticallyAction);
 
     aboutMenu = menuBar()->addMenu(tr("&Help"));
     aboutMenu->addAction(aboutAction);
@@ -909,5 +933,15 @@ QIcon MainWindow::createColorIcon(QColor color)
     painter.fillRect(QRect(0, 0, 20, 20), color);
 
     return QIcon(pixmap);
+}
+
+QString MainWindow::saveFileDir()
+{
+    // Ensure directory exists.
+    QString dirName = "save-files";
+    QDir().mkpath(dirName);
+
+    // Return path.
+    return QDir(dirName).path();
 }
 //! [32]
