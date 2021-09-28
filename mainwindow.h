@@ -75,6 +75,7 @@ class QTreeWidget;
 class QTreeWidgetItem;
 class QUndoStack;
 class MoveItemsUndo;
+class DialogFind;
 QT_END_NAMESPACE
 
 //! [0]
@@ -123,6 +124,8 @@ private slots:
     void onArrowAdded(Arrow *arrow);
     void onItemsAboutToMove();
     void onItemsFinishedMoving();
+    void onFind();
+    void onSearch(const QString &text);
 private:
     void createToolBox();
     void createActions();
@@ -196,6 +199,9 @@ private:
     QAction *undoAction;
     QAction *redoAction;
     MoveItemsUndo *moveItemsUndo;
+
+    QAction *findAction;
+    DialogFind *dialogFind;
 };
 //! [0]
 

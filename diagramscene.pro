@@ -10,7 +10,8 @@ HEADERS	    =   mainwindow.h \
     undo/additemundo.h \
     undo/deleteitemsundo.h \
     undo/addarrowundo.h \
-    undo/moveitemsundo.h
+    undo/moveitemsundo.h \
+    gui/dialogfind.h
 SOURCES	    =   mainwindow.cpp \
 		diagramitem.cpp \
 		main.cpp \
@@ -22,10 +23,14 @@ SOURCES	    =   mainwindow.cpp \
     undo/additemundo.cpp \
     undo/deleteitemsundo.cpp \
     undo/addarrowundo.cpp \
-    undo/moveitemsundo.cpp
+    undo/moveitemsundo.cpp \
+    gui/dialogfind.cpp
 RESOURCES   =	diagramscene.qrc
 
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/widgets/graphicsview/diagramscene
 INSTALLS += target
+
+FORMS += \
+    gui/dialogfind.ui

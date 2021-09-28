@@ -59,7 +59,7 @@
 #include "undo/additemundo.h"
 #include "undo/deleteitemsundo.h"
 #include "undo/moveitemsundo.h"
-
+#include "gui/dialogfind.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -105,6 +105,7 @@ MainWindow::MainWindow()
 
     scaleTextEditedByUser = false;
     moveItemsUndo = nullptr;
+    dialogFind = nullptr;
 }
 
 void MainWindow::backgroundButtonGroupClicked(QAbstractButton *button)
@@ -503,6 +504,30 @@ void MainWindow::onItemsFinishedMoving()
     }
 }
 
+void MainWindow::onFind()
+{
+    if (!dialogFind) {
+        dialogFind = new DialogFind(this);
+        connect(dialogFind, SIGNAL(search(QString)), this, SLOT(onSearch(QString)));
+    }
+    dialogFind->show();
+}
+
+void MainWindow::onSearch(const QString &text)
+{
+    for (auto item: scene->items()) {
+        if (item->type() == DiagramItem::Type) {
+            auto diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
+            if (diagramItem->name().contains(text)) {
+                view->centerOn(diagramItem);
+                return;
+            }
+        }
+    }
+
+    qDebug() << "Item not found.";
+}
+
 void MainWindow::moveToCenter()
 {
     //
@@ -627,9 +652,14 @@ void MainWindow::createToolBox()
 //! [23]
 void MainWindow::createActions()
 {
+    findAction = new QAction(tr("Find..."), this);
+    findAction->setShortcut(QKeySequence::Find);
+    findAction->setStatusTip(tr("Find person with name"));
+    connect(findAction, SIGNAL(triggered()), this, SLOT(onFind()));
+
     toFrontAction = new QAction(QIcon(":/images/bringtofront.png"),
                                 tr("Bring to &Front"), this);
-    toFrontAction->setShortcut(tr("Ctrl+F"));
+    toFrontAction->setShortcut(tr("Ctrl+Shift+F"));
     toFrontAction->setStatusTip(tr("Bring item to front"));
     connect(toFrontAction, SIGNAL(triggered()), this, SLOT(bringToFront()));
 //! [23]
@@ -719,6 +749,8 @@ void MainWindow::createMenus()
     itemMenu = menuBar()->addMenu(tr("&Edit"));
     itemMenu->addAction(undoAction);
     itemMenu->addAction(redoAction);
+    itemMenu->addSeparator();
+    itemMenu->addAction(findAction);
 
     itemMenu = menuBar()->addMenu(tr("&Item"));
     itemMenu->addAction(deleteAction);
