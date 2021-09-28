@@ -779,6 +779,7 @@ void MainWindow::createToolbars()
     QToolButton *pointerButton = new QToolButton;
     pointerButton->setCheckable(true);
     pointerButton->setChecked(true);
+    pointerButton->setShortcut(tr(" "));
     pointerButton->setIcon(QIcon(":/images/pointer.png"));
     linePointerButton = new QToolButton;
     linePointerButton->setCheckable(true);
