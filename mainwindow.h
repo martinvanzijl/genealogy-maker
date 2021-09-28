@@ -55,6 +55,7 @@
 
 #include <QMainWindow>
 
+class Arrow;
 class DiagramScene;
 
 QT_BEGIN_NAMESPACE
@@ -117,6 +118,7 @@ private slots:
     void print();
     void alignItemsHorizontally();
     void onMouseWheelZoomed();
+    void onArrowAdded(Arrow *arrow);
 private:
     void createToolBox();
     void createActions();

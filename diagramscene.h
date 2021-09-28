@@ -102,6 +102,7 @@ signals:
     void textInserted(QGraphicsTextItem *item);
     void itemSelected(QGraphicsItem *item);
     void mouseReleased();
+    void arrowAdded(Arrow *arrow);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;

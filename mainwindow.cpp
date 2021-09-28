@@ -55,7 +55,9 @@
 #include "mainwindow.h"
 #include "mygraphicsview.h"
 #include "percentvalidator.h"
+#include "undo/addarrowundo.h"
 #include "undo/additemundo.h"
+#include "undo/deleteitemsundo.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -84,6 +86,7 @@ MainWindow::MainWindow()
     layout->addWidget(toolBox);
     view = new MyGraphicsView(scene);
     connect(scene, SIGNAL(mouseReleased()), view, SLOT(onMouseReleased()));
+    connect(scene, SIGNAL(arrowAdded(Arrow*)), this, SLOT(onArrowAdded(Arrow*)));
     connect(view, SIGNAL(mouseWheelZoomed()), this, SLOT(onMouseWheelZoomed()));
     layout->addWidget(view);
 
@@ -137,13 +140,16 @@ void MainWindow::buttonGroupClicked(int id)
 
 void MainWindow::deleteItem()
 {
+    QList<QGraphicsItem *> itemsRemoved;
+
     foreach (QGraphicsItem *item, scene->selectedItems()) {
         if (item->type() == Arrow::Type) {
             scene->removeItem(item);
             Arrow *arrow = qgraphicsitem_cast<Arrow *>(item);
             arrow->startItem()->removeArrow(arrow);
             arrow->endItem()->removeArrow(arrow);
-            delete item;
+            //delete item;
+            itemsRemoved << arrow;
         }
     }
 
@@ -151,8 +157,11 @@ void MainWindow::deleteItem()
          if (item->type() == DiagramItem::Type)
              qgraphicsitem_cast<DiagramItem *>(item)->removeArrows();
          scene->removeItem(item);
-         delete item;
+         //delete item;
+         itemsRemoved << item;
      }
+
+    undoStack->push(new DeleteItemsUndo(scene, itemsRemoved));
 }
 
 void MainWindow::pointerGroupClicked(int)
@@ -250,6 +259,8 @@ void MainWindow::sceneScaleEditingFinished()
 
 void MainWindow::sceneScaleTextEdited(const QString &scale)
 {
+    Q_UNUSED(scale);
+
     scaleTextEditedByUser = true;
 }
 
@@ -443,6 +454,11 @@ void MainWindow::onMouseWheelZoomed()
     QString text = QString::number((int)percent) + "%";
     sceneScaleCombo->setCurrentText(text);
 
+}
+
+void MainWindow::onArrowAdded(Arrow *arrow)
+{
+    undoStack->push(new AddArrowUndo(scene, arrow));
 }
 
 void MainWindow::moveToCenter()
