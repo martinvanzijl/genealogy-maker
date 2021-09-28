@@ -443,7 +443,7 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     item->setPos(x, y);
     item->setName(name);
     item->setId(id);
-    emit itemInserted(item);
+    //emit itemInserted(item);
 
     m_itemsDict[id] = item;
 }

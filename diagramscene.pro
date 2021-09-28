@@ -6,7 +6,8 @@ HEADERS	    =   mainwindow.h \
 		arrow.h \
 		diagramtextitem.h \
 		mygraphicsview.h \
-		percentvalidator.h
+		percentvalidator.h \
+    undo/additemundo.h
 SOURCES	    =   mainwindow.cpp \
 		diagramitem.cpp \
 		main.cpp \
@@ -14,7 +15,8 @@ SOURCES	    =   mainwindow.cpp \
 		diagramtextitem.cpp \
 		diagramscene.cpp \
 		mygraphicsview.cpp \
-		percentvalidator.cpp
+		percentvalidator.cpp \
+    undo/additemundo.cpp
 RESOURCES   =	diagramscene.qrc
 
 

@@ -72,6 +72,7 @@ class QAbstractButton;
 class QGraphicsView;
 class QTreeWidget;
 class QTreeWidgetItem;
+class QUndoStack;
 QT_END_NAMESPACE
 
 //! [0]
@@ -182,6 +183,10 @@ private:
     QMap<QUuid, QTreeWidgetItem *> treeItems;
 
     bool scaleTextEditedByUser;
+
+    QUndoStack *undoStack;
+    QAction *undoAction;
+    QAction *redoAction;
 };
 //! [0]
 

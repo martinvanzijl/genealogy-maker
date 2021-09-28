@@ -55,15 +55,19 @@
 #include "mainwindow.h"
 #include "mygraphicsview.h"
 #include "percentvalidator.h"
+#include "undo/additemundo.h"
 
 #include <QtWidgets>
 #include <QPrinter>
 #include <QPrintDialog>
+#include <QUndoStack>
 
 const int InsertArrowButton = 11;
 
 MainWindow::MainWindow()
 {
+    undoStack = new QUndoStack(this);
+
     createActions();
     createToolBox();
     createMenus();
@@ -212,6 +216,9 @@ void MainWindow::itemInserted(DiagramItem *item)
     treeItem->setData(0, Qt::UserRole, id);
     treeItems[id] = treeItem;
     connect(item->textItem(), &DiagramTextItem::textEdited, this, &MainWindow::onItemTextEdited);
+
+    // Update undo stack.
+    undoStack->push(new AddItemUndo(scene, item));
 }
 
 void MainWindow::currentFontChanged(const QFont &)
@@ -599,6 +606,11 @@ void MainWindow::createActions()
     printAction->setStatusTip(tr("Print diagram"));
     connect(printAction, SIGNAL(triggered()), this, SLOT(print()));
 
+    undoAction = undoStack->createUndoAction(this);
+    undoAction->setShortcut(QKeySequence::Undo);
+    redoAction = undoStack->createRedoAction(this);
+    redoAction->setShortcut(QKeySequence::Redo);
+
     boldAction = new QAction(tr("Bold"), this);
     boldAction->setCheckable(true);
     QPixmap pixmap(":/images/bold.png");
@@ -642,6 +654,10 @@ void MainWindow::createMenus()
     fileMenu->addAction(printAction);
     fileMenu->addSeparator();
     fileMenu->addAction(exitAction);
+
+    itemMenu = menuBar()->addMenu(tr("&Edit"));
+    itemMenu->addAction(undoAction);
+    itemMenu->addAction(redoAction);
 
     itemMenu = menuBar()->addMenu(tr("&Item"));
     itemMenu->addAction(deleteAction);
