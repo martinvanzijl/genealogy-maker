@@ -11,7 +11,8 @@ HEADERS	    =   mainwindow.h \
     undo/deleteitemsundo.h \
     undo/addarrowundo.h \
     undo/moveitemsundo.h \
-    gui/dialogfind.h
+    gui/dialogfind.h \
+    gui/dialogpersondetails.h
 SOURCES	    =   mainwindow.cpp \
 		diagramitem.cpp \
 		main.cpp \
@@ -24,7 +25,8 @@ SOURCES	    =   mainwindow.cpp \
     undo/deleteitemsundo.cpp \
     undo/addarrowundo.cpp \
     undo/moveitemsundo.cpp \
-    gui/dialogfind.cpp
+    gui/dialogfind.cpp \
+    gui/dialogpersondetails.cpp
 RESOURCES   =	diagramscene.qrc
 
 
@@ -33,4 +35,5 @@ target.path = $$[QT_INSTALL_EXAMPLES]/widgets/graphicsview/diagramscene
 INSTALLS += target
 
 FORMS += \
-    gui/dialogfind.ui
+    gui/dialogfind.ui \
+    gui/dialogpersondetails.ui

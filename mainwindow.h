@@ -76,6 +76,7 @@ class QTreeWidgetItem;
 class QUndoStack;
 class MoveItemsUndo;
 class DialogFind;
+class DialogPersonDetails;
 QT_END_NAMESPACE
 
 //! [0]
@@ -126,6 +127,7 @@ private slots:
     void onItemsFinishedMoving();
     void onFind();
     void onSearch(const QString &text);
+    void viewItemDetails();
 private:
     void createToolBox();
     void createActions();
@@ -156,6 +158,7 @@ private:
     QAction *selectNoneAction;
     QAction *alignHorizontallyAction;
     QAction *alignVerticallyAction;
+    QAction *viewDetailsAction;
 
     QAction *printAction;
 
@@ -202,6 +205,7 @@ private:
 
     QAction *findAction;
     DialogFind *dialogFind;
+    DialogPersonDetails *dialogPersonDetails;
 };
 //! [0]
 

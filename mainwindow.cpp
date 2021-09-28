@@ -60,6 +60,7 @@
 #include "undo/deleteitemsundo.h"
 #include "undo/moveitemsundo.h"
 #include "gui/dialogfind.h"
+#include "gui/dialogpersondetails.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -106,6 +107,7 @@ MainWindow::MainWindow()
     scaleTextEditedByUser = false;
     moveItemsUndo = nullptr;
     dialogFind = nullptr;
+    dialogPersonDetails = nullptr;
 }
 
 void MainWindow::backgroundButtonGroupClicked(QAbstractButton *button)
@@ -528,6 +530,24 @@ void MainWindow::onSearch(const QString &text)
     qDebug() << "Item not found.";
 }
 
+void MainWindow::viewItemDetails()
+{
+    auto selectedItems = scene->selectedItems();
+    if (selectedItems.isEmpty())
+        return;
+
+    auto item = selectedItems.first();
+    if (item->type() == DiagramItem::Type) {
+        auto person = qgraphicsitem_cast<DiagramItem *>(item);
+
+        if (!dialogPersonDetails) {
+            dialogPersonDetails = new DialogPersonDetails(this);
+        }
+        dialogPersonDetails->setItem(person);
+        dialogPersonDetails->show();
+    }
+}
+
 void MainWindow::moveToCenter()
 {
     //
@@ -733,6 +753,9 @@ void MainWindow::createActions()
 
     alignVerticallyAction = new QAction(tr("Align Vertically"), this);
     connect(alignVerticallyAction, SIGNAL(triggered()), this, SLOT(alignItemsVertically()));
+
+    viewDetailsAction = new QAction(tr("Details..."), this);
+    connect(viewDetailsAction, SIGNAL(triggered()), this, SLOT(viewItemDetails()));
 }
 
 //! [24]
@@ -763,6 +786,8 @@ void MainWindow::createMenus()
     itemMenu->addSeparator();
     itemMenu->addAction(alignHorizontallyAction);
     itemMenu->addAction(alignVerticallyAction);
+    itemMenu->addSeparator();
+    itemMenu->addAction(viewDetailsAction);
 
     aboutMenu = menuBar()->addMenu(tr("&Help"));
     aboutMenu->addAction(aboutAction);
