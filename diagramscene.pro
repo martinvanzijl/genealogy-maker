@@ -12,7 +12,8 @@ HEADERS	    =   mainwindow.h \
     undo/addarrowundo.h \
     undo/moveitemsundo.h \
     gui/dialogfind.h \
-    gui/dialogpersondetails.h
+    gui/dialogpersondetails.h \
+    marriageitem.h
 SOURCES	    =   mainwindow.cpp \
 		diagramitem.cpp \
 		main.cpp \
@@ -26,7 +27,8 @@ SOURCES	    =   mainwindow.cpp \
     undo/addarrowundo.cpp \
     undo/moveitemsundo.cpp \
     gui/dialogfind.cpp \
-    gui/dialogpersondetails.cpp
+    gui/dialogpersondetails.cpp \
+    marriageitem.cpp
 RESOURCES   =	diagramscene.qrc
 
 

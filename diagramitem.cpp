@@ -51,6 +51,7 @@
 #include "diagramitem.h"
 #include "arrow.h"
 #include "diagramtextitem.h"
+#include "marriageitem.h"
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneContextMenuEvent>
@@ -206,6 +207,17 @@ void DiagramItem::marryTo(DiagramItem *spouse)
     //QList<QGraphicsItem *> list;
     //list << this << spouse;
     //scene()->createItemGroup(list);
+
+    // Add "wedding ring".
+    auto ring = new MarriageItem(this);
+    ring->setX(boundingRect().width() / 2.0 - ring->boundingRect().width() / 2.0);
+    ring->setY(-ring->boundingRect().height() / 2.0);
+
+    // Move above spouse so that ring is always visible.
+    if (zValue() < spouse->zValue())
+    {
+        setZValue(spouse->zValue() + 0.1);
+    }
 }
 
 QUuid DiagramItem::id() const
