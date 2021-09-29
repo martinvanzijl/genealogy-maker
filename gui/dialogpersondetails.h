@@ -24,6 +24,8 @@ private slots:
 
     void on_pushButtonSave_clicked();
 
+    void on_pushButtonAddPhoto_clicked();
+
 private:
     void save();
 
