@@ -5,6 +5,8 @@
 
 class DiagramItem;
 
+class QListWidgetItem;
+
 namespace Ui {
 class DialogPersonDetails;
 }
@@ -27,6 +29,8 @@ private slots:
     void on_pushButtonAddPhoto_clicked();
 
     void on_pushButtonRemovePhoto_clicked();
+
+    void on_listWidgetPhotos_itemDoubleClicked(QListWidgetItem *item);
 
 private:
     void save();

@@ -6,7 +6,7 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QImage>
-#include <QDebug>
+#include <QDesktopServices>
 
 DialogPersonDetails::DialogPersonDetails(QWidget *parent) :
     QDialog(parent),
@@ -104,4 +104,11 @@ void DialogPersonDetails::on_pushButtonRemovePhoto_clicked()
     {
         delete item;
     }
+}
+
+void DialogPersonDetails::on_listWidgetPhotos_itemDoubleClicked(QListWidgetItem *item)
+{
+    auto fullFileName = item->data(Qt::UserRole).toString();
+    QString url = QString("file://") + fullFileName;
+    QDesktopServices::openUrl(url);
 }
