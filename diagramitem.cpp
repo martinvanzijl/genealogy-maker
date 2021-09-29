@@ -117,6 +117,7 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     }
 
     m_spouse = nullptr;
+    m_movedBySpouse = false;
 }
 //! [0]
 
@@ -286,6 +287,7 @@ QVariant DiagramItem::itemChange(GraphicsItemChange change, const QVariant &valu
     }
     else if (change == QGraphicsItem::ItemPositionHasChanged) {
         updateSpousePosition();
+        m_movedBySpouse = false;
     }
 
     return value;
@@ -302,12 +304,16 @@ void DiagramItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void DiagramItem::updateSpousePosition()
 {
-    if (m_spouse)
+    if (m_spouse && !m_movedBySpouse)
     {
+        m_spouse->m_movedBySpouse = true; // Avoid infinite loop.
+
         if (m_spousePosition == SpouseToLeft)
         {
-            // TODO: Handle this while avoiding loop!
-            //qDebug() << "Would set spouse (left) position.";
+            // Spouse is to left.
+            auto spouseX = x() - boundingRect().width();
+            auto spouseY = y();
+            m_spouse->setPos(spouseX, spouseY);
         }
         else
         {

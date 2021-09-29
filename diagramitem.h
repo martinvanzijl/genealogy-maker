@@ -124,6 +124,7 @@ private:
     enum SpousePosition { SpouseToLeft, SpouseToRight };
 
     SpousePosition m_spousePosition;
+    bool m_movedBySpouse;
 };
 //! [0]
 
