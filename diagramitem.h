@@ -101,6 +101,7 @@ public:
     void setBio(const QString& value);
     QStringList photos() const;
     void setPhotos(const QStringList& value);
+    bool isMarried() const;
 
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
@@ -116,6 +117,7 @@ private:
     QUuid m_id;
     QString m_bio;
     QStringList m_photos;
+    DiagramItem *m_spouse;
 };
 //! [0]
 

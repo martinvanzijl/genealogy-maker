@@ -57,6 +57,7 @@
 #include <QMenu>
 #include <QPainter>
 #include <QUuid>
+#include <QGraphicsItemGroup>
 
 //! [0]
 DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
@@ -112,6 +113,8 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     else {
         m_textItem = nullptr;
     }
+
+    m_spouse = nullptr;
 }
 //! [0]
 
@@ -190,9 +193,19 @@ void DiagramItem::setHighlighted(bool value)
 
 void DiagramItem::marryTo(DiagramItem *spouse)
 {
+    // Set spouses.
+    m_spouse = spouse;
+    spouse->m_spouse = this;
+
+    // Position together.
     auto spouseX = pos().x() + boundingRect().width();
     auto spouseY = pos().y();
     spouse->setPos(spouseX, spouseY);
+
+    // Move items together.
+    //QList<QGraphicsItem *> list;
+    //list << this << spouse;
+    //scene()->createItemGroup(list);
 }
 
 QUuid DiagramItem::id() const
@@ -233,6 +246,11 @@ QStringList DiagramItem::photos() const
 void DiagramItem::setPhotos(const QStringList &value)
 {
     m_photos = value;
+}
+
+bool DiagramItem::isMarried() const
+{
+    return m_spouse != nullptr;
 }
 //! [4]
 

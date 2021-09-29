@@ -368,9 +368,12 @@ void DiagramScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
             for (auto item: list) {
                 if (item != draggedItem) {
                     if (item->type() == DiagramItem::Type) {
-                        found = true;
-                        highlight(qgraphicsitem_cast<DiagramItem *>(item));
-                        break;
+                        auto diagramItem = qgraphicsitem_cast<DiagramItem *>(item);
+                        if (!diagramItem->isMarried()) {
+                            found = true;
+                            highlight(diagramItem);
+                            break;
+                        }
                     }
                 }
             }
