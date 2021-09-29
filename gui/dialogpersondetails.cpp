@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QImage>
+#include <QDebug>
 
 DialogPersonDetails::DialogPersonDetails(QWidget *parent) :
     QDialog(parent),
@@ -63,5 +64,15 @@ void DialogPersonDetails::on_pushButtonAddPhoto_clicked()
         QFileInfo info(fileName);
         auto item = new QListWidgetItem(icon, info.fileName());
         ui->listWidgetPhotos->addItem(item);
+    }
+}
+
+void DialogPersonDetails::on_pushButtonRemovePhoto_clicked()
+{
+    auto selectedItems = ui->listWidgetPhotos->selectedItems();
+
+    for (auto item: selectedItems)
+    {
+        delete item;
     }
 }

@@ -26,6 +26,8 @@ private slots:
 
     void on_pushButtonAddPhoto_clicked();
 
+    void on_pushButtonRemovePhoto_clicked();
+
 private:
     void save();
 
