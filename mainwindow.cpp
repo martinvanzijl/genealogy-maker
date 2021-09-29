@@ -781,13 +781,15 @@ void MainWindow::createMenus()
     itemMenu->addAction(toFrontAction);
     itemMenu->addAction(sendBackAction);
     itemMenu->addSeparator();
-    itemMenu->addAction(selectAllAction);
-    itemMenu->addAction(selectNoneAction);
-    itemMenu->addSeparator();
-    itemMenu->addAction(alignHorizontallyAction);
-    itemMenu->addAction(alignVerticallyAction);
-    itemMenu->addSeparator();
     itemMenu->addAction(viewDetailsAction);
+
+    selectMenu = menuBar()->addMenu(tr("&Select"));
+    selectMenu->addAction(selectAllAction);
+    selectMenu->addAction(selectNoneAction);
+
+    alignMenu = menuBar()->addMenu(tr("&Align"));
+    alignMenu->addAction(alignHorizontallyAction);
+    alignMenu->addAction(alignVerticallyAction);
 
     aboutMenu = menuBar()->addMenu(tr("&Help"));
     aboutMenu->addAction(aboutAction);

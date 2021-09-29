@@ -165,6 +165,8 @@ private:
     QMenu *fileMenu;
     QMenu *editMenu;
     QMenu *itemMenu;
+    QMenu *selectMenu;
+    QMenu *alignMenu;
     QMenu *aboutMenu;
 
     QToolBar *textToolBar;
