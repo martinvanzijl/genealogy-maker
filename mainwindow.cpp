@@ -755,6 +755,7 @@ void MainWindow::createActions()
     connect(alignVerticallyAction, SIGNAL(triggered()), this, SLOT(alignItemsVertically()));
 
     viewDetailsAction = new QAction(tr("Details..."), this);
+    viewDetailsAction->setShortcut(tr("Ctrl+D"));
     connect(viewDetailsAction, SIGNAL(triggered()), this, SLOT(viewItemDetails()));
 }
 
