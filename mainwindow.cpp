@@ -769,11 +769,11 @@ void MainWindow::createMenus()
     fileMenu->addSeparator();
     fileMenu->addAction(exitAction);
 
-    itemMenu = menuBar()->addMenu(tr("&Edit"));
-    itemMenu->addAction(undoAction);
-    itemMenu->addAction(redoAction);
-    itemMenu->addSeparator();
-    itemMenu->addAction(findAction);
+    editMenu = menuBar()->addMenu(tr("&Edit"));
+    editMenu->addAction(undoAction);
+    editMenu->addAction(redoAction);
+    editMenu->addSeparator();
+    editMenu->addAction(findAction);
 
     itemMenu = menuBar()->addMenu(tr("&Item"));
     itemMenu->addAction(deleteAction);

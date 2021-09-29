@@ -163,6 +163,7 @@ private:
     QAction *printAction;
 
     QMenu *fileMenu;
+    QMenu *editMenu;
     QMenu *itemMenu;
     QMenu *aboutMenu;
 
