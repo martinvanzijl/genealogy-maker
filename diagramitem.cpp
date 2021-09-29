@@ -214,6 +214,26 @@ void DiagramItem::editName()
 {
     m_textItem->startEditing();
 }
+
+QString DiagramItem::bio() const
+{
+    return m_bio;
+}
+
+void DiagramItem::setBio(const QString &value)
+{
+    m_bio = value;
+}
+
+QStringList DiagramItem::photos() const
+{
+    return m_photos;
+}
+
+void DiagramItem::setPhotos(const QStringList &value)
+{
+    m_photos = value;
+}
 //! [4]
 
 //! [5]

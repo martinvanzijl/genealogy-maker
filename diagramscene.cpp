@@ -190,6 +190,14 @@ void DiagramScene::save(QIODevice *device)
             itemElement.setAttribute("y", item->pos().y());
             itemElement.setAttribute("name", diagramItem->name());
             itemElement.setAttribute("id", diagramItem->id().toString());
+            itemElement.setAttribute("bio", diagramItem->bio());
+
+            for (auto photo: diagramItem->photos()) {
+                QDomElement photoElement = domDocument.createElement("photo");
+                photoElement.setAttribute("path", photo);
+                itemElement.appendChild(photoElement);
+            }
+
             rootElement.appendChild(itemElement);
 
             arrows << diagramItem->getArrows();
@@ -474,11 +482,21 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     auto y = element.attribute("y").toDouble();
     auto name = element.attribute("name");
     auto id = QUuid(element.attribute("id"));
+    auto bio = element.attribute("bio");
     item->setPos(x, y);
     item->setName(name);
     item->setId(id);
-    //emit itemInserted(item);
+    item->setBio(bio);
 
+    QStringList photos;
+    QDomElement photoElement = element.firstChildElement("photo");
+    while (!photoElement.isNull()) {
+        photos << photoElement.attribute("path");
+        photoElement = photoElement.nextSiblingElement("photo");
+    }
+    item->setPhotos(photos);
+
+    //emit itemInserted(item);
     m_itemsDict[id] = item;
 }
 

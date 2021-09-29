@@ -23,6 +23,16 @@ DialogPersonDetails::~DialogPersonDetails()
 void DialogPersonDetails::setItem(DiagramItem *item)
 {
     ui->lineEditName->setText(item->name());
+    ui->plainTextEditBio->setPlainText(item->bio());
+
+    ui->listWidgetPhotos->clear();
+
+    for (auto photo: item->photos())
+    {
+        addPhoto(photo);
+    }
+
+    m_item = item;
 }
 
 void DialogPersonDetails::on_pushButtonClose_clicked()
@@ -38,7 +48,30 @@ void DialogPersonDetails::on_pushButtonSave_clicked()
 
 void DialogPersonDetails::save()
 {
-    // TODO: Save.
+    if (m_item)
+    {
+        m_item->setName(ui->lineEditName->text());
+        m_item->setBio(ui->plainTextEditBio->toPlainText());
+
+        QStringList photos;
+        for (int i = 0; i < ui->listWidgetPhotos->count(); ++i)
+        {
+            auto fullFileName = ui->listWidgetPhotos->item(i)->data(Qt::UserRole).toString();
+            photos << fullFileName;
+        }
+        m_item->setPhotos(photos);
+    }
+
+}
+
+void DialogPersonDetails::addPhoto(const QString &fileName)
+{
+    //QImage image(fileName);
+    QIcon icon(fileName);
+    QFileInfo info(fileName);
+    auto item = new QListWidgetItem(icon, info.fileName());
+    item->setData(Qt::UserRole, fileName);
+    ui->listWidgetPhotos->addItem(item);
 }
 
 void DialogPersonDetails::on_pushButtonAddPhoto_clicked()
@@ -59,11 +92,7 @@ void DialogPersonDetails::on_pushButtonAddPhoto_clicked()
 
     // Add to list view.
     if (!fileName.isEmpty()) {
-        //QImage image(fileName);
-        QIcon icon(fileName);
-        QFileInfo info(fileName);
-        auto item = new QListWidgetItem(icon, info.fileName());
-        ui->listWidgetPhotos->addItem(item);
+        addPhoto(fileName);
     }
 }
 

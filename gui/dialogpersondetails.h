@@ -30,8 +30,10 @@ private slots:
 
 private:
     void save();
+    void addPhoto(const QString &fileName);
 
     Ui::DialogPersonDetails *ui;
+    DiagramItem *m_item;
 };
 
 #endif // DIALOGPERSONDETAILS_H

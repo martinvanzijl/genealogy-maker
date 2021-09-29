@@ -97,6 +97,10 @@ public:
     void setId(const QUuid& value);
     DiagramTextItem *textItem();
     void editName();
+    QString bio() const;
+    void setBio(const QString& value);
+    QStringList photos() const;
+    void setPhotos(const QStringList& value);
 
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
@@ -110,6 +114,8 @@ private:
     QList<Arrow *> arrows;
     DiagramTextItem *m_textItem;
     QUuid m_id;
+    QString m_bio;
+    QStringList m_photos;
 };
 //! [0]
 
