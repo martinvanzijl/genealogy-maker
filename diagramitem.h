@@ -109,6 +109,8 @@ protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
+    void updateSpousePosition();
+
     DiagramType myDiagramType;
     QPolygonF myPolygon;
     QMenu *myContextMenu;
@@ -118,6 +120,10 @@ private:
     QString m_bio;
     QStringList m_photos;
     DiagramItem *m_spouse;
+
+    enum SpousePosition { SpouseToLeft, SpouseToRight };
+
+    SpousePosition m_spousePosition;
 };
 //! [0]
 

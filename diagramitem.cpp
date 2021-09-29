@@ -59,6 +59,7 @@
 #include <QPainter>
 #include <QUuid>
 #include <QGraphicsItemGroup>
+#include <QDebug>
 
 //! [0]
 DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
@@ -199,9 +200,9 @@ void DiagramItem::marryTo(DiagramItem *spouse)
     spouse->m_spouse = this;
 
     // Position together.
-    auto spouseX = pos().x() + boundingRect().width();
-    auto spouseY = pos().y();
-    spouse->setPos(spouseX, spouseY);
+    m_spousePosition = SpouseToRight;
+    spouse->m_spousePosition = SpouseToLeft;
+    updateSpousePosition();
 
     // Move items together.
     //QList<QGraphicsItem *> list;
@@ -214,7 +215,7 @@ void DiagramItem::marryTo(DiagramItem *spouse)
     ring->setY(-ring->boundingRect().height() / 2.0);
 
     // Move above spouse so that ring is always visible.
-    if (zValue() < spouse->zValue())
+    if (zValue() <= spouse->zValue())
     {
         setZValue(spouse->zValue() + 0.1);
     }
@@ -283,6 +284,9 @@ QVariant DiagramItem::itemChange(GraphicsItemChange change, const QVariant &valu
             arrow->updatePosition();
         }
     }
+    else if (change == QGraphicsItem::ItemPositionHasChanged) {
+        updateSpousePosition();
+    }
 
     return value;
 }
@@ -294,4 +298,23 @@ void DiagramItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     //if (m_textItem->isUnderMouse()) {
         m_textItem->startEditing();
         //}
+}
+
+void DiagramItem::updateSpousePosition()
+{
+    if (m_spouse)
+    {
+        if (m_spousePosition == SpouseToLeft)
+        {
+            // TODO: Handle this while avoiding loop!
+            //qDebug() << "Would set spouse (left) position.";
+        }
+        else
+        {
+            // Spouse is to right.
+            auto spouseX = x() + boundingRect().width();
+            auto spouseY = y();
+            m_spouse->setPos(spouseX, spouseY);
+        }
+    }
 }
