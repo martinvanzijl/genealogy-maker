@@ -310,7 +310,7 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         auto id = QUuid::createUuid();
         item->setId(id);
         m_itemsDict[id] = item;
-        emit itemInserted(item);
+        emit itemInserted(item, false);
 
         break;
     }
@@ -522,7 +522,7 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     }
     item->setPhotos(photos);
 
-    //emit itemInserted(item);
+    emit itemInserted(item, true);
     m_itemsDict[id] = item;
 }
 

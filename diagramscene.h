@@ -98,7 +98,7 @@ public slots:
     void editorLostFocus(DiagramTextItem *item);
 
 signals:
-    void itemInserted(DiagramItem *item);
+    void itemInserted(DiagramItem *item, bool fromLoad);
     void textInserted(QGraphicsTextItem *item);
     void itemSelected(QGraphicsItem *item);
     void mouseReleased();

@@ -98,7 +98,7 @@ private slots:
     void pointerGroupClicked(int id);
     void bringToFront();
     void sendToBack();
-    void itemInserted(DiagramItem *item);
+    void itemInserted(DiagramItem *item, bool fromLoad);
     void currentFontChanged(const QFont &font);
     void fontSizeChanged(const QString &size);
     void sceneScaleActivated(const QString &scale);

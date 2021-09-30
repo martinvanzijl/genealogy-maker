@@ -79,8 +79,8 @@ MainWindow::MainWindow()
 
     scene = new DiagramScene(itemMenu, this);
     scene->setSceneRect(QRectF(0, 0, 5000, 5000));
-    connect(scene, SIGNAL(itemInserted(DiagramItem*)),
-            this, SLOT(itemInserted(DiagramItem*)));
+    connect(scene, SIGNAL(itemInserted(DiagramItem*, bool)),
+            this, SLOT(itemInserted(DiagramItem*, bool)));
     connect(scene, SIGNAL(itemSelected(QGraphicsItem*)),
             this, SLOT(itemSelected(QGraphicsItem*)));
     createToolbars();
@@ -218,12 +218,8 @@ void MainWindow::sendToBack()
     selectedItem->setZValue(zValue);
 }
 
-void MainWindow::itemInserted(DiagramItem *item)
+void MainWindow::itemInserted(DiagramItem *item, bool fromLoad)
 {
-    pointerTypeGroup->button(int(DiagramScene::MoveItem))->setChecked(true);
-    scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
-    buttonGroup->button(int(item->diagramType()))->setChecked(false);
-
     // Add item to list view.
     auto id = item->id();
     QStringList list;
@@ -234,8 +230,16 @@ void MainWindow::itemInserted(DiagramItem *item)
     treeItems[id] = treeItem;
     connect(item->textItem(), &DiagramTextItem::textEdited, this, &MainWindow::onItemTextEdited);
 
-    // Update undo stack.
-    undoStack->push(new AddItemUndo(scene, item));
+    if (!fromLoad)
+    {
+        // Update widgets.
+        pointerTypeGroup->button(int(DiagramScene::MoveItem))->setChecked(true);
+        scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
+        buttonGroup->button(int(item->diagramType()))->setChecked(false);
+
+        // Update undo stack.
+        undoStack->push(new AddItemUndo(scene, item));
+    }
 }
 
 void MainWindow::currentFontChanged(const QFont &)
