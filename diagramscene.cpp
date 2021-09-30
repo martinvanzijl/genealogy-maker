@@ -278,6 +278,13 @@ void DiagramScene::removePersonFromUndo(DiagramItem *item)
     emit itemRemoved(item);
 }
 
+void DiagramScene::removeMarriage(DiagramItem *person1, DiagramItem *person2)
+{
+    Q_UNUSED(person2);
+
+    person1->removeMarriage();
+}
+
 //! [4]
 
 void DiagramScene::setMode(Mode mode)
@@ -503,7 +510,6 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     emit mouseReleased();
 }
 
-//! [14]
 bool DiagramScene::isItemChange(int type)
 {
     foreach (QGraphicsItem *item, selectedItems()) {
@@ -589,8 +595,11 @@ void DiagramScene::unHighlightAll()
     m_highlightedItem = nullptr;
 }
 
-void DiagramScene::marry(DiagramItem *item1, DiagramItem *item2)
+void DiagramScene::marry(DiagramItem *item1, DiagramItem *item2, bool fromUndo)
 {
     item1->marryTo(item2);
+
+    if (!fromUndo) {
+        emit peopleMarried(item1, item2);
+    }
 }
-//! [14]

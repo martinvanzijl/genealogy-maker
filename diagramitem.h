@@ -71,6 +71,7 @@ QT_END_NAMESPACE
 
 class Arrow;
 class DiagramTextItem;
+class MarriageItem;
 
 //! [0]
 class DiagramItem : public QGraphicsPolygonItem
@@ -102,6 +103,7 @@ public:
     QStringList photos() const;
     void setPhotos(const QStringList& value);
     bool isMarried() const;
+    void removeMarriage();
 
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
@@ -125,6 +127,7 @@ private:
 
     SpousePosition m_spousePosition;
     bool m_movedBySpouse;
+    MarriageItem *m_marriageItem;
 };
 //! [0]
 

@@ -93,6 +93,8 @@ public:
     void selectAll();
     void addPersonFromUndo(DiagramItem *item);
     void removePersonFromUndo(DiagramItem *item);
+    void marry(DiagramItem *item1, DiagramItem *item2, bool fromUndo = false);
+    void removeMarriage(DiagramItem *person1, DiagramItem *person2);
 
 public slots:
     void setMode(Mode mode);
@@ -108,6 +110,7 @@ signals:
     void arrowAdded(Arrow *arrow);
     void itemsAboutToMove();
     void itemsFinishedMoving();
+    void peopleMarried(DiagramItem *person1, DiagramItem *person2);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
@@ -121,7 +124,6 @@ private:
     void parseMarriageElement(const QDomElement& element);
     void highlight(DiagramItem *item);
     void unHighlightAll();
-    void marry(DiagramItem *item1, DiagramItem *item2);
 
     DiagramItem::DiagramType myItemType;
     QMenu *myItemMenu;

@@ -130,6 +130,7 @@ private slots:
     void onFind();
     void onSearch(const QString &text);
     void viewItemDetails();
+    void onPeopleMarried(DiagramItem *person1, DiagramItem *person2);
 private:
     void createToolBox();
     void createActions();

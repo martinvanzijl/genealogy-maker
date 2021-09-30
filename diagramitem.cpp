@@ -118,6 +118,7 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
 
     m_spouse = nullptr;
     m_movedBySpouse = false;
+    m_marriageItem = nullptr;
 }
 //! [0]
 
@@ -211,6 +212,8 @@ void DiagramItem::marryTo(DiagramItem *spouse)
     ring->setY(-ring->boundingRect().height() / 2.0);
     ring->setPersonLeft(this);
     ring->setPersonRight(spouse);
+    m_marriageItem = ring;
+    m_spouse->m_marriageItem = ring;
 
     // Move above spouse so that ring is always visible.
     if (zValue() <= spouse->zValue())
@@ -262,6 +265,25 @@ void DiagramItem::setPhotos(const QStringList &value)
 bool DiagramItem::isMarried() const
 {
     return m_spouse != nullptr;
+}
+
+void DiagramItem::removeMarriage()
+{
+    if (isMarried())
+    {
+        // Delete "wedding ring".
+        if (m_marriageItem)
+        {
+            scene()->removeItem(m_marriageItem);
+            delete m_marriageItem;
+        }
+        m_marriageItem = nullptr;
+        m_spouse->m_marriageItem = nullptr;
+
+        // Remove spouse connections.
+        m_spouse->m_spouse = nullptr;
+        m_spouse = nullptr;
+    }
 }
 //! [4]
 

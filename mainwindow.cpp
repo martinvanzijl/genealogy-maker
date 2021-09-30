@@ -61,6 +61,7 @@
 #include "undo/moveitemsundo.h"
 #include "gui/dialogfind.h"
 #include "gui/dialogpersondetails.h"
+#include "undo/marriageundo.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -85,6 +86,8 @@ MainWindow::MainWindow()
             this, SLOT(onItemRemoved(DiagramItem*)));
     connect(scene, SIGNAL(itemSelected(QGraphicsItem*)),
             this, SLOT(itemSelected(QGraphicsItem*)));
+    connect(scene, SIGNAL(peopleMarried(DiagramItem*,DiagramItem*)),
+            this, SLOT(onPeopleMarried(DiagramItem*,DiagramItem*)));
     createToolbars();
 
     QHBoxLayout *layout = new QHBoxLayout;
@@ -568,6 +571,11 @@ void MainWindow::viewItemDetails()
         dialogPersonDetails->setItem(person);
         dialogPersonDetails->show();
     }
+}
+
+void MainWindow::onPeopleMarried(DiagramItem *person1, DiagramItem *person2)
+{
+    undoStack->push(new MarriageUndo(scene, person1, person2));
 }
 
 void MainWindow::moveToCenter()
