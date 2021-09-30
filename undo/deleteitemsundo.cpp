@@ -17,7 +17,10 @@ void DeleteItemsUndo::undo()
     if (!m_undone)
     {
         for (auto item: m_items) {
-            m_scene->addItem(item);
+            if (item->type() == DiagramItem::Type) {
+                auto diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
+                m_scene->addPersonFromUndo(diagramItem);
+            }
         }
         m_undone = true;
     }
@@ -28,7 +31,10 @@ void DeleteItemsUndo::redo()
     if (m_undone)
     {
         for (auto item: m_items) {
-            m_scene->removeItem(item);
+            if (item->type() == DiagramItem::Type) {
+                auto diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
+                m_scene->removePersonFromUndo(diagramItem);
+            }
         }
         m_undone = false;
     }

@@ -91,6 +91,8 @@ public:
     bool isEmpty() const;
     QGraphicsItem *firstItem() const;
     void selectAll();
+    void addPersonFromUndo(DiagramItem *item);
+    void removePersonFromUndo(DiagramItem *item);
 
 public slots:
     void setMode(Mode mode);
@@ -99,6 +101,7 @@ public slots:
 
 signals:
     void itemInserted(DiagramItem *item, bool fromLoad);
+    void itemRemoved(DiagramItem *item);
     void textInserted(QGraphicsTextItem *item);
     void itemSelected(QGraphicsItem *item);
     void mouseReleased();

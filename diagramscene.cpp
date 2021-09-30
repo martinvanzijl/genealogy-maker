@@ -264,6 +264,20 @@ void DiagramScene::selectAll()
     }
 }
 
+void DiagramScene::addPersonFromUndo(DiagramItem *item)
+{
+    addItem(item);
+    m_itemsDict[item->id()] = item;
+    emit itemInserted(item, false);
+}
+
+void DiagramScene::removePersonFromUndo(DiagramItem *item)
+{
+    removeItem(item);
+    m_itemsDict.remove(item->id());
+    emit itemRemoved(item);
+}
+
 //! [4]
 
 void DiagramScene::setMode(Mode mode)

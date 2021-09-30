@@ -81,6 +81,8 @@ MainWindow::MainWindow()
     scene->setSceneRect(QRectF(0, 0, 5000, 5000));
     connect(scene, SIGNAL(itemInserted(DiagramItem*, bool)),
             this, SLOT(itemInserted(DiagramItem*, bool)));
+    connect(scene, SIGNAL(itemRemoved(DiagramItem*)),
+            this, SLOT(onItemRemoved(DiagramItem*)));
     connect(scene, SIGNAL(itemSelected(QGraphicsItem*)),
             this, SLOT(itemSelected(QGraphicsItem*)));
     createToolbars();
@@ -162,8 +164,11 @@ void MainWindow::deleteItem()
     }
 
     foreach (QGraphicsItem *item, scene->selectedItems()) {
-         if (item->type() == DiagramItem::Type)
-             qgraphicsitem_cast<DiagramItem *>(item)->removeArrows();
+         if (item->type() == DiagramItem::Type) {
+             DiagramItem *diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
+             diagramItem->removeArrows();
+             delete treeItems[diagramItem->id()];
+         }
          scene->removeItem(item);
          //delete item;
          itemsRemoved << item;
@@ -240,6 +245,11 @@ void MainWindow::itemInserted(DiagramItem *item, bool fromLoad)
         // Update undo stack.
         undoStack->push(new AddItemUndo(scene, item));
     }
+}
+
+void MainWindow::onItemRemoved(DiagramItem *item)
+{
+    delete treeItems[item->id()];
 }
 
 void MainWindow::currentFontChanged(const QFont &)

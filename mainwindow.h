@@ -99,6 +99,7 @@ private slots:
     void bringToFront();
     void sendToBack();
     void itemInserted(DiagramItem *item, bool fromLoad);
+    void onItemRemoved(DiagramItem *item);
     void currentFontChanged(const QFont &font);
     void fontSizeChanged(const QString &size);
     void sceneScaleActivated(const QString &scale);
