@@ -32,9 +32,18 @@ private slots:
 
     void on_listWidgetPhotos_itemDoubleClicked(QListWidgetItem *item);
 
+    void on_dateEditBirth_dateChanged(const QDate &date);
+
+    void on_dateEditDeath_dateChanged(const QDate &date);
+
+    void on_checkBoxDateOfBirthUnknown_stateChanged(int state);
+
+    void on_checkBoxDateOfDeathUnknown_stateChanged(int state);
+
 private:
     void save();
     void addPhoto(const QString &fileName);
+    void setTextGrayedOut(QWidget *widget, bool grayedOut);
 
     Ui::DialogPersonDetails *ui;
     DiagramItem *m_item;

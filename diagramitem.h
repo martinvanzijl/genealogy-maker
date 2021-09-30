@@ -54,6 +54,7 @@
 #include <QGraphicsPixmapItem>
 #include <QList>
 #include <QUuid>
+#include <QDate>
 
 QT_BEGIN_NAMESPACE
 class QPixmap;
@@ -105,6 +106,12 @@ public:
     bool isMarried() const;
     void removeMarriage();
 
+    QDate getDateOfBirth() const;
+    void setDateOfBirth(const QDate &dateOfBirth);
+
+    QDate getDateOfDeath() const;
+    void setDateOfDeath(const QDate &dateOfDeath);
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -121,6 +128,8 @@ private:
     QUuid m_id;
     QString m_bio;
     QStringList m_photos;
+    QDate m_dateOfBirth;
+    QDate m_dateOfDeath;
     DiagramItem *m_spouse;
 
     enum SpousePosition { SpouseToLeft, SpouseToRight };

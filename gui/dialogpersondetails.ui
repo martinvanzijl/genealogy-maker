@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>500</height>
+    <width>420</width>
+    <height>560</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,16 +22,79 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QFormLayout" name="formLayout">
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="labelName">
         <property name="text">
          <string>Name:</string>
         </property>
+        <property name="buddy">
+         <cstring>lineEditName</cstring>
+        </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="0" column="1" colspan="3">
        <widget class="QLineEdit" name="lineEditName"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelDateOfBirth">
+        <property name="text">
+         <string>Date of birth:</string>
+        </property>
+        <property name="buddy">
+         <cstring>dateEditBirth</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelDateOfDeath">
+        <property name="text">
+         <string>Date of death:</string>
+        </property>
+        <property name="buddy">
+         <cstring>dateEditDeath</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QDateEdit" name="dateEditDeath">
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDateEdit" name="dateEditBirth">
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="checkBoxDateOfBirthUnknown">
+        <property name="text">
+         <string>Unknown</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="checkBoxDateOfDeathUnknown">
+        <property name="text">
+         <string>Unknown</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

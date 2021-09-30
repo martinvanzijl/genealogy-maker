@@ -343,3 +343,23 @@ void DiagramItem::updateSpousePosition()
         }
     }
 }
+
+QDate DiagramItem::getDateOfDeath() const
+{
+    return m_dateOfDeath;
+}
+
+void DiagramItem::setDateOfDeath(const QDate &dateOfDeath)
+{
+    m_dateOfDeath = dateOfDeath;
+}
+
+QDate DiagramItem::getDateOfBirth() const
+{
+    return m_dateOfBirth;
+}
+
+void DiagramItem::setDateOfBirth(const QDate &dateOfBirth)
+{
+    m_dateOfBirth = dateOfBirth;
+}
