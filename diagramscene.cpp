@@ -50,6 +50,7 @@
 
 #include "diagramscene.h"
 #include "arrow.h"
+#include "marriageitem.h"
 
 #include <QDebug>
 #include <QDomDocument>
@@ -159,6 +160,12 @@ void DiagramScene::open(QIODevice *device)
         parseArrowElement(child);
         child = child.nextSiblingElement("relationship");
     }
+
+    child = root.firstChildElement("marriage");
+    while (!child.isNull()) {
+        parseMarriageElement(child);
+        child = child.nextSiblingElement("marriage");
+    }
 }
 
 void DiagramScene::print()
@@ -213,6 +220,22 @@ void DiagramScene::save(QIODevice *device)
         element.setAttribute("from", arrow->startItem()->id().toString());
         element.setAttribute("to", arrow->endItem()->id().toString());
         rootElement.appendChild(element);
+    }
+
+    //
+    // Save marriages.
+    //
+    for (auto item: items()) {
+        if (item->type() == MarriageItem::Type) {
+            MarriageItem *marriage = dynamic_cast<MarriageItem*> (item);
+            QDomElement element = domDocument.createElement("marriage");
+            element.setAttribute("x", marriage->pos().x());
+            element.setAttribute("y", marriage->pos().y());
+            element.setAttribute("person_left", marriage->personLeft()->id().toString());
+            element.setAttribute("person_right", marriage->personRight()->id().toString());
+
+            rootElement.appendChild(element);
+        }
     }
 
     domDocument.appendChild(rootElement);
@@ -518,6 +541,18 @@ void DiagramScene::parseArrowElement(const QDomElement &element)
         arrow->setZValue(-1000.0);
         addItem(arrow);
         arrow->updatePosition();
+    }
+}
+
+void DiagramScene::parseMarriageElement(const QDomElement &element)
+{
+    auto leftId = element.attribute("person_left");
+    auto rightId = element.attribute("person_right");
+    auto personLeft = m_itemsDict[leftId];
+    auto personRight = m_itemsDict[rightId];
+
+    if (personLeft && personRight) {
+        personLeft->marryTo(personRight);
     }
 }
 

@@ -115,6 +115,7 @@ private:
     bool isItemChange(int type);
     void parseItemElement(const QDomElement& element);
     void parseArrowElement(const QDomElement& element);
+    void parseMarriageElement(const QDomElement& element);
     void highlight(DiagramItem *item);
     void unHighlightAll();
     void marry(DiagramItem *item1, DiagramItem *item2);
