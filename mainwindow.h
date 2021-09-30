@@ -113,6 +113,7 @@ private slots:
     void handleFontChange();
     void itemSelected(QGraphicsItem *item);
     void about();
+    void newDiagram();
     void open();
     void save();
     void onTreeItemDoubleClicked(QTreeWidgetItem *item, int column);
@@ -148,6 +149,7 @@ private:
     QAction *exitAction;
     QAction *addAction;
     QAction *deleteAction;
+    QAction *newAction;
     QAction *openAction;
     QAction *saveAction;
 

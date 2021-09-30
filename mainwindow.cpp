@@ -345,6 +345,14 @@ void MainWindow::about()
                           "use of the graphics framework."));
 }
 
+void MainWindow::newDiagram()
+{
+    undoStack->clear();
+    scene->clear();
+    tree->clear();
+    treeItems.clear();
+}
+
 void MainWindow::open()
 {
     QString fileName =
@@ -699,6 +707,11 @@ void MainWindow::createActions()
     exitAction->setStatusTip(tr("Quit Scenediagram example"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
+    newAction = new QAction(tr("New"), this);
+    newAction->setShortcuts(QKeySequence::New);
+    newAction->setStatusTip(tr("Start a new diagram"));
+    connect(newAction, SIGNAL(triggered()), this, SLOT(newDiagram()));
+
     openAction = new QAction(tr("Open"), this);
     openAction->setShortcuts(QKeySequence::Open);
     openAction->setStatusTip(tr("Open diagram"));
@@ -763,6 +776,7 @@ void MainWindow::createActions()
 void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
+    fileMenu->addAction(newAction);
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addSeparator();
