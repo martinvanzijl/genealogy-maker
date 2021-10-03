@@ -49,7 +49,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="labelDateOfDeath">
         <property name="text">
          <string>Date of death:</string>
@@ -59,7 +59,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QDateEdit" name="dateEditDeath">
         <property name="calendarPopup">
          <bool>true</bool>
@@ -86,7 +86,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="2">
+      <item row="3" column="2">
        <widget class="QCheckBox" name="checkBoxDateOfDeathUnknown">
         <property name="text">
          <string>Unknown</string>
@@ -95,6 +95,26 @@
          <bool>true</bool>
         </property>
        </widget>
+      </item>
+      <item row="2" column="1" colspan="3">
+       <widget class="QLineEdit" name="lineEditPlaceOfBirth"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelPlaceOfBirth">
+        <property name="text">
+         <string>Place of birth:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="labelPlaceOfDeath">
+        <property name="text">
+         <string>Place of death:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1" colspan="3">
+       <widget class="QLineEdit" name="lineEditPlaceOfDeath"/>
       </item>
      </layout>
     </widget>

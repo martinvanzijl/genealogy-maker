@@ -344,6 +344,26 @@ void DiagramItem::updateSpousePosition()
     }
 }
 
+QString DiagramItem::getPlaceOfDeath() const
+{
+    return m_placeOfDeath;
+}
+
+void DiagramItem::setPlaceOfDeath(const QString &placeOfDeath)
+{
+    m_placeOfDeath = placeOfDeath;
+}
+
+QString DiagramItem::getPlaceOfBirth() const
+{
+    return m_placeOfBirth;
+}
+
+void DiagramItem::setPlaceOfBirth(const QString &placeOfBirth)
+{
+    m_placeOfBirth = placeOfBirth;
+}
+
 QDate DiagramItem::getDateOfDeath() const
 {
     return m_dateOfDeath;

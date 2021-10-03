@@ -112,6 +112,12 @@ public:
     QDate getDateOfDeath() const;
     void setDateOfDeath(const QDate &dateOfDeath);
 
+    QString getPlaceOfBirth() const;
+    void setPlaceOfBirth(const QString &placeOfBirth);
+
+    QString getPlaceOfDeath() const;
+    void setPlaceOfDeath(const QString &placeOfDeath);
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -130,6 +136,8 @@ private:
     QStringList m_photos;
     QDate m_dateOfBirth;
     QDate m_dateOfDeath;
+    QString m_placeOfBirth;
+    QString m_placeOfDeath;
     DiagramItem *m_spouse;
 
     enum SpousePosition { SpouseToLeft, SpouseToRight };
