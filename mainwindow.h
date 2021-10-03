@@ -133,6 +133,7 @@ private slots:
     void onSearch(const QString &text);
     void viewItemDetails();
     void onPeopleMarried(DiagramItem *person1, DiagramItem *person2);
+    void removeMarriage();
     void viewMarriageDetails();
 private:
     void createToolBox();
@@ -171,6 +172,7 @@ private:
 
     QAction *printAction;
 
+    QAction *removeMarriageAction;
     QAction *marriageDetailsAction;
 
     QMenu *fileMenu;

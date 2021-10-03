@@ -652,6 +652,12 @@ void MainWindow::onPeopleMarried(DiagramItem *person1, DiagramItem *person2)
     undoStack->push(new MarriageUndo(scene, person1, person2));
 }
 
+void MainWindow::removeMarriage()
+{
+    auto marriage = MarriageItem::getSelectedMarriage();
+    marriage->personLeft()->removeMarriage();
+}
+
 void MainWindow::viewMarriageDetails()
 {
     if (!dialogMarriageDetails) {
@@ -880,7 +886,10 @@ void MainWindow::createActions()
     viewDetailsAction->setShortcut(tr("Ctrl+D"));
     connect(viewDetailsAction, SIGNAL(triggered()), this, SLOT(viewItemDetails()));
 
-    marriageDetailsAction = new QAction(tr("Marriage details..."), this);
+    removeMarriageAction = new QAction(QIcon(":/images/delete.png"), tr("Remove Marriage"), this);
+    connect(removeMarriageAction, SIGNAL(triggered()), this, SLOT(removeMarriage()));
+
+    marriageDetailsAction = new QAction(tr("Marriage Details..."), this);
     connect(marriageDetailsAction, SIGNAL(triggered()), this, SLOT(viewMarriageDetails()));
 }
 
@@ -923,6 +932,7 @@ void MainWindow::createMenus()
     aboutMenu->addAction(aboutAction);
 
     marriageMenu = new QMenu("Marriage", this);
+    marriageMenu->addAction(removeMarriageAction);
     marriageMenu->addAction(marriageDetailsAction);
     MarriageItem::setContextMenu(marriageMenu);
 }

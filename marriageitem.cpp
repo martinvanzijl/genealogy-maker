@@ -2,6 +2,7 @@
 
 #include "diagramitem.h"
 
+#include <QGraphicsScene>
 #include <QMenu>
 #include <QGraphicsSceneContextMenuEvent>
 
