@@ -118,6 +118,7 @@ private slots:
     void newDiagram();
     void open();
     void save();
+    void saveAs();
     void onTreeItemDoubleClicked(QTreeWidgetItem *item, int column);
     void selectAll();
     void selectNone();
@@ -157,6 +158,7 @@ private:
     QAction *newAction;
     QAction *openAction;
     QAction *saveAction;
+    QAction *saveAsAction;
 
     QAction *toFrontAction;
     QAction *sendBackAction;

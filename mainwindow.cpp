@@ -438,6 +438,39 @@ void MainWindow::save()
      scene->save(&file);
 }
 
+void MainWindow::saveAs()
+{
+    // Select file if required.
+    QString title = tr("Save Genealogy File As");
+    QString dir = saveFileDir();
+    if (saveFileExists()) {
+        dir = m_saveFileName;
+    }
+    QString filter = tr("Genealogy XML Files (*.xml)");
+    QString fileName = QFileDialog::getSaveFileName(this, title, dir, filter);
+
+    if (fileName.isEmpty())
+        return;
+
+    if (!fileName.endsWith(".xml")) {
+        fileName += ".xml";
+    }
+
+    // Open file.
+     QFile file(fileName);
+     if (!file.open(QFile::WriteOnly | QFile::Text)) {
+         QString message = tr("Cannot write file %1:\n%2.").arg(fileName).arg(file.errorString());
+         QMessageBox::warning(this, tr("Genealogy Maker"), message);
+         return;
+     }
+
+     // Store save file.
+     m_saveFileName = fileName;
+
+     // Save to file.
+     scene->save(&file);
+}
+
 void MainWindow::onTreeItemDoubleClicked(QTreeWidgetItem *item, int column)
 {
     Q_UNUSED(column);
@@ -767,6 +800,10 @@ void MainWindow::createActions()
     saveAction->setShortcuts(QKeySequence::Save);
     saveAction->setStatusTip(tr("Save diagram"));
     connect(saveAction, SIGNAL(triggered()), this, SLOT(save()));
+    saveAsAction = new QAction(tr("Save As..."), this);
+    saveAsAction->setShortcuts(QKeySequence::SaveAs);
+    saveAsAction->setStatusTip(tr("Save diagram as a new file"));
+    connect(saveAsAction, SIGNAL(triggered()), this, SLOT(saveAs()));
 
     printAction = new QAction(tr("Print..."), this);
     printAction->setShortcuts(QKeySequence::Print);
@@ -828,6 +865,7 @@ void MainWindow::createMenus()
     fileMenu->addAction(newAction);
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
+    fileMenu->addAction(saveAsAction);
     fileMenu->addSeparator();
     fileMenu->addAction(printAction);
     fileMenu->addSeparator();
