@@ -510,41 +510,59 @@ void MainWindow::print()
 
 void MainWindow::alignItemsHorizontally()
 {
-    auto items = scene->selectedItems();
-    auto count = items.count();
+    QList<QGraphicsItem *> itemsToAlign;
+
+    // Only apply to person items.
+    for (auto item: scene->selectedItems())
+    {
+        if (item->type() == DiagramItem::Type) {
+            itemsToAlign << item;
+        }
+    }
+
+    auto count = itemsToAlign.count();
     if (count < 2) {
         return;
     }
 
     QPointF center;
-    for (auto item: items) {
+    for (auto item: itemsToAlign) {
         center += item->pos();
     }
 
     center = center / count;
 
-    for (auto item: items) {
-        item->setPos(center.x(), item->pos().y());
+    for (auto item: itemsToAlign) {
+        item->setPos(item->pos().x(), center.y());
     }
 }
 
 void MainWindow::alignItemsVertically()
 {
-    auto items = scene->selectedItems();
-    auto count = items.count();
+    QList<QGraphicsItem *> itemsToAlign;
+
+    // Only apply to person items.
+    for (auto item: scene->selectedItems())
+    {
+        if (item->type() == DiagramItem::Type) {
+            itemsToAlign << item;
+        }
+    }
+
+    auto count = itemsToAlign.count();
     if (count < 2) {
         return;
     }
 
     QPointF center;
-    for (auto item: items) {
+    for (auto item: itemsToAlign) {
         center += item->pos();
     }
 
     center = center / count;
 
-    for (auto item: items) {
-        item->setPos(item->pos().x(), center.y());
+    for (auto item: itemsToAlign) {
+        item->setPos(center.x(), item->pos().y());
     }
 }
 
