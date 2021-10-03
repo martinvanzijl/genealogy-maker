@@ -77,6 +77,7 @@ class QUndoStack;
 class MoveItemsUndo;
 class DialogFind;
 class DialogPersonDetails;
+class DialogMarriageDetails;
 QT_END_NAMESPACE
 
 //! [0]
@@ -131,6 +132,7 @@ private slots:
     void onSearch(const QString &text);
     void viewItemDetails();
     void onPeopleMarried(DiagramItem *person1, DiagramItem *person2);
+    void viewMarriageDetails();
 private:
     void createToolBox();
     void createActions();
@@ -166,12 +168,15 @@ private:
 
     QAction *printAction;
 
+    QAction *marriageDetailsAction;
+
     QMenu *fileMenu;
     QMenu *editMenu;
     QMenu *itemMenu;
     QMenu *selectMenu;
     QMenu *alignMenu;
     QMenu *aboutMenu;
+    QMenu *marriageMenu;
 
     QToolBar *textToolBar;
     QToolBar *editToolBar;
@@ -213,6 +218,7 @@ private:
     QAction *findAction;
     DialogFind *dialogFind;
     DialogPersonDetails *dialogPersonDetails;
+    DialogMarriageDetails *dialogMarriageDetails;
 };
 //! [0]
 

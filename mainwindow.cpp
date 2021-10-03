@@ -62,6 +62,8 @@
 #include "gui/dialogfind.h"
 #include "gui/dialogpersondetails.h"
 #include "undo/marriageundo.h"
+#include "marriageitem.h"
+#include "gui/dialogmarriagedetails.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -113,6 +115,7 @@ MainWindow::MainWindow()
     moveItemsUndo = nullptr;
     dialogFind = nullptr;
     dialogPersonDetails = nullptr;
+    dialogMarriageDetails = nullptr;
 }
 
 void MainWindow::backgroundButtonGroupClicked(QAbstractButton *button)
@@ -578,6 +581,15 @@ void MainWindow::onPeopleMarried(DiagramItem *person1, DiagramItem *person2)
     undoStack->push(new MarriageUndo(scene, person1, person2));
 }
 
+void MainWindow::viewMarriageDetails()
+{
+    if (!dialogMarriageDetails) {
+        dialogMarriageDetails = new DialogMarriageDetails(this);
+    }
+    dialogMarriageDetails->setMarriage(MarriageItem::getSelectedMarriage());
+    dialogMarriageDetails->show();
+}
+
 void MainWindow::moveToCenter()
 {
     //
@@ -792,6 +804,9 @@ void MainWindow::createActions()
     viewDetailsAction = new QAction(tr("Details..."), this);
     viewDetailsAction->setShortcut(tr("Ctrl+D"));
     connect(viewDetailsAction, SIGNAL(triggered()), this, SLOT(viewItemDetails()));
+
+    marriageDetailsAction = new QAction(tr("Marriage details..."), this);
+    connect(marriageDetailsAction, SIGNAL(triggered()), this, SLOT(viewMarriageDetails()));
 }
 
 //! [24]
@@ -830,6 +845,10 @@ void MainWindow::createMenus()
 
     aboutMenu = menuBar()->addMenu(tr("&Help"));
     aboutMenu->addAction(aboutAction);
+
+    marriageMenu = new QMenu("Marriage", this);
+    marriageMenu->addAction(marriageDetailsAction);
+    MarriageItem::setContextMenu(marriageMenu);
 }
 //! [24]
 

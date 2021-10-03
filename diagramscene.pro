@@ -14,7 +14,8 @@ HEADERS	    =   mainwindow.h \
     gui/dialogfind.h \
     gui/dialogpersondetails.h \
     marriageitem.h \
-    undo/marriageundo.h
+    undo/marriageundo.h \
+    gui/dialogmarriagedetails.h
 SOURCES	    =   mainwindow.cpp \
 		diagramitem.cpp \
 		main.cpp \
@@ -30,7 +31,8 @@ SOURCES	    =   mainwindow.cpp \
     gui/dialogfind.cpp \
     gui/dialogpersondetails.cpp \
     marriageitem.cpp \
-    undo/marriageundo.cpp
+    undo/marriageundo.cpp \
+    gui/dialogmarriagedetails.cpp
 RESOURCES   =	diagramscene.qrc
 
 
@@ -40,4 +42,5 @@ INSTALLS += target
 
 FORMS += \
     gui/dialogfind.ui \
-    gui/dialogpersondetails.ui
+    gui/dialogpersondetails.ui \
+    gui/dialogmarriagedetails.ui

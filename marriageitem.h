@@ -16,10 +16,18 @@ public:
     DiagramItem * personRight() const;
 
     int type() const override;
+    static void setContextMenu(QMenu *menu);
+    static MarriageItem *getSelectedMarriage();
+
+protected:
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 
 private:
     DiagramItem *m_personLeft;
     DiagramItem *m_personRight;
+
+    static QMenu *m_contextMenu;
+    static MarriageItem *m_selectedMarriage;
 };
 
 #endif // MARRIAGEITEM_H
