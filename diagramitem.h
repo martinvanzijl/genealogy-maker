@@ -120,6 +120,8 @@ public:
     QString getPlaceOfDeath() const;
     void setPlaceOfDeath(const QString &placeOfDeath);
 
+    MarriageItem *getMarriageItem() const;
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;

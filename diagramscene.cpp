@@ -241,6 +241,10 @@ void DiagramScene::save(QIODevice *device)
             element.setAttribute("y", marriage->pos().y());
             element.setAttribute("person_left", marriage->personLeft()->id().toString());
             element.setAttribute("person_right", marriage->personRight()->id().toString());
+            if (marriage->isDateKnown()) {
+                element.setAttribute("date", marriage->getDate().toString());
+            }
+            element.setAttribute("place", marriage->getPlace());
 
             rootElement.appendChild(element);
         }
@@ -592,6 +596,12 @@ void DiagramScene::parseMarriageElement(const QDomElement &element)
 
     if (personLeft && personRight) {
         personLeft->marryTo(personRight);
+        MarriageItem *marriage = personLeft->getMarriageItem();
+
+        if (element.hasAttribute("date")) {
+            marriage->setDate(QDate::fromString(element.attribute("date")));
+        }
+        marriage->setPlace(element.attribute("place"));
     }
 }
 

@@ -344,6 +344,11 @@ void DiagramItem::updateSpousePosition()
     }
 }
 
+MarriageItem *DiagramItem::getMarriageItem() const
+{
+    return m_marriageItem;
+}
+
 QString DiagramItem::getPlaceOfDeath() const
 {
     return m_placeOfDeath;
