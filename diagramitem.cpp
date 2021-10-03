@@ -374,6 +374,11 @@ void DiagramItem::setDateOfDeath(const QDate &dateOfDeath)
     m_dateOfDeath = dateOfDeath;
 }
 
+bool DiagramItem::isDateOfDeathKnown() const
+{
+    return m_dateOfDeath.isValid();
+}
+
 QDate DiagramItem::getDateOfBirth() const
 {
     return m_dateOfBirth;
@@ -382,4 +387,9 @@ QDate DiagramItem::getDateOfBirth() const
 void DiagramItem::setDateOfBirth(const QDate &dateOfBirth)
 {
     m_dateOfBirth = dateOfBirth;
+}
+
+bool DiagramItem::isDateOfBirthKnown() const
+{
+    return m_dateOfBirth.isValid();
 }

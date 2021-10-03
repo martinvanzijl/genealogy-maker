@@ -198,6 +198,14 @@ void DiagramScene::save(QIODevice *device)
             itemElement.setAttribute("name", diagramItem->name());
             itemElement.setAttribute("id", diagramItem->id().toString());
             itemElement.setAttribute("bio", diagramItem->bio());
+            if (diagramItem->isDateOfBirthKnown()) {
+                itemElement.setAttribute("date_of_birth", diagramItem->getDateOfBirth().toString());
+            }
+            itemElement.setAttribute("place_of_birth", diagramItem->getPlaceOfBirth());
+            if (diagramItem->isDateOfDeathKnown()) {
+                itemElement.setAttribute("date_of_death", diagramItem->getDateOfDeath().toString());
+            }
+            itemElement.setAttribute("place_of_death", diagramItem->getPlaceOfDeath());
 
             for (auto photo: diagramItem->photos()) {
                 QDomElement photoElement = domDocument.createElement("photo");
@@ -529,10 +537,21 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     auto name = element.attribute("name");
     auto id = QUuid(element.attribute("id"));
     auto bio = element.attribute("bio");
+    auto placeOfBirth = element.attribute("place_of_birth");
+    auto placeOfDeath = element.attribute("place_of_death");
     item->setPos(x, y);
     item->setName(name);
     item->setId(id);
     item->setBio(bio);
+    item->setPlaceOfBirth(placeOfBirth);
+    item->setPlaceOfDeath(placeOfDeath);
+
+    if (element.hasAttribute("date_of_birth")) {
+        item->setDateOfBirth(QDate::fromString(element.attribute("date_of_birth")));
+    }
+    if (element.hasAttribute("date_of_death")) {
+        item->setDateOfDeath(QDate::fromString(element.attribute("date_of_death")));
+    }
 
     QStringList photos;
     QDomElement photoElement = element.firstChildElement("photo");

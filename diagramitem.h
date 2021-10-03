@@ -108,9 +108,11 @@ public:
 
     QDate getDateOfBirth() const;
     void setDateOfBirth(const QDate &dateOfBirth);
+    bool isDateOfBirthKnown() const;
 
     QDate getDateOfDeath() const;
     void setDateOfDeath(const QDate &dateOfDeath);
+    bool isDateOfDeathKnown() const;
 
     QString getPlaceOfBirth() const;
     void setPlaceOfBirth(const QString &placeOfBirth);
