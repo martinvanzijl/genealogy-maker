@@ -64,6 +64,7 @@
 #include "undo/marriageundo.h"
 #include "marriageitem.h"
 #include "gui/dialogmarriagedetails.h"
+#include "undo/removemarriageundo.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -656,6 +657,7 @@ void MainWindow::removeMarriage()
 {
     auto marriage = MarriageItem::getSelectedMarriage();
     marriage->personLeft()->removeMarriage();
+    undoStack->push(new RemoveMarriageUndo(scene, marriage));
 }
 
 void MainWindow::viewMarriageDetails()

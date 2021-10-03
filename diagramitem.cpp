@@ -275,7 +275,7 @@ void DiagramItem::removeMarriage()
         if (m_marriageItem)
         {
             scene()->removeItem(m_marriageItem);
-            delete m_marriageItem;
+            //delete m_marriageItem; // Let undo stack handle this.
         }
         m_marriageItem = nullptr;
         m_spouse->m_marriageItem = nullptr;

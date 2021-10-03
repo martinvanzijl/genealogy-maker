@@ -15,7 +15,9 @@ HEADERS	    =   mainwindow.h \
     gui/dialogpersondetails.h \
     marriageitem.h \
     undo/marriageundo.h \
-    gui/dialogmarriagedetails.h
+    gui/dialogmarriagedetails.h \
+    undo/removemarriageundo.h \
+    undo/undomanager.h
 SOURCES	    =   mainwindow.cpp \
 		diagramitem.cpp \
 		main.cpp \
@@ -32,7 +34,9 @@ SOURCES	    =   mainwindow.cpp \
     gui/dialogpersondetails.cpp \
     marriageitem.cpp \
     undo/marriageundo.cpp \
-    gui/dialogmarriagedetails.cpp
+    gui/dialogmarriagedetails.cpp \
+    undo/removemarriageundo.cpp \
+    undo/undomanager.cpp
 RESOURCES   =	diagramscene.qrc
 
 
