@@ -532,9 +532,13 @@ void MainWindow::alignItemsHorizontally()
 
     center = center / count;
 
+    MoveItemsUndo *undo = new MoveItemsUndo(scene, itemsToAlign);
     for (auto item: itemsToAlign) {
         item->setPos(item->pos().x(), center.y());
     }
+    undo->storeAfterState();
+    undo->setText("align items");
+    undoStack->push(undo);
 }
 
 void MainWindow::alignItemsVertically()
@@ -561,9 +565,13 @@ void MainWindow::alignItemsVertically()
 
     center = center / count;
 
+    MoveItemsUndo *undo = new MoveItemsUndo(scene, itemsToAlign);
     for (auto item: itemsToAlign) {
         item->setPos(center.x(), item->pos().y());
     }
+    undo->storeAfterState();
+    undo->setText("align items");
+    undoStack->push(undo);
 }
 
 void MainWindow::onMouseWheelZoomed()
