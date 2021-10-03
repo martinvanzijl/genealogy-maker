@@ -56,3 +56,28 @@ void MarriageItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     m_selectedMarriage = this;
     m_contextMenu->exec(event->screenPos());
 }
+
+QString MarriageItem::getPlace() const
+{
+    return m_place;
+}
+
+void MarriageItem::setPlace(const QString &place)
+{
+    m_place = place;
+}
+
+QDate MarriageItem::getDate() const
+{
+    return m_date;
+}
+
+void MarriageItem::setDate(const QDate &date)
+{
+    m_date = date;
+}
+
+bool MarriageItem::isDateKnown() const
+{
+    return m_date.isValid();
+}

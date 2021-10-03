@@ -2,6 +2,7 @@
 #define MARRIAGEITEM_H
 
 #include <QGraphicsPixmapItem>
+#include <QDate>
 
 class DiagramItem;
 
@@ -19,12 +20,22 @@ public:
     static void setContextMenu(QMenu *menu);
     static MarriageItem *getSelectedMarriage();
 
+    QDate getDate() const;
+    void setDate(const QDate &date);
+    bool isDateKnown() const;
+
+    QString getPlace() const;
+    void setPlace(const QString &place);
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 
 private:
     DiagramItem *m_personLeft;
     DiagramItem *m_personRight;
+
+    QDate m_date;
+    QString m_place;
 
     static QMenu *m_contextMenu;
     static MarriageItem *m_selectedMarriage;
