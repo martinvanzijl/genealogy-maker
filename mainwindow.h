@@ -146,6 +146,7 @@ private:
     QIcon createColorToolButtonIcon(const QString &image, QColor color);
     QIcon createColorIcon(QColor color);
     QString saveFileDir();
+    bool saveFileExists() const;
 
     DiagramScene *scene;
     QGraphicsView *view;
@@ -219,6 +220,8 @@ private:
     DialogFind *dialogFind;
     DialogPersonDetails *dialogPersonDetails;
     DialogMarriageDetails *dialogMarriageDetails;
+
+    QString m_saveFileName;
 };
 //! [0]
 

@@ -371,6 +371,9 @@ void MainWindow::newDiagram()
     scene->clear();
     tree->clear();
     treeItems.clear();
+
+    // Clear save file name.
+    m_saveFileName.clear();
 }
 
 void MainWindow::open()
@@ -398,31 +401,40 @@ void MainWindow::open()
     if (!scene->isEmpty()) {
         view->centerOn(scene->firstItem());
     }
+
+    // Store save file.
+    m_saveFileName = fileName;
 }
 
 void MainWindow::save()
 {
-    QString fileName =
-            QFileDialog::getSaveFileName(this, tr("Save Genealogy File"),
-                                         saveFileDir(),
-                                         tr("Genealogy XML Files (*.xml)"));
+    // Select file if required.
+    if (!saveFileExists()) {
+        QString title = tr("Save Genealogy File");
+        QString dir = saveFileDir();
+        QString filter = tr("Genealogy XML Files (*.xml)");
+        QString fileName = QFileDialog::getSaveFileName(this, title, dir, filter);
 
-    if (fileName.isEmpty())
-        return;
+        if (fileName.isEmpty())
+            return;
 
-    if (!fileName.endsWith(".xml")) {
-        fileName += ".xml";
+        if (!fileName.endsWith(".xml")) {
+            fileName += ".xml";
+        }
+
+        // Store save file.
+        m_saveFileName = fileName;
     }
 
-    QFile file(fileName);
+    // Open file.
+     QFile file(m_saveFileName);
      if (!file.open(QFile::WriteOnly | QFile::Text)) {
-         QMessageBox::warning(this, tr("Genealogy Maker"),
-                              tr("Cannot write file %1:\n%2.")
-                              .arg(fileName)
-                              .arg(file.errorString()));
+         QString message = tr("Cannot write file %1:\n%2.").arg(m_saveFileName).arg(file.errorString());
+         QMessageBox::warning(this, tr("Genealogy Maker"), message);
          return;
      }
 
+     // Save to file.
      scene->save(&file);
 }
 
@@ -1058,5 +1070,10 @@ QString MainWindow::saveFileDir()
 
     // Return path.
     return QDir(dirName).path();
+}
+
+bool MainWindow::saveFileExists() const
+{
+    return !m_saveFileName.isEmpty();
 }
 //! [32]
