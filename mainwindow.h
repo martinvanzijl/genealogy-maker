@@ -137,6 +137,7 @@ private slots:
     void viewMarriageDetails();
     void onSceneCleared();
     void updateWindowTitle();
+    void onUndoStackCleanChanged(bool clean);
 private:
     void createToolBox();
     void createActions();

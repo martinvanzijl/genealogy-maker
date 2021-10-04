@@ -76,6 +76,7 @@ const int InsertArrowButton = 11;
 MainWindow::MainWindow()
 {
     undoStack = new QUndoStack(this);
+    connect(undoStack, SIGNAL(cleanChanged(bool)), this, SLOT(onUndoStackCleanChanged(bool)));
     m_appName = "Genealogy Maker Qt";
 
     createActions();
@@ -173,15 +174,15 @@ void MainWindow::deleteItem()
     }
 
     foreach (QGraphicsItem *item, scene->selectedItems()) {
-         if (item->type() == DiagramItem::Type) {
-             DiagramItem *diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
-             diagramItem->removeArrows();
-             delete treeItems[diagramItem->id()];
-         }
-         scene->removeItem(item);
-         //delete item;
-         itemsRemoved << item;
-     }
+        if (item->type() == DiagramItem::Type) {
+            DiagramItem *diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
+            diagramItem->removeArrows();
+            delete treeItems[diagramItem->id()];
+        }
+        scene->removeItem(item);
+        //delete item;
+        itemsRemoved << item;
+    }
 
     undoStack->push(new DeleteItemsUndo(scene, itemsRemoved));
 }
@@ -372,7 +373,11 @@ void MainWindow::about()
 
 void MainWindow::newDiagram()
 {
+    // Clear undo stack.
     undoStack->clear();
+    undoStack->setClean();
+
+    // Clear scene.
     scene->clear();
     tree->clear();
     treeItems.clear();
@@ -415,6 +420,10 @@ void MainWindow::open()
 
     // Update window title.
     updateWindowTitle();
+
+    // Clear undo stack.
+    undoStack->clear();
+    undoStack->setClean();
 }
 
 void MainWindow::save()
@@ -450,6 +459,9 @@ void MainWindow::save()
 
      // Update window title.
      updateWindowTitle();
+
+     // Mark undo stack.
+     undoStack->setClean();
 }
 
 void MainWindow::saveAs()
@@ -486,6 +498,9 @@ void MainWindow::saveAs()
 
      // Update window title.
      updateWindowTitle();
+
+     // Mark undo stack.
+     undoStack->setClean();
 }
 
 void MainWindow::onTreeItemDoubleClicked(QTreeWidgetItem *item, int column)
@@ -693,15 +708,33 @@ void MainWindow::onSceneCleared()
 
 void MainWindow::updateWindowTitle()
 {
+    QString title;
+
     if (saveFileExists())
     {
         QFileInfo info(m_saveFileName);
-        setWindowTitle(info.fileName() + " - " + m_appName);
+        title = info.fileName();
     }
     else
     {
-        setWindowTitle(QString("New Diagram - ") + m_appName);
+        title = "New Diagram";
     }
+
+    if (!undoStack->isClean())
+    {
+        title += "*";
+    }
+
+    title += " - ";
+    title += m_appName;
+
+    setWindowTitle(title);
+}
+
+void MainWindow::onUndoStackCleanChanged(bool clean)
+{
+    Q_UNUSED(clean);
+    updateWindowTitle();
 }
 
 void MainWindow::moveToCenter()
