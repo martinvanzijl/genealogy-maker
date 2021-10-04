@@ -1,7 +1,7 @@
 #include "moveitemsundo.h"
 
 #include "diagramitem.h"
-#include "genealogymaker.h"
+#include "diagramscene.h"
 
 MoveItemsUndo::MoveItemsUndo(DiagramScene *scene, QList<QGraphicsItem *> items, QUndoCommand *parent) :
     QUndoCommand("move items", parent),

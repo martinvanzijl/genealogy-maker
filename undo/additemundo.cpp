@@ -1,7 +1,7 @@
 #include "additemundo.h"
 
 #include "diagramitem.h"
-#include "genealogymaker.h"
+#include "diagramscene.h"
 
 AddItemUndo::AddItemUndo(DiagramScene *scene, DiagramItem *item, QUndoCommand *parent) :
     QUndoCommand("add person", parent),

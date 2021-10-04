@@ -3,7 +3,7 @@
 #include "moveitemsundo.h"
 
 #include "diagramitem.h"
-#include "genealogymaker.h"
+#include "diagramscene.h"
 
 MarriageUndo::MarriageUndo(DiagramScene *scene, DiagramItem *person1, DiagramItem *person2, QUndoCommand *parent) :
     QUndoCommand("marriage", parent),

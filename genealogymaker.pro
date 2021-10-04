@@ -2,7 +2,7 @@ QT += printsupport widgets xml
 
 HEADERS	    =   mainwindow.h \
 		diagramitem.h \
-		genealogymaker.h \
+		diagramscene.h \
 		arrow.h \
 		diagramtextitem.h \
 		mygraphicsview.h \
@@ -23,7 +23,7 @@ SOURCES	    =   mainwindow.cpp \
 		main.cpp \
 		arrow.cpp \
 		diagramtextitem.cpp \
-		genealogymaker.cpp \
+		diagramscene.cpp \
 		mygraphicsview.cpp \
 		percentvalidator.cpp \
     undo/additemundo.cpp \

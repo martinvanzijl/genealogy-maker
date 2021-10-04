@@ -2,7 +2,7 @@
 
 #include "arrow.h"
 #include "diagramitem.h"
-#include "genealogymaker.h"
+#include "diagramscene.h"
 
 AddArrowUndo::AddArrowUndo(DiagramScene *scene, Arrow *arrow, QUndoCommand *parent) :
     QUndoCommand("add arrow", parent),

@@ -48,7 +48,7 @@
 **
 ****************************************************************************/
 
-#include "genealogymaker.h"
+#include "diagramscene.h"
 #include "arrow.h"
 #include "marriageitem.h"
 

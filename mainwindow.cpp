@@ -50,7 +50,7 @@
 
 #include "arrow.h"
 #include "diagramitem.h"
-#include "genealogymaker.h"
+#include "diagramscene.h"
 #include "diagramtextitem.h"
 #include "mainwindow.h"
 #include "mygraphicsview.h"
