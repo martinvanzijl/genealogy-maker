@@ -2,7 +2,7 @@ QT += printsupport widgets xml
 
 HEADERS	    =   mainwindow.h \
 		diagramitem.h \
-		diagramscene.h \
+		genealogymaker.h \
 		arrow.h \
 		diagramtextitem.h \
 		mygraphicsview.h \
@@ -23,7 +23,7 @@ SOURCES	    =   mainwindow.cpp \
 		main.cpp \
 		arrow.cpp \
 		diagramtextitem.cpp \
-		diagramscene.cpp \
+		genealogymaker.cpp \
 		mygraphicsview.cpp \
 		percentvalidator.cpp \
     undo/additemundo.cpp \
@@ -37,11 +37,11 @@ SOURCES	    =   mainwindow.cpp \
     gui/dialogmarriagedetails.cpp \
     undo/removemarriageundo.cpp \
     undo/undomanager.cpp
-RESOURCES   =	diagramscene.qrc
+RESOURCES   =	genealogymaker.qrc
 
 
 # install
-target.path = $$[QT_INSTALL_EXAMPLES]/widgets/graphicsview/diagramscene
+target.path = $$[QT_INSTALL_EXAMPLES]/widgets/graphicsview/genealogymaker
 INSTALLS += target
 
 FORMS += \

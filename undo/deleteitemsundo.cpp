@@ -1,7 +1,7 @@
 #include "deleteitemsundo.h"
 
 #include "diagramitem.h"
-#include "diagramscene.h"
+#include "genealogymaker.h"
 
 DeleteItemsUndo::DeleteItemsUndo(DiagramScene *scene, QList<QGraphicsItem *> items, QUndoCommand *parent) :
     QUndoCommand("delete items", parent),

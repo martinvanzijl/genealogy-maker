@@ -49,7 +49,7 @@
 ****************************************************************************/
 
 #include "diagramtextitem.h"
-#include "diagramscene.h"
+#include "genealogymaker.h"
 
 #include <QTextCursor>
 #include <QKeyEvent>
