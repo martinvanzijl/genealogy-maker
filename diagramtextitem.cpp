@@ -52,6 +52,7 @@
 #include "diagramscene.h"
 
 #include <QTextCursor>
+#include <QKeyEvent>
 
 DiagramTextItem::DiagramTextItem(QGraphicsItem *parent)
     : QGraphicsTextItem(parent)
