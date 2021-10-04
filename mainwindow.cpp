@@ -361,9 +361,11 @@ void MainWindow::itemSelected(QGraphicsItem *item)
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, tr("About Diagram Scene"),
-                       tr("The <b>Diagram Scene</b> example shows "
-                          "use of the graphics framework."));
+    QString message = tr("This program is for creating genealogies. It is "
+                         "written using the Qt Framework. The program is "
+                         "open-source and you are welcome to contribute "
+                         "to it.");
+    QMessageBox::about(this, tr("About Genealogy Maker"), message);
 }
 
 void MainWindow::newDiagram()
