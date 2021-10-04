@@ -100,6 +100,7 @@ MainWindow::MainWindow()
     connect(scene, SIGNAL(arrowAdded(Arrow*)), this, SLOT(onArrowAdded(Arrow*)));
     connect(scene, SIGNAL(itemsAboutToMove()), this, SLOT(onItemsAboutToMove()));
     connect(scene, SIGNAL(itemsFinishedMoving()), this, SLOT(onItemsFinishedMoving()));
+    connect(scene, SIGNAL(cleared()), this, SLOT(onSceneCleared()));
     connect(view, SIGNAL(mouseWheelZoomed()), this, SLOT(onMouseWheelZoomed()));
     layout->addWidget(view);
 
@@ -669,6 +670,12 @@ void MainWindow::viewMarriageDetails()
     }
     dialogMarriageDetails->setMarriage(MarriageItem::getSelectedMarriage());
     dialogMarriageDetails->show();
+}
+
+void MainWindow::onSceneCleared()
+{
+    treeItems.clear();
+    tree->clear();
 }
 
 void MainWindow::moveToCenter()

@@ -111,6 +111,7 @@ signals:
     void itemsAboutToMove();
     void itemsFinishedMoving();
     void peopleMarried(DiagramItem *person1, DiagramItem *person2);
+    void cleared();
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;

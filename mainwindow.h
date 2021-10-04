@@ -135,6 +135,7 @@ private slots:
     void onPeopleMarried(DiagramItem *person1, DiagramItem *person2);
     void removeMarriage();
     void viewMarriageDetails();
+    void onSceneCleared();
 private:
     void createToolBox();
     void createActions();

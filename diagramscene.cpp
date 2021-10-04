@@ -148,6 +148,7 @@ void DiagramScene::open(QIODevice *device)
     }
 
     clear();
+    emit cleared();
 
     QDomElement child = root.firstChildElement("item");
     while (!child.isNull()) {
