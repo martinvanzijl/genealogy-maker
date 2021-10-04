@@ -136,6 +136,7 @@ private slots:
     void removeMarriage();
     void viewMarriageDetails();
     void onSceneCleared();
+    void updateWindowTitle();
 private:
     void createToolBox();
     void createActions();
@@ -227,6 +228,7 @@ private:
     DialogMarriageDetails *dialogMarriageDetails;
 
     QString m_saveFileName;
+    QString m_appName;
 };
 //! [0]
 

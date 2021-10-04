@@ -76,6 +76,7 @@ const int InsertArrowButton = 11;
 MainWindow::MainWindow()
 {
     undoStack = new QUndoStack(this);
+    m_appName = "Genealogy Maker Qt";
 
     createActions();
     createToolBox();
@@ -108,7 +109,7 @@ MainWindow::MainWindow()
     widget->setLayout(layout);
 
     setCentralWidget(widget);
-    setWindowTitle(tr("Genealogy Maker - Qt Version"));
+    updateWindowTitle();
     setUnifiedTitleAndToolBarOnMac(true);
 
     view->setFocus();
@@ -378,6 +379,9 @@ void MainWindow::newDiagram()
 
     // Clear save file name.
     m_saveFileName.clear();
+
+    // Update window title.
+    updateWindowTitle();
 }
 
 void MainWindow::open()
@@ -408,6 +412,9 @@ void MainWindow::open()
 
     // Store save file.
     m_saveFileName = fileName;
+
+    // Update window title.
+    updateWindowTitle();
 }
 
 void MainWindow::save()
@@ -440,6 +447,9 @@ void MainWindow::save()
 
      // Save to file.
      scene->save(&file);
+
+     // Update window title.
+     updateWindowTitle();
 }
 
 void MainWindow::saveAs()
@@ -473,6 +483,9 @@ void MainWindow::saveAs()
 
      // Save to file.
      scene->save(&file);
+
+     // Update window title.
+     updateWindowTitle();
 }
 
 void MainWindow::onTreeItemDoubleClicked(QTreeWidgetItem *item, int column)
@@ -676,6 +689,19 @@ void MainWindow::onSceneCleared()
 {
     treeItems.clear();
     tree->clear();
+}
+
+void MainWindow::updateWindowTitle()
+{
+    if (saveFileExists())
+    {
+        QFileInfo info(m_saveFileName);
+        setWindowTitle(info.fileName() + " - " + m_appName);
+    }
+    else
+    {
+        setWindowTitle(QString("New Diagram - ") + m_appName);
+    }
 }
 
 void MainWindow::moveToCenter()
