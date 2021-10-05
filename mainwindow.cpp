@@ -373,6 +373,11 @@ void MainWindow::about()
 
 void MainWindow::newDiagram()
 {
+    // Ask whether to save unsaved changes.
+    if (!maybeSave()) {
+        return;
+    }
+
     // Clear undo stack.
     undoStack->clear();
     undoStack->setClean();
@@ -391,6 +396,11 @@ void MainWindow::newDiagram()
 
 void MainWindow::open()
 {
+    // Ask whether to save unsaved changes.
+    if (!maybeSave()) {
+        return;
+    }
+
     QString fileName =
             QFileDialog::getOpenFileName(this, tr("Open Genealogy File"),
                                          saveFileDir(),
