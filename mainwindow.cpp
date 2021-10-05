@@ -367,7 +367,9 @@ void MainWindow::about()
     QString message = tr("This program is for creating genealogies. It is "
                          "written using the Qt Framework. The program is "
                          "open-source and you are welcome to contribute "
-                         "to it.");
+                         "to it."
+                         "\n\n"
+                         "Version: 1");
     QMessageBox::about(this, tr("About Genealogy Maker"), message);
 }
 
