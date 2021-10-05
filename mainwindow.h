@@ -138,6 +138,10 @@ private slots:
     void onSceneCleared();
     void updateWindowTitle();
     void onUndoStackCleanChanged(bool clean);
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 private:
     void createToolBox();
     void createActions();
@@ -152,6 +156,7 @@ private:
     QIcon createColorIcon(QColor color);
     QString saveFileDir();
     bool saveFileExists() const;
+    bool maybeSave();
 
     DiagramScene *scene;
     QGraphicsView *view;

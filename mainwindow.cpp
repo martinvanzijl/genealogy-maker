@@ -737,6 +737,15 @@ void MainWindow::onUndoStackCleanChanged(bool clean)
     updateWindowTitle();
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (maybeSave()) {
+        event->accept();
+    } else {
+        event->ignore();
+    }
+}
+
 void MainWindow::moveToCenter()
 {
     //
@@ -1219,5 +1228,25 @@ QString MainWindow::saveFileDir()
 bool MainWindow::saveFileExists() const
 {
     return !m_saveFileName.isEmpty();
+}
+
+bool MainWindow::maybeSave()
+{
+    if (!undoStack->isClean()) {
+        QString message = tr("The diagram has been modified.\n"
+                             "Do you want to save your changes?");
+        auto ret = QMessageBox::warning(this, m_appName, message,
+                                        QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        switch (ret) {
+        case QMessageBox::Save:
+            save();
+            return true;
+        case QMessageBox::Cancel:
+            return false;
+        default:
+            break;
+        }
+    }
+    return true;
 }
 //! [32]
