@@ -96,14 +96,14 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionNew"/>
-    <addaction name="actionOpen"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionSaveAs"/>
+    <addaction name="newAction"/>
+    <addaction name="openAction"/>
+    <addaction name="saveAction"/>
+    <addaction name="saveAsAction"/>
     <addaction name="separator"/>
-    <addaction name="actionPrint"/>
+    <addaction name="printAction"/>
     <addaction name="separator"/>
-    <addaction name="actionExit"/>
+    <addaction name="exitAction"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -112,48 +112,48 @@
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
-    <addaction name="actionFind"/>
+    <addaction name="findAction"/>
    </widget>
-   <widget class="QMenu" name="menuItem">
+   <widget class="QMenu" name="itemMenu">
     <property name="title">
      <string>&amp;Item</string>
     </property>
-    <addaction name="actionDelete"/>
+    <addaction name="deleteAction"/>
     <addaction name="separator"/>
-    <addaction name="actionBringToFront"/>
-    <addaction name="actionSendToBack"/>
+    <addaction name="toFrontAction"/>
+    <addaction name="sendBackAction"/>
     <addaction name="separator"/>
-    <addaction name="actionDetails"/>
+    <addaction name="viewDetailsAction"/>
    </widget>
    <widget class="QMenu" name="menuSelect">
     <property name="title">
      <string>&amp;Select</string>
     </property>
-    <addaction name="actionSelectAll"/>
-    <addaction name="actionSelectNone"/>
+    <addaction name="selectAllAction"/>
+    <addaction name="selectNoneAction"/>
    </widget>
    <widget class="QMenu" name="menuAlign">
     <property name="title">
      <string>&amp;Align</string>
     </property>
-    <addaction name="actionAlignHorizontally"/>
-    <addaction name="actionAlignVertically"/>
+    <addaction name="alignHorizontallyAction"/>
+    <addaction name="alignVerticallyAction"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>&amp;Help</string>
     </property>
-    <addaction name="actionAbout"/>
+    <addaction name="aboutAction"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
-   <addaction name="menuItem"/>
+   <addaction name="itemMenu"/>
    <addaction name="menuSelect"/>
    <addaction name="menuAlign"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionNew">
+  <action name="newAction">
    <property name="text">
     <string>New</string>
    </property>
@@ -164,7 +164,7 @@
     <string>Ctrl+N</string>
    </property>
   </action>
-  <action name="actionOpen">
+  <action name="openAction">
    <property name="text">
     <string>Open</string>
    </property>
@@ -175,7 +175,7 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionSave">
+  <action name="saveAction">
    <property name="text">
     <string>Save</string>
    </property>
@@ -186,7 +186,7 @@
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="actionSaveAs">
+  <action name="saveAsAction">
    <property name="text">
     <string>Save As...</string>
    </property>
@@ -197,7 +197,7 @@
     <string>Ctrl+Shift+S</string>
    </property>
   </action>
-  <action name="actionPrint">
+  <action name="printAction">
    <property name="text">
     <string>Print...</string>
    </property>
@@ -208,7 +208,7 @@
     <string>Ctrl+P</string>
    </property>
   </action>
-  <action name="actionExit">
+  <action name="exitAction">
    <property name="text">
     <string>E&amp;xit</string>
    </property>
@@ -235,7 +235,7 @@
     <string>Ctrl+Shift+Z</string>
    </property>
   </action>
-  <action name="actionFind">
+  <action name="findAction">
    <property name="text">
     <string>Find...</string>
    </property>
@@ -246,7 +246,7 @@
     <string>Ctrl+F</string>
    </property>
   </action>
-  <action name="actionDelete">
+  <action name="deleteAction">
    <property name="icon">
     <iconset resource="../genealogymaker.qrc">
      <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
@@ -261,7 +261,7 @@
     <string>Del</string>
    </property>
   </action>
-  <action name="actionBringToFront">
+  <action name="toFrontAction">
    <property name="icon">
     <iconset resource="../genealogymaker.qrc">
      <normaloff>:/images/bringtofront.png</normaloff>:/images/bringtofront.png</iconset>
@@ -276,7 +276,7 @@
     <string>Ctrl+Shift+F</string>
    </property>
   </action>
-  <action name="actionSendToBack">
+  <action name="sendBackAction">
    <property name="icon">
     <iconset resource="../genealogymaker.qrc">
      <normaloff>:/images/sendtoback.png</normaloff>:/images/sendtoback.png</iconset>
@@ -291,7 +291,7 @@
     <string>Backspace</string>
    </property>
   </action>
-  <action name="actionSelectAll">
+  <action name="selectAllAction">
    <property name="text">
     <string>Select All</string>
    </property>
@@ -299,7 +299,7 @@
     <string>Ctrl+A</string>
    </property>
   </action>
-  <action name="actionSelectNone">
+  <action name="selectNoneAction">
    <property name="text">
     <string>Select None</string>
    </property>
@@ -307,17 +307,17 @@
     <string>Ctrl+Shift+A</string>
    </property>
   </action>
-  <action name="actionAlignHorizontally">
+  <action name="alignHorizontallyAction">
    <property name="text">
     <string>Align Horizontally</string>
    </property>
   </action>
-  <action name="actionAlignVertically">
+  <action name="alignVerticallyAction">
    <property name="text">
     <string>Align Vertically</string>
    </property>
   </action>
-  <action name="actionDetails">
+  <action name="viewDetailsAction">
    <property name="text">
     <string>Details...</string>
    </property>
@@ -325,7 +325,7 @@
     <string>Ctrl+D</string>
    </property>
   </action>
-  <action name="actionAbout">
+  <action name="aboutAction">
    <property name="text">
     <string>A&amp;bout</string>
    </property>

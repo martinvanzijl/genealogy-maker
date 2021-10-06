@@ -236,6 +236,5 @@ private:
     QString m_saveFileName;
     QString m_appName;
 };
-//! [0]
 
 #endif // MAINWINDOW_H

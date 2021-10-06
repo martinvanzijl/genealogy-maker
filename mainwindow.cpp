@@ -48,11 +48,12 @@
 **
 ****************************************************************************/
 
+#include "mainwindow.h"
+
 #include "arrow.h"
 #include "diagramitem.h"
 #include "diagramscene.h"
 #include "diagramtextitem.h"
-#include "mainwindow.h"
 #include "mygraphicsview.h"
 #include "percentvalidator.h"
 #include "undo/addarrowundo.h"
@@ -72,6 +73,8 @@
 #include <QUndoStack>
 
 const int InsertArrowButton = 11;
+
+#include <QDesktopWidget>
 
 MainWindow::MainWindow()
 {
