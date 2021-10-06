@@ -1240,3 +1240,8 @@ bool MainForm::maybeSave()
     return true;
 }
 //! [32]
+
+void MainForm::showHelpContents()
+{
+
+}

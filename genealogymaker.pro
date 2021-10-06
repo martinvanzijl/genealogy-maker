@@ -1,4 +1,4 @@
-QT += printsupport widgets xml
+QT += help printsupport widgets xml
 
 HEADERS	    =   mainwindow.h \
 		diagramitem.h \
@@ -18,7 +18,8 @@ HEADERS	    =   mainwindow.h \
     gui/dialogmarriagedetails.h \
     undo/removemarriageundo.h \
     undo/undomanager.h \
-    gui/mainform.h
+    gui/mainform.h \
+    gui/dialoghelp.h
 SOURCES	    =   mainwindow.cpp \
 		diagramitem.cpp \
 		main.cpp \
@@ -38,7 +39,8 @@ SOURCES	    =   mainwindow.cpp \
     gui/dialogmarriagedetails.cpp \
     undo/removemarriageundo.cpp \
     undo/undomanager.cpp \
-    gui/mainform.cpp
+    gui/mainform.cpp \
+    gui/dialoghelp.cpp
 RESOURCES   =	genealogymaker.qrc
 
 
@@ -50,4 +52,5 @@ FORMS += \
     gui/dialogfind.ui \
     gui/dialogpersondetails.ui \
     gui/dialogmarriagedetails.ui \
-    gui/mainform.ui
+    gui/mainform.ui \
+    gui/dialoghelp.ui

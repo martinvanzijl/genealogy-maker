@@ -14,74 +14,7 @@
    <string>Genealogy Maker Qt</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QToolBox" name="toolBoxLeft">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Ignored">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <widget class="QWidget" name="pageAddItems">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>96</width>
-         <height>345</height>
-        </rect>
-       </property>
-       <attribute name="label">
-        <string>Add Items</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="pageBackgrounds">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>96</width>
-         <height>345</height>
-        </rect>
-       </property>
-       <attribute name="label">
-        <string>Backgrounds</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="pageTreeView">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>274</width>
-         <height>345</height>
-        </rect>
-       </property>
-       <attribute name="label">
-        <string>Tree View</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QTreeWidget" name="treeWidgetPersons">
-          <column>
-           <property name="text">
-            <string>Person</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QGraphicsView" name="graphicsViewMain"/>
-    </item>
-   </layout>
+   <layout class="QHBoxLayout" name="horizontalLayout"/>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -143,6 +76,7 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
+    <addaction name="helpContentsAction"/>
     <addaction name="aboutAction"/>
    </widget>
    <addaction name="menuFile"/>
@@ -331,6 +265,14 @@
    </property>
    <property name="shortcut">
     <string>F1</string>
+   </property>
+  </action>
+  <action name="helpContentsAction">
+   <property name="text">
+    <string>Contents</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
    </property>
   </action>
  </widget>

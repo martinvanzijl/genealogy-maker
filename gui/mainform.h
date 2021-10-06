@@ -144,6 +144,8 @@ private slots:
     void updateWindowTitle();
     void onUndoStackCleanChanged(bool clean);
 
+    void showHelpContents();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
