@@ -1001,6 +1001,12 @@ void MainForm::createMenus()
 //    editMenu->addSeparator();
 //    editMenu->addAction(findAction);
 
+    // Replace the placeholder undo items.
+    ui->menuEdit->insertAction(ui->actionUndo, undoAction);
+    ui->menuEdit->insertAction(ui->actionRedo, redoAction);
+    ui->menuEdit->removeAction(ui->actionUndo);
+    ui->menuEdit->removeAction(ui->actionRedo);
+
 //    itemMenu = menuBar()->addMenu(tr("&Item"));
 //    itemMenu->addAction(deleteAction);
 //    itemMenu->addSeparator();
