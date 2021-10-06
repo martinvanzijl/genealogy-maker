@@ -82,6 +82,7 @@ class MoveItemsUndo;
 class DialogFind;
 class DialogPersonDetails;
 class DialogMarriageDetails;
+class DialogHelp;
 QT_END_NAMESPACE
 
 //! [0]
@@ -241,6 +242,7 @@ private:
     DialogFind *dialogFind;
     DialogPersonDetails *dialogPersonDetails;
     DialogMarriageDetails *dialogMarriageDetails;
+    DialogHelp *dialogHelp;
 
     QString m_saveFileName;
     QString m_appName;

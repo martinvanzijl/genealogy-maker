@@ -67,6 +67,7 @@
 #include "marriageitem.h"
 #include "gui/dialogmarriagedetails.h"
 #include "undo/removemarriageundo.h"
+#include "gui/dialoghelp.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -128,6 +129,7 @@ MainForm::MainForm(QWidget *parent) :
     dialogFind = nullptr;
     dialogPersonDetails = nullptr;
     dialogMarriageDetails = nullptr;
+    dialogHelp = nullptr;
 }
 
 MainForm::~MainForm()
@@ -977,6 +979,8 @@ void MainForm::createActions()
 
     marriageDetailsAction = new QAction(tr("Marriage Details..."), this);
     connect(marriageDetailsAction, SIGNAL(triggered()), this, SLOT(viewMarriageDetails()));
+
+    connect(ui->helpContentsAction, SIGNAL(triggered()), this, SLOT(showHelpContents()));
 }
 
 void MainForm::createMenus()
@@ -1243,5 +1247,9 @@ bool MainForm::maybeSave()
 
 void MainForm::showHelpContents()
 {
+    if (!dialogHelp) {
+        dialogHelp = new DialogHelp(this);
+    }
 
+    dialogHelp->show();
 }
