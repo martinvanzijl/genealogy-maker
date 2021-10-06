@@ -17,7 +17,8 @@ HEADERS	    =   mainwindow.h \
     undo/marriageundo.h \
     gui/dialogmarriagedetails.h \
     undo/removemarriageundo.h \
-    undo/undomanager.h
+    undo/undomanager.h \
+    gui/mainform.h
 SOURCES	    =   mainwindow.cpp \
 		diagramitem.cpp \
 		main.cpp \
@@ -36,7 +37,8 @@ SOURCES	    =   mainwindow.cpp \
     undo/marriageundo.cpp \
     gui/dialogmarriagedetails.cpp \
     undo/removemarriageundo.cpp \
-    undo/undomanager.cpp
+    undo/undomanager.cpp \
+    gui/mainform.cpp
 RESOURCES   =	genealogymaker.qrc
 
 
@@ -47,4 +49,5 @@ INSTALLS += target
 FORMS += \
     gui/dialogfind.ui \
     gui/dialogpersondetails.ui \
-    gui/dialogmarriagedetails.ui
+    gui/dialogmarriagedetails.ui \
+    gui/mainform.ui

@@ -168,7 +168,6 @@ void MainWindow::deleteItem()
             Arrow *arrow = qgraphicsitem_cast<Arrow *>(item);
             arrow->startItem()->removeArrow(arrow);
             arrow->endItem()->removeArrow(arrow);
-            //delete item;
             itemsRemoved << arrow;
         }
     }
@@ -180,7 +179,6 @@ void MainWindow::deleteItem()
             delete treeItems[diagramItem->id()];
         }
         scene->removeItem(item);
-        //delete item;
         itemsRemoved << item;
     }
 
@@ -783,11 +781,12 @@ void MainWindow::onItemTextEdited(QGraphicsItem *item)
         }
     }
 }
-//! [20]
 
-//! [21]
 void MainWindow::createToolBox()
 {
+    //
+    // "Add Item" tab.
+    //
     buttonGroup = new QButtonGroup(this);
     buttonGroup->setExclusive(false);
     connect(buttonGroup, SIGNAL(buttonClicked(int)),
@@ -797,9 +796,7 @@ void MainWindow::createToolBox()
     //
     // "Person" button
     //
-    //layout->addWidget(createCellWidget(tr("Conditional"), DiagramItem::Conditional), 0, 0);
     layout->addWidget(createCellWidget(tr("Person"), DiagramItem::Step, tr("P")), 0, 0);
-    //layout->addWidget(createCellWidget(tr("Input/Output"), DiagramItem::Io), 1, 0);
 
     //
     // "Relationship" button
@@ -818,26 +815,15 @@ void MainWindow::createToolBox()
     textWidget->setLayout(textLayout);
     layout->addWidget(textWidget, 0, 1);
 
-//! [21]
-
-//    QToolButton *textButton = new QToolButton;
-//    textButton->setCheckable(true);
-//    buttonGroup->addButton(textButton, InsertTextButton);
-//    textButton->setIcon(QIcon(QPixmap(":/images/textpointer.png")));
-//    textButton->setIconSize(QSize(50, 50));
-//    QGridLayout *textLayout = new QGridLayout;
-//    textLayout->addWidget(textButton, 0, 0, Qt::AlignHCenter);
-//    textLayout->addWidget(new QLabel(tr("Text")), 1, 0, Qt::AlignCenter);
-//    QWidget *textWidget = new QWidget;
-//    textWidget->setLayout(textLayout);
-//    layout->addWidget(textWidget, 1, 1);
-
     layout->setRowStretch(3, 10);
     layout->setColumnStretch(2, 10);
 
     QWidget *itemWidget = new QWidget;
     itemWidget->setLayout(layout);
 
+    //
+    // Background tab.
+    //
     backgroundButtonGroup = new QButtonGroup(this);
     connect(backgroundButtonGroup, SIGNAL(buttonClicked(QAbstractButton*)),
             this, SLOT(backgroundButtonGroupClicked(QAbstractButton*)));
@@ -869,7 +855,6 @@ void MainWindow::createToolBox()
     QWidget *treeViewWidget = new QWidget;
     treeViewWidget->setLayout(treeViewLayout);
 
-//! [22]
     toolBox = new QToolBox;
     toolBox->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Ignored));
     toolBox->setMinimumWidth(itemWidget->sizeHint().width());
@@ -877,9 +862,7 @@ void MainWindow::createToolBox()
     toolBox->addItem(backgroundWidget, tr("Backgrounds"));
     toolBox->addItem(treeViewWidget, tr("Tree View"));
 }
-//! [22]
 
-//! [23]
 void MainWindow::createActions()
 {
     findAction = new QAction(tr("Find..."), this);
@@ -892,7 +875,6 @@ void MainWindow::createActions()
     toFrontAction->setShortcut(tr("Ctrl+Shift+F"));
     toFrontAction->setStatusTip(tr("Bring item to front"));
     connect(toFrontAction, SIGNAL(triggered()), this, SLOT(bringToFront()));
-//! [23]
 
     sendBackAction = new QAction(QIcon(":/images/sendtoback.png"), tr("Send to &Back"), this);
     sendBackAction->setShortcut(tr("Ctrl+T"));
@@ -906,7 +888,7 @@ void MainWindow::createActions()
 
     exitAction = new QAction(tr("E&xit"), this);
     exitAction->setShortcuts(QKeySequence::Quit);
-    exitAction->setStatusTip(tr("Quit Scenediagram example"));
+    exitAction->setStatusTip(tr("Quit the application"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
     newAction = new QAction(tr("New"), this);
@@ -984,7 +966,6 @@ void MainWindow::createActions()
     connect(marriageDetailsAction, SIGNAL(triggered()), this, SLOT(viewMarriageDetails()));
 }
 
-//! [24]
 void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
@@ -1027,12 +1008,9 @@ void MainWindow::createMenus()
     marriageMenu->addAction(marriageDetailsAction);
     MarriageItem::setContextMenu(marriageMenu);
 }
-//! [24]
 
-//! [25]
 void MainWindow::createToolbars()
 {
-//! [25]
     editToolBar = addToolBar(tr("Edit"));
     editToolBar->addAction(deleteAction);
     editToolBar->addAction(toFrontAction);
@@ -1060,7 +1038,6 @@ void MainWindow::createToolbars()
     connect(fontColorToolButton, SIGNAL(clicked()),
             this, SLOT(textButtonTriggered()));
 
-//! [26]
     fillColorToolButton = new QToolButton;
     fillColorToolButton->setPopupMode(QToolButton::MenuButtonPopup);
     fillColorToolButton->setMenu(createColorMenu(SLOT(itemColorChanged()), Qt::white));
@@ -1069,7 +1046,6 @@ void MainWindow::createToolbars()
                                      ":/images/floodfill.png", Qt::white));
     connect(fillColorToolButton, SIGNAL(clicked()),
             this, SLOT(fillButtonTriggered()));
-//! [26]
 
     lineColorToolButton = new QToolButton;
     lineColorToolButton->setPopupMode(QToolButton::MenuButtonPopup);
@@ -1126,11 +1102,8 @@ void MainWindow::createToolbars()
     pointerToolbar->addWidget(pointerButton);
     pointerToolbar->addWidget(linePointerButton);
     pointerToolbar->addWidget(sceneScaleCombo);
-//! [27]
 }
-//! [27]
 
-//! [28]
 QWidget *MainWindow::createBackgroundCellWidget(const QString &text, const QString &image)
 {
     QToolButton *button = new QToolButton;
@@ -1149,9 +1122,7 @@ QWidget *MainWindow::createBackgroundCellWidget(const QString &text, const QStri
 
     return widget;
 }
-//! [28]
 
-//! [29]
 QWidget *MainWindow::createCellWidget(const QString &text, DiagramItem::DiagramType type, QKeySequence shortcut)
 {
     DiagramItem item(type, itemMenu);
@@ -1174,9 +1145,7 @@ QWidget *MainWindow::createCellWidget(const QString &text, DiagramItem::DiagramT
 
     return widget;
 }
-//! [29]
 
-//! [30]
 QMenu *MainWindow::createColorMenu(const char *slot, QColor defaultColor)
 {
     QList<QColor> colors;
@@ -1197,9 +1166,7 @@ QMenu *MainWindow::createColorMenu(const char *slot, QColor defaultColor)
     }
     return colorMenu;
 }
-//! [30]
 
-//! [31]
 QIcon MainWindow::createColorToolButtonIcon(const QString &imageFile, QColor color)
 {
     QPixmap pixmap(50, 80);
@@ -1214,9 +1181,7 @@ QIcon MainWindow::createColorToolButtonIcon(const QString &imageFile, QColor col
 
     return QIcon(pixmap);
 }
-//! [31]
 
-//! [32]
 QIcon MainWindow::createColorIcon(QColor color)
 {
     QPixmap pixmap(20, 20);

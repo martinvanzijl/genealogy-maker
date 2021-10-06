@@ -49,6 +49,7 @@
 ****************************************************************************/
 
 #include "mainwindow.h"
+#include "gui/mainform.h"
 
 #include <QApplication>
 
@@ -57,8 +58,9 @@ int main(int argv, char *args[])
     Q_INIT_RESOURCE(genealogymaker);
 
     QApplication app(argv, args);
-    MainWindow mainWindow;
-    mainWindow.setGeometry(100, 100, 800, 500);
+//    MainWindow mainWindow;
+    MainForm mainWindow;
+//    mainWindow.setGeometry(100, 100, 800, 500);
     mainWindow.moveToCenter();
     mainWindow.show();
 
