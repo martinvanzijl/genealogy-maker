@@ -48,7 +48,7 @@
 **
 ****************************************************************************/
 
-#include "mainwindow.h"
+//#include "mainwindow.h"
 #include "gui/mainform.h"
 
 #include <QApplication>

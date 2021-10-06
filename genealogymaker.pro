@@ -1,6 +1,6 @@
 QT += help printsupport widgets xml
 
-HEADERS	    =   mainwindow.h \
+HEADERS	    =   \
 		diagramitem.h \
 		diagramscene.h \
 		arrow.h \
@@ -20,7 +20,7 @@ HEADERS	    =   mainwindow.h \
     undo/undomanager.h \
     gui/mainform.h \
     gui/dialoghelp.h
-SOURCES	    =   mainwindow.cpp \
+SOURCES	    =   \
 		diagramitem.cpp \
 		main.cpp \
 		arrow.cpp \
