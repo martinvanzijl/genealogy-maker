@@ -101,6 +101,9 @@ public slots:
     void setItemType(DiagramItem::DiagramType type);
     void editorLostFocus(DiagramTextItem *item);
 
+//private slots:
+//    void onSelectionChanged();
+
 signals:
     void itemInserted(DiagramItem *item, bool fromLoad);
     void itemRemoved(DiagramItem *item);

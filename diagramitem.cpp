@@ -60,6 +60,7 @@
 #include <QUuid>
 #include <QGraphicsItemGroup>
 #include <QDebug>
+#include <QStyleOptionGraphicsItem>
 
 //! [0]
 DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
@@ -320,6 +321,21 @@ void DiagramItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
         m_textItem->startEditing();
         //}
 }
+
+//void DiagramItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+//{
+//    // Highlight in green if selected.
+//    if (isSelected()) {
+//        QPen pen(Qt::darkGreen, 3);
+//        painter->setPen(pen);
+//        painter->drawRect(boundingRect().adjusted(-5, -5, 5, 5));
+//    }
+
+//    // Prevent the default "selection indicator".
+//    QStyleOptionGraphicsItem myoption = (*option);
+//    myoption.state &= !QStyle::State_Selected;
+//    QGraphicsPolygonItem::paint(painter, &myoption, widget);
+//}
 
 void DiagramItem::updateSpousePosition()
 {

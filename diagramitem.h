@@ -126,6 +126,7 @@ protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+//    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 private:
     void updateSpousePosition();

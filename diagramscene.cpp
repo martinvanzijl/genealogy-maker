@@ -73,6 +73,8 @@ DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
     myLineColor = Qt::black;
     m_highlightedItem = nullptr;
     m_nextId = 1;
+
+    connect(this, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
 }
 //! [0]
 
@@ -322,6 +324,17 @@ void DiagramScene::editorLostFocus(DiagramTextItem *item)
         item->deleteLater();
     }
 }
+
+//void DiagramScene::onSelectionChanged()
+//{
+//    // Highlight selected items.
+//    for (auto item: selectedItems()) {
+//        if (item->type() == DiagramItem::Type) {
+//            auto diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
+//            diagramItem->setHighlighted(true);
+//        }
+//    }
+//}
 //! [5]
 
 //! [6]
