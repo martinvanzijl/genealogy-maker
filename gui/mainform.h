@@ -147,6 +147,8 @@ private slots:
 
     void showHelpContents();
 
+    void on_actionChangeSize_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

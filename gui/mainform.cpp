@@ -68,6 +68,7 @@
 #include "gui/dialogmarriagedetails.h"
 #include "undo/removemarriageundo.h"
 #include "gui/dialoghelp.h"
+#include "gui/dialogchangesize.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -1258,4 +1259,17 @@ void MainForm::showHelpContents()
     }
 
     dialogHelp->show();
+}
+
+void MainForm::on_actionChangeSize_triggered()
+{
+    // Show dialog.
+    auto dialog = new DialogChangeSize(this);
+    dialog->setCurrentSize(scene->sceneRect().size());
+    int result = dialog->exec();
+
+    // Process result.
+    if (result == QDialog::Accepted) {
+        scene->setSceneRect(0, 0, dialog->getNewWidth(), dialog->getNewHeight());
+    }
 }

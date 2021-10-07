@@ -19,7 +19,8 @@ HEADERS	    =   \
     undo/removemarriageundo.h \
     undo/undomanager.h \
     gui/mainform.h \
-    gui/dialoghelp.h
+    gui/dialoghelp.h \
+    gui/dialogchangesize.h
 SOURCES	    =   \
 		diagramitem.cpp \
 		main.cpp \
@@ -40,7 +41,8 @@ SOURCES	    =   \
     undo/removemarriageundo.cpp \
     undo/undomanager.cpp \
     gui/mainform.cpp \
-    gui/dialoghelp.cpp
+    gui/dialoghelp.cpp \
+    gui/dialogchangesize.cpp
 RESOURCES   =	genealogymaker.qrc
 
 
@@ -53,4 +55,5 @@ FORMS += \
     gui/dialogpersondetails.ui \
     gui/dialogmarriagedetails.ui \
     gui/mainform.ui \
-    gui/dialoghelp.ui
+    gui/dialoghelp.ui \
+    gui/dialogchangesize.ui
