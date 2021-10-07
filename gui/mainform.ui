@@ -242,11 +242,19 @@
    </property>
   </action>
   <action name="alignHorizontallyAction">
+   <property name="icon">
+    <iconset resource="../genealogymaker.qrc">
+     <normaloff>:/images/align-horizontal.png</normaloff>:/images/align-horizontal.png</iconset>
+   </property>
    <property name="text">
     <string>Align Horizontally</string>
    </property>
   </action>
   <action name="alignVerticallyAction">
+   <property name="icon">
+    <iconset resource="../genealogymaker.qrc">
+     <normaloff>:/images/align-vertical.png</normaloff>:/images/align-vertical.png</iconset>
+   </property>
    <property name="text">
     <string>Align Vertically</string>
    </property>
