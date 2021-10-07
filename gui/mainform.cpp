@@ -677,7 +677,7 @@ void MainForm::onSearch(const QString &text)
     for (auto item: scene->items()) {
         if (item->type() == DiagramItem::Type) {
             auto diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
-            if (diagramItem->name().contains(text)) {
+            if (diagramItem->name().contains(text, Qt::CaseInsensitive)) {
                 view->centerOn(diagramItem);
                 return;
             }
