@@ -644,6 +644,11 @@ void MainForm::onMouseWheelZoomed()
 void MainForm::onArrowAdded(Arrow *arrow)
 {
     undoStack->push(new AddArrowUndo(scene, arrow));
+
+    // Back to "pointer mode".
+    pointerTypeGroup->button(int(DiagramScene::MoveItem))->setChecked(true);
+    scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
+    buttonGroup->button(InsertArrowButton)->setChecked(false);
 }
 
 void MainForm::onItemsAboutToMove()
