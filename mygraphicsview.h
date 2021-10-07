@@ -3,11 +3,13 @@
 
 #include <QGraphicsView>
 
+class DiagramScene;
+
 class MyGraphicsView : public QGraphicsView {
     Q_OBJECT
 
 public:
-    MyGraphicsView(QGraphicsScene* scene, QWidget* owner = nullptr);
+    MyGraphicsView(DiagramScene *scene, QWidget* owner = nullptr);
 
 public slots:
     void onMouseReleased();
@@ -15,6 +17,8 @@ public slots:
 private:
     bool eventFilter(QObject* object, QEvent* event) override;
     void wheelEvent(QWheelEvent *event) override;
+
+    DiagramScene *m_diagramScene;
 
 signals:
     void mouseWheelZoomed();

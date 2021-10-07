@@ -300,6 +300,11 @@ void DiagramScene::removeMarriage(DiagramItem *person1, DiagramItem *person2)
     person1->removeMarriage();
 }
 
+bool DiagramScene::isDrawingArrow() const
+{
+    return myMode == InsertLine;
+}
+
 //! [4]
 
 void DiagramScene::setMode(Mode mode)

@@ -8,10 +8,14 @@
 #include <QMouseEvent>
 #include <QDebug>
 
-MyGraphicsView::MyGraphicsView(QGraphicsScene *scene, QWidget *owner) :
+#include "diagramscene.h"
+
+MyGraphicsView::MyGraphicsView(DiagramScene *scene, QWidget *owner) :
     QGraphicsView(scene, owner)
 {
     installEventFilter(this);
+
+    m_diagramScene = scene;
 }
 
 void MyGraphicsView::onMouseReleased()
@@ -44,7 +48,9 @@ bool MyGraphicsView::eventFilter(QObject *object, QEvent *event) {
         }
         else if (mouse_event->button() == Qt::LeftButton) {
             // Use the middle mouse button for rectangle-select.
-            setDragMode(QGraphicsView::DragMode::RubberBandDrag);
+            if (!m_diagramScene->isDrawingArrow()) {
+                setDragMode(QGraphicsView::DragMode::RubberBandDrag);
+            }
 
             // Emit a left mouse click again, now that the mode is set.
             QMouseEvent* pressEvent = new QMouseEvent(QEvent::GraphicsSceneMousePress,
