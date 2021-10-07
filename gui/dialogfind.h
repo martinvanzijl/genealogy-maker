@@ -15,12 +15,13 @@ public:
     explicit DialogFind(QWidget *parent = 0);
     ~DialogFind();
 
+    void setStatus(const QString &text);
+
 signals:
     void search(const QString &text);
 
 private slots:
     void on_pushButtonClose_clicked();
-
     void on_pushButtonFind_clicked();
 
 private:

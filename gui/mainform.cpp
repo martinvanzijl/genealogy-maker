@@ -679,9 +679,14 @@ void MainForm::onSearch(const QString &text)
             auto diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
             if (diagramItem->name().contains(text, Qt::CaseInsensitive)) {
                 view->centerOn(diagramItem);
+                dialogFind->setStatus("Person found.");
                 return;
             }
         }
+    }
+
+    if (dialogFind) {
+        dialogFind->setStatus("Person not found.");
     }
 
     qDebug() << "Item not found.";

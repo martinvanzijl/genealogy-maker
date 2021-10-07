@@ -13,6 +13,11 @@ DialogFind::~DialogFind()
     delete ui;
 }
 
+void DialogFind::setStatus(const QString &text)
+{
+    ui->labelStatus->setText(text);
+}
+
 void DialogFind::on_pushButtonClose_clicked()
 {
     close();
