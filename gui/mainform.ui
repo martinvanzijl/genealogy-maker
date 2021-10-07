@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Genealogy Maker Qt</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../genealogymaker.qrc">
+    <normaloff>:/images/application-icon.svg</normaloff>:/images/application-icon.svg</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout"/>
   </widget>
