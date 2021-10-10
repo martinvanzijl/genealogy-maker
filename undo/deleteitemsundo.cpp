@@ -1,5 +1,6 @@
 #include "deleteitemsundo.h"
 
+#include "arrow.h"
 #include "diagramitem.h"
 #include "diagramscene.h"
 
@@ -21,6 +22,12 @@ void DeleteItemsUndo::undo()
                 auto diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
                 m_scene->addPersonFromUndo(diagramItem);
             }
+            else if(item->type() == Arrow::Type) {
+                auto arrow = qgraphicsitem_cast<Arrow *> (item);
+                arrow->startItem()->addArrow(arrow);
+                arrow->endItem()->addArrow(arrow);
+                m_scene->addItem(arrow);
+            }
         }
         m_undone = true;
     }
@@ -34,6 +41,12 @@ void DeleteItemsUndo::redo()
             if (item->type() == DiagramItem::Type) {
                 auto diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
                 m_scene->removePersonFromUndo(diagramItem);
+            }
+            else if(item->type() == Arrow::Type) {
+                auto arrow = qgraphicsitem_cast<Arrow *> (item);
+                arrow->startItem()->removeArrow(arrow);
+                arrow->endItem()->removeArrow(arrow);
+                m_scene->removeItem(arrow);
             }
         }
         m_undone = false;
