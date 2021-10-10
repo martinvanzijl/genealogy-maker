@@ -23,5 +23,8 @@
         <file>images/save-document.svg</file>
         <file>images/save-as.svg</file>
         <file>images/print.svg</file>
+        <file>images/redo.svg</file>
+        <file>images/undo.svg</file>
+        <file>images/search.svg</file>
     </qresource>
 </RCC>

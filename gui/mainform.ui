@@ -185,6 +185,10 @@
    </property>
   </action>
   <action name="actionUndo">
+   <property name="icon">
+    <iconset resource="../genealogymaker.qrc">
+     <normaloff>:/images/undo.svg</normaloff>:/images/undo.svg</iconset>
+   </property>
    <property name="text">
     <string>Undo</string>
    </property>
@@ -193,6 +197,10 @@
    </property>
   </action>
   <action name="actionRedo">
+   <property name="icon">
+    <iconset resource="../genealogymaker.qrc">
+     <normaloff>:/images/redo.svg</normaloff>:/images/redo.svg</iconset>
+   </property>
    <property name="text">
     <string>Redo</string>
    </property>
@@ -201,6 +209,10 @@
    </property>
   </action>
   <action name="findAction">
+   <property name="icon">
+    <iconset resource="../genealogymaker.qrc">
+     <normaloff>:/images/search.svg</normaloff>:/images/search.svg</iconset>
+   </property>
    <property name="text">
     <string>Find...</string>
    </property>

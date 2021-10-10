@@ -1016,6 +1016,8 @@ void MainForm::createMenus()
 //    editMenu->addAction(findAction);
 
     // Replace the placeholder undo items.
+    undoAction->setIcon(ui->actionUndo->icon());
+    redoAction->setIcon(ui->actionRedo->icon());
     ui->menuEdit->insertAction(ui->actionUndo, undoAction);
     ui->menuEdit->insertAction(ui->actionRedo, redoAction);
     ui->menuEdit->removeAction(ui->actionUndo);
