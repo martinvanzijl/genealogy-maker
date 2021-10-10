@@ -99,6 +99,10 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="newAction">
+   <property name="icon">
+    <iconset resource="../genealogymaker.qrc">
+     <normaloff>:/images/new-document.svg</normaloff>:/images/new-document.svg</iconset>
+   </property>
    <property name="text">
     <string>New</string>
    </property>
@@ -110,6 +114,10 @@
    </property>
   </action>
   <action name="openAction">
+   <property name="icon">
+    <iconset resource="../genealogymaker.qrc">
+     <normaloff>:/images/open-document.svg</normaloff>:/images/open-document.svg</iconset>
+   </property>
    <property name="text">
     <string>Open</string>
    </property>
@@ -121,6 +129,10 @@
    </property>
   </action>
   <action name="saveAction">
+   <property name="icon">
+    <iconset resource="../genealogymaker.qrc">
+     <normaloff>:/images/save-document.svg</normaloff>:/images/save-document.svg</iconset>
+   </property>
    <property name="text">
     <string>Save</string>
    </property>
@@ -132,6 +144,10 @@
    </property>
   </action>
   <action name="saveAsAction">
+   <property name="icon">
+    <iconset resource="../genealogymaker.qrc">
+     <normaloff>:/images/save-as.svg</normaloff>:/images/save-as.svg</iconset>
+   </property>
    <property name="text">
     <string>Save As...</string>
    </property>
@@ -143,6 +159,10 @@
    </property>
   </action>
   <action name="printAction">
+   <property name="icon">
+    <iconset resource="../genealogymaker.qrc">
+     <normaloff>:/images/print.svg</normaloff>:/images/print.svg</iconset>
+   </property>
    <property name="text">
     <string>Print...</string>
    </property>
@@ -161,7 +181,7 @@
     <string>Quit the application</string>
    </property>
    <property name="shortcut">
-    <string>Backspace</string>
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="actionUndo">
