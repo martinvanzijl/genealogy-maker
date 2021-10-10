@@ -50,13 +50,13 @@ bool MyGraphicsView::eventFilter(QObject *object, QEvent *event) {
             // Use the middle mouse button for rectangle-select.
             if (!m_diagramScene->isDrawingArrow()) {
                 setDragMode(QGraphicsView::DragMode::RubberBandDrag);
-            }
 
-            // Emit a left mouse click again, now that the mode is set.
-            QMouseEvent* pressEvent = new QMouseEvent(QEvent::GraphicsSceneMousePress,
-                                                      mouse_event->pos(), Qt::MouseButton::LeftButton,
-                                                      Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
-            mousePressEvent(pressEvent);
+                // Emit a left mouse click again, now that the mode is set.
+                QMouseEvent* pressEvent = new QMouseEvent(QEvent::GraphicsSceneMousePress,
+                                                          mouse_event->pos(), Qt::MouseButton::LeftButton,
+                                                          Qt::MouseButton::LeftButton, Qt::KeyboardModifier::NoModifier);
+                mousePressEvent(pressEvent);
+            }
         }
     }
 
