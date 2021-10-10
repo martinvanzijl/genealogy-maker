@@ -150,18 +150,26 @@ void DiagramScene::open(QIODevice *device)
     clear();
     emit cleared();
 
+    // Load diagram size.
+    int diagramWidth = root.attribute("height", "5000").toInt();
+    int diagramHeight = root.attribute("width", "5000").toInt();
+    setSceneRect(0, 0, diagramWidth, diagramHeight);
+
+    // Load persons.
     QDomElement child = root.firstChildElement("item");
     while (!child.isNull()) {
         parseItemElement(child);
         child = child.nextSiblingElement("item");
     }
 
+    // Load relationships.
     child = root.firstChildElement("relationship");
     while (!child.isNull()) {
         parseArrowElement(child);
         child = child.nextSiblingElement("relationship");
     }
 
+    // Load marriages.
     child = root.firstChildElement("marriage");
     while (!child.isNull()) {
         parseMarriageElement(child);
@@ -185,6 +193,13 @@ void DiagramScene::save(QIODevice *device)
     QDomDocument domDocument;
     QDomElement rootElement = domDocument.createElement("genealogy");
     QList<Arrow *> arrows;
+
+    //
+    // Save diagram information.
+    //
+    auto diagramRect = sceneRect();
+    rootElement.setAttribute("width", diagramRect.width());
+    rootElement.setAttribute("height", diagramRect.height());
 
     //
     // Save persons.

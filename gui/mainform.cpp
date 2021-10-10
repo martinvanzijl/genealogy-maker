@@ -408,6 +408,9 @@ void MainForm::newDiagram()
 
     // Update window title.
     updateWindowTitle();
+
+    // Set default size.
+    scene->setSceneRect(QRectF(0, 0, 5000, 5000));
 }
 
 void MainForm::open()
