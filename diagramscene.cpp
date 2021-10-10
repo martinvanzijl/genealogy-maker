@@ -73,8 +73,6 @@ DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
     myLineColor = Qt::black;
     m_highlightedItem = nullptr;
     m_nextId = 1;
-
-    connect(this, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
 }
 //! [0]
 
