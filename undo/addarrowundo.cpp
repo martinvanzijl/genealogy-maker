@@ -5,7 +5,7 @@
 #include "diagramscene.h"
 
 AddArrowUndo::AddArrowUndo(DiagramScene *scene, Arrow *arrow, QUndoCommand *parent) :
-    QUndoCommand("add arrow", parent),
+    QUndoCommand("add relationship", parent),
     m_scene(scene),
     m_arrow(arrow),
     m_undone(false)
