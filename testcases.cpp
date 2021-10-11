@@ -69,6 +69,7 @@ private slots:
     void testNew();
     void testOpen();
     void testSave();
+    void testExit();
 
 private:
     TestCaseHelper *m_helper;
@@ -123,6 +124,14 @@ void TestCases::testSave()
     QTest::keyClicks(m_mainWindow, "S", Qt::ControlModifier);
 
     QCOMPARE(m_mainWindow->windowTitle(), QString("saved-diagram.xml - Genealogy Maker Qt"));
+}
+
+void TestCases::testExit()
+{
+    QTest::keyClicks(m_mainWindow, "Q", Qt::ControlModifier);
+    QTest::qWait(100);
+
+    QCOMPARE(m_mainWindow->isVisible(), false);
 }
 
 QTEST_MAIN(TestCases)
