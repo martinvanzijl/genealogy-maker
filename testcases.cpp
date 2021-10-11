@@ -64,12 +64,15 @@ public:
     virtual ~TestCases();
 
 private slots:
-    void testGui();
+    void cleanup();
+    void init();
+    void testNew();
     void testOpen();
     void testSave();
 
 private:
     TestCaseHelper *m_helper;
+    MainForm *m_mainWindow;
 };
 
 TestCases::~TestCases()
@@ -77,56 +80,49 @@ TestCases::~TestCases()
     // Avoid compiler bug.
 }
 
-void TestCases::testGui()
+void TestCases::cleanup()
 {
+    // Performed after each test case.
+    delete m_mainWindow;
+    m_mainWindow = nullptr;
+}
+
+void TestCases::init()
+{
+    // Performed before each test case.
     Q_INIT_RESOURCE(genealogymaker);
 
-    MainForm mainWindow;
-    mainWindow.moveToCenter();
-    mainWindow.show();
-    mainWindow.activateWindow();
+    m_mainWindow = new MainForm();
+    m_mainWindow->moveToCenter();
+    m_mainWindow->show();
+    m_mainWindow->activateWindow();
 
-    QTest::qWaitForWindowActive(&mainWindow);
+    QTest::qWaitForWindowActive(m_mainWindow);
+}
 
-    QTest::keyClicks(&mainWindow, "N", Qt::ControlModifier);
+void TestCases::testNew()
+{
+    QTest::keyClicks(m_mainWindow, "N", Qt::ControlModifier);
 
-    QCOMPARE(mainWindow.windowTitle(), QString("New Diagram - Genealogy Maker Qt"));
+    QCOMPARE(m_mainWindow->windowTitle(), QString("New Diagram - Genealogy Maker Qt"));
 }
 
 void TestCases::testOpen()
 {
-    Q_INIT_RESOURCE(genealogymaker);
-
-    MainForm mainWindow;
-    mainWindow.moveToCenter();
-    mainWindow.show();
-    mainWindow.activateWindow();
-
-    QTest::qWaitForWindowActive(&mainWindow);
-
     m_helper = new TestCaseHelper();
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
-    QTest::keyClicks(&mainWindow, "O", Qt::ControlModifier);
+    QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
 
-    QCOMPARE(mainWindow.windowTitle(), QString("van-zijl-new.xml - Genealogy Maker Qt"));
+    QCOMPARE(m_mainWindow->windowTitle(), QString("van-zijl-new.xml - Genealogy Maker Qt"));
 }
 
 void TestCases::testSave()
 {
-    Q_INIT_RESOURCE(genealogymaker);
-
-    MainForm mainWindow;
-    mainWindow.moveToCenter();
-    mainWindow.show();
-    mainWindow.activateWindow();
-
-    QTest::qWaitForWindowActive(&mainWindow);
-
     m_helper = new TestCaseHelper();
     QTimer::singleShot(1000, m_helper, SLOT(handleSaveDialog()));
-    QTest::keyClicks(&mainWindow, "S", Qt::ControlModifier);
+    QTest::keyClicks(m_mainWindow, "S", Qt::ControlModifier);
 
-    QCOMPARE(mainWindow.windowTitle(), QString("saved-diagram.xml - Genealogy Maker Qt"));
+    QCOMPARE(m_mainWindow->windowTitle(), QString("saved-diagram.xml - Genealogy Maker Qt"));
 }
 
 QTEST_MAIN(TestCases)
