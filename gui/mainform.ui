@@ -311,6 +311,10 @@
    </property>
   </action>
   <action name="aboutAction">
+   <property name="icon">
+    <iconset resource="../genealogymaker.qrc">
+     <normaloff>:/images/help-about.svg</normaloff>:/images/help-about.svg</iconset>
+   </property>
    <property name="text">
     <string>A&amp;bout</string>
    </property>
@@ -319,6 +323,10 @@
    </property>
   </action>
   <action name="helpContentsAction">
+   <property name="icon">
+    <iconset resource="../genealogymaker.qrc">
+     <normaloff>:/images/help-contents.svg</normaloff>:/images/help-contents.svg</iconset>
+   </property>
    <property name="text">
     <string>Contents</string>
    </property>
