@@ -754,25 +754,28 @@ void MainForm::onSceneCleared()
 
 void MainForm::updateWindowTitle()
 {
-    QString title;
+    // Application title.
+    QString title = m_appName + " - ";
 
+    // File name.
     if (saveFileExists())
     {
         QFileInfo info(m_saveFileName);
-        title = info.fileName();
+        title += info.fileName();
     }
     else
     {
-        title = "New Diagram";
+        title += "New Diagram";
     }
 
+    // "Unsaved changes" indicator.
     if (!undoStack->isClean())
     {
         title += "*";
     }
 
-    title += " - ";
-    title += m_appName;
+//    title += " - ";
+//    title += m_appName;
 
     setWindowTitle(title);
 }

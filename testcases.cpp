@@ -115,7 +115,7 @@ void TestCases::testNew()
 {
     QTest::keyClicks(m_mainWindow, "N", Qt::ControlModifier);
 
-    QCOMPARE(m_mainWindow->windowTitle(), QString("New Diagram - Genealogy Maker Qt"));
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram"));
 }
 
 void TestCases::testOpen()
@@ -126,7 +126,7 @@ void TestCases::testOpen()
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
     QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
 
-    QCOMPARE(m_mainWindow->windowTitle(), QString("van-zijl-new.xml - Genealogy Maker Qt"));
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - van-zijl-new.xml"));
 }
 
 void TestCases::testSave()
@@ -135,7 +135,7 @@ void TestCases::testSave()
     QTimer::singleShot(1000, m_helper, SLOT(handleSaveDialog()));
     QTest::keyClicks(m_mainWindow, "S", Qt::ControlModifier);
 
-    QCOMPARE(m_mainWindow->windowTitle(), QString("saved-diagram.xml - Genealogy Maker Qt"));
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - saved-diagram.xml"));
 }
 
 void TestCases::testExit()
@@ -155,7 +155,7 @@ void TestCases::testBug1()
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
     QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
 
-    QCOMPARE(m_mainWindow->windowTitle(), QString("bug-1-test.xml - Genealogy Maker Qt"));
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - bug-1-test.xml"));
 
     // Select all.
     QTest::keyClicks(m_mainWindow, "A", Qt::ControlModifier);
