@@ -290,12 +290,12 @@ void MainForm::onItemRemoved(DiagramItem *item)
 
 void MainForm::currentFontChanged(const QFont &)
 {
-    handleFontChange();
+//    handleFontChange();
 }
 
 void MainForm::fontSizeChanged(const QString &)
 {
-    handleFontChange();
+//    handleFontChange();
 }
 
 void MainForm::sceneScaleActivated(const QString &scale)
@@ -364,28 +364,30 @@ void MainForm::lineButtonTriggered()
     scene->setLineColor(qvariant_cast<QColor>(lineAction->data()));
 }
 
-void MainForm::handleFontChange()
-{
-    QFont font = fontCombo->currentFont();
-    font.setPointSize(fontSizeCombo->currentText().toInt());
-    font.setWeight(boldAction->isChecked() ? QFont::Bold : QFont::Normal);
-    font.setItalic(italicAction->isChecked());
-    font.setUnderline(underlineAction->isChecked());
+//void MainForm::handleFontChange()
+//{
+//    QFont font = fontCombo->currentFont();
+//    font.setPointSize(fontSizeCombo->currentText().toInt());
+//    font.setWeight(boldAction->isChecked() ? QFont::Bold : QFont::Normal);
+//    font.setItalic(italicAction->isChecked());
+//    font.setUnderline(underlineAction->isChecked());
 
-    scene->setFont(font);
-}
+//    scene->setFont(font);
+//}
 
 void MainForm::itemSelected(QGraphicsItem *item)
 {
-    DiagramTextItem *textItem =
-    qgraphicsitem_cast<DiagramTextItem *>(item);
+    Q_UNUSED(item);
 
-    QFont font = textItem->font();
-    fontCombo->setCurrentFont(font);
-    fontSizeCombo->setEditText(QString().setNum(font.pointSize()));
-    boldAction->setChecked(font.weight() == QFont::Bold);
-    italicAction->setChecked(font.italic());
-    underlineAction->setChecked(font.underline());
+//    DiagramTextItem *textItem =
+//    qgraphicsitem_cast<DiagramTextItem *>(item);
+
+//    QFont font = textItem->font();
+//    fontCombo->setCurrentFont(font);
+//    fontSizeCombo->setEditText(QString().setNum(font.pointSize()));
+//    boldAction->setChecked(font.weight() == QFont::Bold);
+//    italicAction->setChecked(font.italic());
+//    underlineAction->setChecked(font.underline());
 }
 
 void MainForm::about()
@@ -964,22 +966,22 @@ void MainForm::createActions()
     redoAction = undoStack->createRedoAction(this);
     redoAction->setShortcut(QKeySequence::Redo);
 
-    boldAction = new QAction(tr("Bold"), this);
-    boldAction->setCheckable(true);
-    QPixmap pixmap(":/images/bold.png");
-    boldAction->setIcon(QIcon(pixmap));
-    boldAction->setShortcut(tr("Ctrl+B"));
-    connect(boldAction, SIGNAL(triggered()), this, SLOT(handleFontChange()));
+//    boldAction = new QAction(tr("Bold"), this);
+//    boldAction->setCheckable(true);
+//    QPixmap pixmap(":/images/bold.png");
+//    boldAction->setIcon(QIcon(pixmap));
+//    boldAction->setShortcut(tr("Ctrl+B"));
+//    connect(boldAction, SIGNAL(triggered()), this, SLOT(handleFontChange()));
 
-    italicAction = new QAction(QIcon(":/images/italic.png"), tr("Italic"), this);
-    italicAction->setCheckable(true);
-    italicAction->setShortcut(tr("Ctrl+I"));
-    connect(italicAction, SIGNAL(triggered()), this, SLOT(handleFontChange()));
+//    italicAction = new QAction(QIcon(":/images/italic.png"), tr("Italic"), this);
+//    italicAction->setCheckable(true);
+//    italicAction->setShortcut(tr("Ctrl+I"));
+//    connect(italicAction, SIGNAL(triggered()), this, SLOT(handleFontChange()));
 
-    underlineAction = new QAction(QIcon(":/images/underline.png"), tr("Underline"), this);
-    underlineAction->setCheckable(true);
-    underlineAction->setShortcut(tr("Ctrl+U"));
-    connect(underlineAction, SIGNAL(triggered()), this, SLOT(handleFontChange()));
+//    underlineAction = new QAction(QIcon(":/images/underline.png"), tr("Underline"), this);
+//    underlineAction->setCheckable(true);
+//    underlineAction->setShortcut(tr("Ctrl+U"));
+//    connect(underlineAction, SIGNAL(triggered()), this, SLOT(handleFontChange()));
 
 //    aboutAction = new QAction(tr("A&bout"), this);
 //    aboutAction->setShortcut(tr("F1"));
@@ -1070,18 +1072,18 @@ void MainForm::createToolbars()
     editToolBar->addAction(ui->toFrontAction);
     editToolBar->addAction(ui->sendBackAction);
 
-    fontCombo = new QFontComboBox();
-    connect(fontCombo, SIGNAL(currentFontChanged(QFont)),
-            this, SLOT(currentFontChanged(QFont)));
+//    fontCombo = new QFontComboBox();
+//    connect(fontCombo, SIGNAL(currentFontChanged(QFont)),
+//            this, SLOT(currentFontChanged(QFont)));
 
-    fontSizeCombo = new QComboBox;
-    fontSizeCombo->setEditable(true);
-    for (int i = 8; i < 30; i = i + 2)
-        fontSizeCombo->addItem(QString().setNum(i));
-    QIntValidator *validator = new QIntValidator(2, 64, this);
-    fontSizeCombo->setValidator(validator);
-    connect(fontSizeCombo, SIGNAL(currentIndexChanged(QString)),
-            this, SLOT(fontSizeChanged(QString)));
+//    fontSizeCombo = new QComboBox;
+//    fontSizeCombo->setEditable(true);
+//    for (int i = 8; i < 30; i = i + 2)
+//        fontSizeCombo->addItem(QString().setNum(i));
+//    QIntValidator *validator = new QIntValidator(2, 64, this);
+//    fontSizeCombo->setValidator(validator);
+//    connect(fontSizeCombo, SIGNAL(currentIndexChanged(QString)),
+//            this, SLOT(fontSizeChanged(QString)));
 
     fontColorToolButton = new QToolButton;
     fontColorToolButton->setPopupMode(QToolButton::MenuButtonPopup);
@@ -1110,12 +1112,12 @@ void MainForm::createToolbars()
     connect(lineColorToolButton, SIGNAL(clicked()),
             this, SLOT(lineButtonTriggered()));
 
-    textToolBar = addToolBar(tr("Font"));
-    textToolBar->addWidget(fontCombo);
-    textToolBar->addWidget(fontSizeCombo);
-    textToolBar->addAction(boldAction);
-    textToolBar->addAction(italicAction);
-    textToolBar->addAction(underlineAction);
+//    textToolBar = addToolBar(tr("Font"));
+//    textToolBar->addWidget(fontCombo);
+//    textToolBar->addWidget(fontSizeCombo);
+//    textToolBar->addAction(boldAction);
+//    textToolBar->addAction(italicAction);
+//    textToolBar->addAction(underlineAction);
 
     colorToolBar = addToolBar(tr("Color"));
     colorToolBar->addWidget(fontColorToolButton);

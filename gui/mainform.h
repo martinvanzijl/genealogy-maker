@@ -118,7 +118,7 @@ private slots:
     void textButtonTriggered();
     void fillButtonTriggered();
     void lineButtonTriggered();
-    void handleFontChange();
+//    void handleFontChange();
     void itemSelected(QGraphicsItem *item);
     void about();
     void newDiagram();
@@ -212,9 +212,9 @@ private:
 
     QComboBox *sceneScaleCombo;
     QComboBox *itemColorCombo;
-    QComboBox *textColorCombo;
-    QComboBox *fontSizeCombo;
-    QFontComboBox *fontCombo;
+//    QComboBox *textColorCombo;
+//    QComboBox *fontSizeCombo;
+//    QFontComboBox *fontCombo;
 
     QToolBox *toolBox;
     QButtonGroup *buttonGroup;
@@ -225,9 +225,9 @@ private:
     QToolButton *lineColorToolButton;
     QToolButton *linePointerButton;
     QToolButton *arrowButton;
-    QAction *boldAction;
-    QAction *underlineAction;
-    QAction *italicAction;
+//    QAction *boldAction;
+//    QAction *underlineAction;
+//    QAction *italicAction;
     QAction *textAction;
     QAction *fillAction;
     QAction *lineAction;
