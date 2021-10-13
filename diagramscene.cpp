@@ -214,13 +214,13 @@ void DiagramScene::save(QIODevice *device)
             itemElement.setAttribute("name", diagramItem->name());
             itemElement.setAttribute("id", diagramItem->id().toString());
             itemElement.setAttribute("bio", diagramItem->bio());
-            if (diagramItem->isDateOfBirthKnown()) {
+//            if (diagramItem->isDateOfBirthKnown()) {
                 itemElement.setAttribute("date_of_birth", diagramItem->getDateOfBirth().toString());
-            }
+//            }
             itemElement.setAttribute("place_of_birth", diagramItem->getPlaceOfBirth());
-            if (diagramItem->isDateOfDeathKnown()) {
+//            if (diagramItem->isDateOfDeathKnown()) {
                 itemElement.setAttribute("date_of_death", diagramItem->getDateOfDeath().toString());
-            }
+//            }
             itemElement.setAttribute("place_of_death", diagramItem->getPlaceOfDeath());
 
             for (auto photo: diagramItem->photos()) {

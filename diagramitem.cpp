@@ -122,6 +122,10 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     m_spouse = nullptr;
     m_movedBySpouse = false;
     m_marriageItem = nullptr;
+
+    // Set default dates.
+    m_dateOfBirth = defaultDateOfBirth();
+    m_dateOfDeath = defaultDateOfDeath();
 }
 //! [0]
 
@@ -379,6 +383,16 @@ void DiagramItem::resetDoubleClickedItem()
     m_doubleClickedItem = nullptr;
 }
 
+QDate DiagramItem::defaultDateOfBirth()
+{
+    return QDate(1900, 1, 1);
+}
+
+QDate DiagramItem::defaultDateOfDeath()
+{
+    return QDate(7999, 12, 31);
+}
+
 QString DiagramItem::getPlaceOfDeath() const
 {
     return m_placeOfDeath;
@@ -409,10 +423,10 @@ void DiagramItem::setDateOfDeath(const QDate &dateOfDeath)
     m_dateOfDeath = dateOfDeath;
 }
 
-bool DiagramItem::isDateOfDeathKnown() const
-{
-    return m_dateOfDeath.isValid();
-}
+//bool DiagramItem::isDateOfDeathKnown() const
+//{
+//    return m_dateOfDeath.isValid();
+//}
 
 QDate DiagramItem::getDateOfBirth() const
 {
@@ -424,7 +438,7 @@ void DiagramItem::setDateOfBirth(const QDate &dateOfBirth)
     m_dateOfBirth = dateOfBirth;
 }
 
-bool DiagramItem::isDateOfBirthKnown() const
-{
-    return m_dateOfBirth.isValid();
-}
+//bool DiagramItem::isDateOfBirthKnown() const
+//{
+//    return m_dateOfBirth.isValid();
+//}

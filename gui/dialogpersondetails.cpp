@@ -13,8 +13,8 @@ DialogPersonDetails::DialogPersonDetails(QWidget *parent) :
     ui(new Ui::DialogPersonDetails)
 {
     ui->setupUi(this);
-    setTextGrayedOut(ui->dateEditBirth, true);
-    setTextGrayedOut(ui->dateEditDeath, true);
+//    setTextGrayedOut(ui->dateEditBirth, true);
+//    setTextGrayedOut(ui->dateEditDeath, true);
 }
 
 DialogPersonDetails::~DialogPersonDetails()
@@ -27,9 +27,9 @@ void DialogPersonDetails::setItem(DiagramItem *item)
     ui->lineEditName->setText(item->name());
     ui->plainTextEditBio->setPlainText(item->bio());
     ui->dateEditBirth->setDate(item->getDateOfBirth());
-    ui->checkBoxDateOfBirthUnknown->setChecked(item->getDateOfBirth().isNull());
+//    ui->checkBoxDateOfBirthUnknown->setChecked(item->getDateOfBirth().isNull());
     ui->dateEditDeath->setDate(item->getDateOfDeath());
-    ui->checkBoxDateOfDeathUnknown->setChecked(item->getDateOfDeath().isNull());
+//    ui->checkBoxDateOfDeathUnknown->setChecked(item->getDateOfDeath().isNull());
     ui->lineEditPlaceOfBirth->setText(item->getPlaceOfBirth());
     ui->lineEditPlaceOfDeath->setText(item->getPlaceOfDeath());
 
@@ -61,23 +61,23 @@ void DialogPersonDetails::save()
         m_item->setName(ui->lineEditName->text());
         m_item->setBio(ui->plainTextEditBio->toPlainText());
 
-        if (ui->checkBoxDateOfBirthUnknown->isChecked())
-        {
-            m_item->setDateOfBirth(QDate());
-        }
-        else
-        {
+//        if (ui->checkBoxDateOfBirthUnknown->isChecked())
+//        {
+//            m_item->setDateOfBirth(QDate());
+//        }
+//        else
+//        {
             m_item->setDateOfBirth(ui->dateEditBirth->date());
-        }
+//        }
 
-        if (ui->checkBoxDateOfDeathUnknown->isChecked())
-        {
-            m_item->setDateOfDeath(QDate());
-        }
-        else
-        {
+//        if (ui->checkBoxDateOfDeathUnknown->isChecked())
+//        {
+//            m_item->setDateOfDeath(QDate());
+//        }
+//        else
+//        {
             m_item->setDateOfDeath(ui->dateEditDeath->date());
-        }
+//        }
 
         m_item->setPlaceOfBirth(ui->lineEditPlaceOfBirth->text());
         m_item->setPlaceOfDeath(ui->lineEditPlaceOfDeath->text());
@@ -103,19 +103,19 @@ void DialogPersonDetails::addPhoto(const QString &fileName)
     ui->listWidgetPhotos->addItem(item);
 }
 
-void DialogPersonDetails::setTextGrayedOut(QWidget *widget, bool grayedOut)
-{
-    if (grayedOut)
-    {
-        QPalette pal = widget->palette();
-        pal.setColor(QPalette::Text, Qt::gray);
-        widget->setPalette(pal);
-    }
-    else
-    {
-        widget->setPalette(QPalette());
-    }
-}
+//void DialogPersonDetails::setTextGrayedOut(QWidget *widget, bool grayedOut)
+//{
+//    if (grayedOut)
+//    {
+//        QPalette pal = widget->palette();
+//        pal.setColor(QPalette::Text, Qt::gray);
+//        widget->setPalette(pal);
+//    }
+//    else
+//    {
+//        widget->setPalette(QPalette());
+//    }
+//}
 
 void DialogPersonDetails::on_pushButtonAddPhoto_clicked()
 {
@@ -157,26 +157,26 @@ void DialogPersonDetails::on_listWidgetPhotos_itemDoubleClicked(QListWidgetItem 
 }
 
 
-void DialogPersonDetails::on_dateEditBirth_dateChanged(const QDate &date)
-{
-    Q_UNUSED(date);
-    ui->checkBoxDateOfBirthUnknown->setChecked(false);
-}
+//void DialogPersonDetails::on_dateEditBirth_dateChanged(const QDate &date)
+//{
+//    Q_UNUSED(date);
+//    ui->checkBoxDateOfBirthUnknown->setChecked(false);
+//}
 
-void DialogPersonDetails::on_dateEditDeath_dateChanged(const QDate &date)
-{
-    Q_UNUSED(date);
-    ui->checkBoxDateOfDeathUnknown->setChecked(false);
-}
+//void DialogPersonDetails::on_dateEditDeath_dateChanged(const QDate &date)
+//{
+//    Q_UNUSED(date);
+//    ui->checkBoxDateOfDeathUnknown->setChecked(false);
+//}
 
-void DialogPersonDetails::on_checkBoxDateOfBirthUnknown_stateChanged(int state)
-{
-    Q_UNUSED(state);
-    setTextGrayedOut (ui->dateEditBirth, ui->checkBoxDateOfBirthUnknown->isChecked());
-}
+//void DialogPersonDetails::on_checkBoxDateOfBirthUnknown_stateChanged(int state)
+//{
+//    Q_UNUSED(state);
+//    setTextGrayedOut (ui->dateEditBirth, ui->checkBoxDateOfBirthUnknown->isChecked());
+//}
 
-void DialogPersonDetails::on_checkBoxDateOfDeathUnknown_stateChanged(int state)
-{
-    Q_UNUSED(state);
-    setTextGrayedOut (ui->dateEditDeath, ui->checkBoxDateOfDeathUnknown->isChecked());
-}
+//void DialogPersonDetails::on_checkBoxDateOfDeathUnknown_stateChanged(int state)
+//{
+//    Q_UNUSED(state);
+//    setTextGrayedOut (ui->dateEditDeath, ui->checkBoxDateOfDeathUnknown->isChecked());
+//}

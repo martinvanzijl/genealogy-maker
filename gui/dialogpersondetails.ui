@@ -26,18 +26,25 @@
       <property name="sizeConstraint">
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="labelName">
+      <item row="2" column="1" colspan="2">
+       <widget class="QLineEdit" name="lineEditPlaceOfBirth"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelPlaceOfBirth">
         <property name="text">
-         <string>Name:</string>
-        </property>
-        <property name="buddy">
-         <cstring>lineEditName</cstring>
+         <string>Place of birth:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1" colspan="3">
-       <widget class="QLineEdit" name="lineEditName"/>
+      <item row="4" column="0">
+       <widget class="QLabel" name="labelPlaceOfDeath">
+        <property name="text">
+         <string>Place of death:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1" colspan="2">
+       <widget class="QLineEdit" name="lineEditPlaceOfDeath"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="labelDateOfBirth">
@@ -64,6 +71,13 @@
         <property name="calendarPopup">
          <bool>true</bool>
         </property>
+        <property name="date">
+         <date>
+          <year>7999</year>
+          <month>12</month>
+          <day>31</day>
+         </date>
+        </property>
        </widget>
       </item>
       <item row="1" column="1">
@@ -74,47 +88,27 @@
         <property name="calendarPopup">
          <bool>true</bool>
         </property>
+        <property name="date">
+         <date>
+          <year>1900</year>
+          <month>1</month>
+          <day>1</day>
+         </date>
+        </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QCheckBox" name="checkBoxDateOfBirthUnknown">
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelName">
         <property name="text">
-         <string>Unknown</string>
+         <string>Name:</string>
         </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="QCheckBox" name="checkBoxDateOfDeathUnknown">
-        <property name="text">
-         <string>Unknown</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+        <property name="buddy">
+         <cstring>lineEditName</cstring>
         </property>
        </widget>
       </item>
-      <item row="2" column="1" colspan="3">
-       <widget class="QLineEdit" name="lineEditPlaceOfBirth"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="labelPlaceOfBirth">
-        <property name="text">
-         <string>Place of birth:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="labelPlaceOfDeath">
-        <property name="text">
-         <string>Place of death:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1" colspan="3">
-       <widget class="QLineEdit" name="lineEditPlaceOfDeath"/>
+      <item row="0" column="1" colspan="2">
+       <widget class="QLineEdit" name="lineEditName"/>
       </item>
      </layout>
     </widget>

@@ -108,11 +108,11 @@ public:
 
     QDate getDateOfBirth() const;
     void setDateOfBirth(const QDate &dateOfBirth);
-    bool isDateOfBirthKnown() const;
+//    bool isDateOfBirthKnown() const;
 
     QDate getDateOfDeath() const;
     void setDateOfDeath(const QDate &dateOfDeath);
-    bool isDateOfDeathKnown() const;
+//    bool isDateOfDeathKnown() const;
 
     QString getPlaceOfBirth() const;
     void setPlaceOfBirth(const QString &placeOfBirth);
@@ -124,6 +124,9 @@ public:
 
     static DiagramItem *getDoubleClickedItem();
     static void resetDoubleClickedItem();
+
+    static QDate defaultDateOfBirth();
+    static QDate defaultDateOfDeath();
 
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
