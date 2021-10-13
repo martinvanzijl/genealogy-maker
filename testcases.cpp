@@ -16,15 +16,24 @@ class TestCaseHelper : public QObject
 
 public:
     virtual ~TestCaseHelper();
+    void setOpenFileName(const QString &fileName);
 
 private slots:
     void handleOpenDialog();
     void handleSaveDialog();
+
+private:
+    QString m_openFileName;
 };
 
 TestCaseHelper::~TestCaseHelper()
 {
     // Avoid compiler error.
+}
+
+void TestCaseHelper::setOpenFileName(const QString &fileName)
+{
+    m_openFileName = fileName;
 }
 
 void TestCaseHelper::handleOpenDialog()
@@ -34,7 +43,7 @@ void TestCaseHelper::handleOpenDialog()
 
     if (dialog)
     {
-        dialog->selectFile("van-zijl-new.xml");
+        dialog->selectFile(m_openFileName);
         QTimer::singleShot(0, dialog, SLOT(accept()));
     }
 }
@@ -70,6 +79,7 @@ private slots:
     void testOpen();
     void testSave();
     void testExit();
+    void testBug1();
 
 private:
     TestCaseHelper *m_helper;
@@ -111,6 +121,8 @@ void TestCases::testNew()
 void TestCases::testOpen()
 {
     m_helper = new TestCaseHelper();
+    m_helper->setOpenFileName("van-zijl-new.xml");
+
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
     QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
 
@@ -132,6 +144,28 @@ void TestCases::testExit()
     QTest::qWait(100);
 
     QCOMPARE(m_mainWindow->isVisible(), false);
+}
+
+void TestCases::testBug1()
+{
+    // Open the test file.
+    m_helper = new TestCaseHelper();
+    m_helper->setOpenFileName("bug-1-test.xml");
+
+    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
+    QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
+
+    QCOMPARE(m_mainWindow->windowTitle(), QString("bug-1-test.xml - Genealogy Maker Qt"));
+
+    // Select all.
+    QTest::keyClicks(m_mainWindow, "A", Qt::ControlModifier);
+
+    // TODO: Check that all are selected. For this I must add a getter for the "scene" field.
+
+    // Delete all.
+    QTest::keyClick(m_mainWindow, Qt::Key_Delete);
+
+    // TODO: Check that all are deleted. For this I must add a getter for the "scene" field.
 }
 
 QTEST_MAIN(TestCases)
