@@ -62,6 +62,8 @@
 #include <QDebug>
 #include <QStyleOptionGraphicsItem>
 
+DiagramItem *DiagramItem::m_doubleClickedItem = nullptr;
+
 //! [0]
 DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
              QGraphicsItem *parent)
@@ -317,9 +319,11 @@ void DiagramItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
 
-    //if (m_textItem->isUnderMouse()) {
-        m_textItem->startEditing();
-        //}
+//    if (m_textItem->isUnderMouse()) {
+//        m_textItem->startEditing();
+//    }
+
+    m_doubleClickedItem = this;
 }
 
 //void DiagramItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -363,6 +367,16 @@ void DiagramItem::updateSpousePosition()
 MarriageItem *DiagramItem::getMarriageItem() const
 {
     return m_marriageItem;
+}
+
+DiagramItem *DiagramItem::getDoubleClickedItem()
+{
+    return m_doubleClickedItem;
+}
+
+void DiagramItem::resetDoubleClickedItem()
+{
+    m_doubleClickedItem = nullptr;
 }
 
 QString DiagramItem::getPlaceOfDeath() const

@@ -122,6 +122,9 @@ public:
 
     MarriageItem *getMarriageItem() const;
 
+    static DiagramItem *getDoubleClickedItem();
+    static void resetDoubleClickedItem();
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -150,6 +153,8 @@ private:
     SpousePosition m_spousePosition;
     bool m_movedBySpouse;
     MarriageItem *m_marriageItem;
+
+    static DiagramItem *m_doubleClickedItem;
 };
 //! [0]
 

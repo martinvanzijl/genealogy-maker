@@ -113,6 +113,7 @@ MainForm::MainForm(QWidget *parent) :
     connect(scene, SIGNAL(itemsAboutToMove()), this, SLOT(onItemsAboutToMove()));
     connect(scene, SIGNAL(itemsFinishedMoving()), this, SLOT(onItemsFinishedMoving()));
     connect(scene, SIGNAL(cleared()), this, SLOT(onSceneCleared()));
+    connect(scene, SIGNAL(personDoubleClicked(DiagramItem*)), this, SLOT(onPersonDoubleClicked(DiagramItem*)));
     connect(view, SIGNAL(mouseWheelZoomed()), this, SLOT(onMouseWheelZoomed()));
     layout->addWidget(view);
 
@@ -711,7 +712,7 @@ void MainForm::onSearch(const QString &text)
     qDebug() << "Item not found.";
 }
 
-void MainForm::viewItemDetails()
+void MainForm::viewSelectedItemDetails()
 {
     auto selectedItems = scene->selectedItems();
     if (selectedItems.isEmpty())
@@ -720,12 +721,7 @@ void MainForm::viewItemDetails()
     auto item = selectedItems.first();
     if (item->type() == DiagramItem::Type) {
         auto person = qgraphicsitem_cast<DiagramItem *>(item);
-
-        if (!dialogPersonDetails) {
-            dialogPersonDetails = new DialogPersonDetails(this);
-        }
-        dialogPersonDetails->setItem(person);
-        dialogPersonDetails->show();
+        viewPersonDetails(person);
     }
 }
 
@@ -785,6 +781,11 @@ void MainForm::onUndoStackCleanChanged(bool clean)
 {
     Q_UNUSED(clean);
     updateWindowTitle();
+}
+
+void MainForm::onPersonDoubleClicked(DiagramItem *person)
+{
+    viewPersonDetails(person);
 }
 
 void MainForm::closeEvent(QCloseEvent *event)
@@ -997,7 +998,7 @@ void MainForm::createActions()
 
 //    viewDetailsAction = new QAction(tr("Details..."), this);
 //    viewDetailsAction->setShortcut(tr("Ctrl+D"));
-    connect(ui->viewDetailsAction, SIGNAL(triggered()), this, SLOT(viewItemDetails()));
+    connect(ui->viewDetailsAction, SIGNAL(triggered()), this, SLOT(viewSelectedItemDetails()));
 
     removeMarriageAction = new QAction(QIcon(":/images/delete.png"), tr("Remove Marriage"), this);
     connect(removeMarriageAction, SIGNAL(triggered()), this, SLOT(removeMarriage()));
@@ -1275,6 +1276,15 @@ bool MainForm::maybeSave()
         }
     }
     return true;
+}
+
+void MainForm::viewPersonDetails(DiagramItem *person)
+{
+    if (!dialogPersonDetails) {
+        dialogPersonDetails = new DialogPersonDetails(this);
+    }
+    dialogPersonDetails->setItem(person);
+    dialogPersonDetails->show();
 }
 //! [32]
 

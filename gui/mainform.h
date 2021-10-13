@@ -137,13 +137,14 @@ private slots:
     void onItemsFinishedMoving();
     void onFind();
     void onSearch(const QString &text);
-    void viewItemDetails();
+    void viewSelectedItemDetails();
     void onPeopleMarried(DiagramItem *person1, DiagramItem *person2);
     void removeMarriage();
     void viewMarriageDetails();
     void onSceneCleared();
     void updateWindowTitle();
     void onUndoStackCleanChanged(bool clean);
+    void onPersonDoubleClicked(DiagramItem *person);
 
     void showHelpContents();
 
@@ -169,6 +170,7 @@ private:
     QString saveFileDir();
     bool saveFileExists() const;
     bool maybeSave();
+    void viewPersonDetails(DiagramItem *person);
 
     DiagramScene *scene;
     QGraphicsView *view;

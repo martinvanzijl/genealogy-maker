@@ -554,6 +554,21 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     emit mouseReleased();
 }
 
+void DiagramScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    // Reset double-clicked item.
+    DiagramItem::resetDoubleClickedItem();
+
+    // Call parent method.
+    QGraphicsScene::mouseDoubleClickEvent(event);
+
+    // Check if item was double-clicked.
+    auto item = DiagramItem::getDoubleClickedItem();
+    if (item) {
+        emit personDoubleClicked(item);
+    }
+}
+
 bool DiagramScene::isItemChange(int type)
 {
     foreach (QGraphicsItem *item, selectedItems()) {

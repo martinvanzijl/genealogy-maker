@@ -116,11 +116,13 @@ signals:
     void itemsFinishedMoving();
     void peopleMarried(DiagramItem *person1, DiagramItem *person2);
     void cleared();
+    void personDoubleClicked(DiagramItem *person);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
     bool isItemChange(int type);
