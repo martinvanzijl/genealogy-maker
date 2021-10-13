@@ -176,8 +176,11 @@ void MainForm::buttonGroupClicked(int id)
 
 void MainForm::deleteItem()
 {
-    QList<QGraphicsItem *> itemsRemoved;
+    QSet<QGraphicsItem *> itemsRemoved;
 
+    //
+    // Delete relationships.
+    //
     foreach (QGraphicsItem *item, scene->selectedItems()) {
         if (item->type() == Arrow::Type) {
             scene->removeItem(item);
@@ -188,9 +191,17 @@ void MainForm::deleteItem()
         }
     }
 
+    //
+    // Delete persons.
+    //
     foreach (QGraphicsItem *item, scene->selectedItems()) {
         if (item->type() == DiagramItem::Type) {
             DiagramItem *diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
+
+            for (Arrow *arrow: diagramItem->getArrows()) {
+                itemsRemoved << arrow;
+            }
+
             diagramItem->removeArrows();
             delete treeItems[diagramItem->id()];
         }
@@ -198,7 +209,7 @@ void MainForm::deleteItem()
         itemsRemoved << item;
     }
 
-    undoStack->push(new DeleteItemsUndo(scene, itemsRemoved));
+    undoStack->push(new DeleteItemsUndo(scene, itemsRemoved.toList()));
 }
 
 void MainForm::pointerGroupClicked(int)

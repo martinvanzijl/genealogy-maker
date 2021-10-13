@@ -140,7 +140,7 @@ void DiagramItem::removeArrows()
         arrow->startItem()->removeArrow(arrow);
         arrow->endItem()->removeArrow(arrow);
         scene()->removeItem(arrow);
-        delete arrow;
+        //delete arrow;
     }
 }
 //! [2]
