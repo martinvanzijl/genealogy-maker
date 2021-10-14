@@ -368,6 +368,7 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         // Create person.
         item = new DiagramItem(myItemType, myItemMenu);
 //        item->setBrush(myItemColor);
+        item->setBrush(Qt::white);
         addItem(item);
         item->setPos(mouseEvent->scenePos());
 
