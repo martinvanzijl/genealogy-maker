@@ -47,11 +47,6 @@ SOURCES	    =   \
     gui/dialogviewphoto.cpp
 RESOURCES   =	genealogymaker.qrc
 
-
-# install
-target.path = $$[QT_INSTALL_EXAMPLES]/widgets/graphicsview/genealogymaker
-INSTALLS += target
-
 FORMS += \
     gui/dialogfind.ui \
     gui/dialogpersondetails.ui \
