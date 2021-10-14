@@ -22,7 +22,7 @@ public:
 
     QDate getDate() const;
     void setDate(const QDate &date);
-    bool isDateKnown() const;
+//    bool isDateKnown() const;
 
     QString getPlace() const;
     void setPlace(const QString &place);

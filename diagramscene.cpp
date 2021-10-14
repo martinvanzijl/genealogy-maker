@@ -257,9 +257,9 @@ void DiagramScene::save(QIODevice *device)
             element.setAttribute("y", marriage->pos().y());
             element.setAttribute("person_left", marriage->personLeft()->id().toString());
             element.setAttribute("person_right", marriage->personRight()->id().toString());
-            if (marriage->isDateKnown()) {
+//            if (marriage->isDateKnown()) {
                 element.setAttribute("date", marriage->getDate().toString());
-            }
+//            }
             element.setAttribute("place", marriage->getPlace());
 
             rootElement.appendChild(element);

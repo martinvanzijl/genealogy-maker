@@ -25,12 +25,12 @@ private slots:
 
     void on_pushButtonClose_clicked();
 
-    void on_checkBoxDateUnknown_stateChanged(int state);
+//    void on_checkBoxDateUnknown_stateChanged(int state);
 
-    void on_dateEditDate_dateChanged(const QDate &date);
+//    void on_dateEditDate_dateChanged(const QDate &date);
 
 private:
-    void setTextGrayedOut(QWidget *widget, bool grayedOut);
+//    void setTextGrayedOut(QWidget *widget, bool grayedOut);
 
     Ui::DialogMarriageDetails *ui;
     MarriageItem *m_marriage;

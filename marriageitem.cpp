@@ -14,7 +14,8 @@ MarriageItem::MarriageItem(QGraphicsItem *parent) :
     m_personLeft(nullptr),
     m_personRight(nullptr)
 {
-
+    // Set default date.
+    m_date = QDate(1900, 1, 1);
 }
 
 void MarriageItem::setPersonLeft(DiagramItem *item)
@@ -78,7 +79,7 @@ void MarriageItem::setDate(const QDate &date)
     m_date = date;
 }
 
-bool MarriageItem::isDateKnown() const
-{
-    return m_date.isValid();
-}
+//bool MarriageItem::isDateKnown() const
+//{
+//    return m_date.isValid();
+//}
