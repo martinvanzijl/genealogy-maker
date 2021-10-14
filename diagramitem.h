@@ -121,6 +121,7 @@ public:
     void setPlaceOfDeath(const QString &placeOfDeath);
 
     MarriageItem *getMarriageItem() const;
+    QPointF getMarriageItemPos() const;
 
     static DiagramItem *getDoubleClickedItem();
     static void resetDoubleClickedItem();

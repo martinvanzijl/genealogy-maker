@@ -373,6 +373,26 @@ MarriageItem *DiagramItem::getMarriageItem() const
     return m_marriageItem;
 }
 
+QPointF DiagramItem::getMarriageItemPos() const
+{
+    int offset = boundingRect().width() / 2.0;
+    int resultX = 0;
+    int resultY = y() + boundingRect().height() / 2.0;
+
+    if (m_spousePosition == SpouseToLeft)
+    {
+        // Marriage item is to left.
+        resultX = x() - offset;
+    }
+    else
+    {
+        // Marriage item is to right.
+        resultX = x() + offset;
+    }
+
+    return QPointF(resultX, resultY);
+}
+
 DiagramItem *DiagramItem::getDoubleClickedItem()
 {
     return m_doubleClickedItem;

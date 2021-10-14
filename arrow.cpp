@@ -50,11 +50,13 @@
 
 
 #include "arrow.h"
+#include "marriageitem.h"
 
 #include <math.h>
 
 #include <QPen>
 #include <QPainter>
+#include <QDebug>
 
 const qreal Pi = 3.14;
 
@@ -94,7 +96,12 @@ QPainterPath Arrow::shape() const
 //! [3]
 void Arrow::updatePosition()
 {
-    QLineF line(mapFromItem(myStartItem, 0, 0), mapFromItem(myEndItem, 0, 0));
+    QGraphicsItem *startItem = myStartItem;
+    if (myStartItem->isMarried()) {
+        startItem = myStartItem->getMarriageItem();
+    }
+
+    QLineF line(mapFromItem(startItem, 0, 0), mapFromItem(myEndItem, 0, 0));
     setLine(line);
 }
 //! [3]
@@ -113,7 +120,12 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
     painter->setBrush(myColor);
 //! [4] //! [5]
 
-    QLineF centerLine(myStartItem->pos(), myEndItem->pos());
+    QPointF startPos = myStartItem->pos();
+    if (myStartItem->isMarried()) {
+        startPos = myStartItem->getMarriageItemPos();
+    }
+
+    QLineF centerLine(startPos, myEndItem->pos());
     QPolygonF endPolygon = myEndItem->polygon();
     QPointF p1 = endPolygon.first() + myEndItem->pos();
     QPointF p2;
@@ -129,7 +141,7 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
         p1 = p2;
     }
 
-    setLine(QLineF(intersectPoint, myStartItem->pos()));
+    setLine(QLineF(intersectPoint, startPos));
 //! [5] //! [6]
 
     double angle = ::acos(line().dx() / line().length());
