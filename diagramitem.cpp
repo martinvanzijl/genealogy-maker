@@ -227,6 +227,10 @@ void DiagramItem::marryTo(DiagramItem *spouse)
     {
         setZValue(spouse->zValue() + 0.1);
     }
+
+    // Update arrow positions.
+    updateArrowPositions();
+    m_spouse->updateArrowPositions();
 }
 
 QUuid DiagramItem::id() const
@@ -307,9 +311,7 @@ void DiagramItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 QVariant DiagramItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemPositionChange) {
-        foreach (Arrow *arrow, arrows) {
-            arrow->updatePosition();
-        }
+        updateArrowPositions();
     }
     else if (change == QGraphicsItem::ItemPositionHasChanged) {
         updateSpousePosition();
@@ -328,6 +330,13 @@ void DiagramItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 //    }
 
     m_doubleClickedItem = this;
+}
+
+void DiagramItem::updateArrowPositions()
+{
+    foreach (Arrow *arrow, arrows) {
+        arrow->updatePosition();
+    }
 }
 
 //void DiagramItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

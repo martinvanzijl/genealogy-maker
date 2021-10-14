@@ -136,6 +136,7 @@ protected:
 //    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 private:
+    void updateArrowPositions();
     void updateSpousePosition();
 
     DiagramType myDiagramType;
