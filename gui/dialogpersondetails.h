@@ -11,6 +11,8 @@ namespace Ui {
 class DialogPersonDetails;
 }
 
+class DialogViewPhoto;
+
 class DialogPersonDetails : public QDialog
 {
     Q_OBJECT
@@ -45,9 +47,11 @@ private:
     void save();
     void addPhoto(const QString &fileName);
 //    void setTextGrayedOut(QWidget *widget, bool grayedOut);
+    void viewPhoto(const QString &fileName);
 
     Ui::DialogPersonDetails *ui;
     DiagramItem *m_item;
+    DialogViewPhoto *m_viewPhotoDialog;
 };
 
 #endif // DIALOGPERSONDETAILS_H

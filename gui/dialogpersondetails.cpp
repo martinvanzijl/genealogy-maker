@@ -2,6 +2,7 @@
 #include "ui_dialogpersondetails.h"
 
 #include "diagramitem.h"
+#include "dialogviewphoto.h"
 
 #include <QFileDialog>
 #include <QStandardPaths>
@@ -15,6 +16,8 @@ DialogPersonDetails::DialogPersonDetails(QWidget *parent) :
     ui->setupUi(this);
 //    setTextGrayedOut(ui->dateEditBirth, true);
 //    setTextGrayedOut(ui->dateEditDeath, true);
+
+    m_viewPhotoDialog = nullptr;
 }
 
 DialogPersonDetails::~DialogPersonDetails()
@@ -108,6 +111,15 @@ void DialogPersonDetails::addPhoto(const QString &fileName)
     ui->listWidgetPhotos->addItem(item);
 }
 
+void DialogPersonDetails::viewPhoto(const QString &fileName)
+{
+    if (!m_viewPhotoDialog) {
+        m_viewPhotoDialog = new DialogViewPhoto(this);
+    }
+    m_viewPhotoDialog->setPhoto(fileName);
+    m_viewPhotoDialog->show();
+}
+
 //void DialogPersonDetails::setTextGrayedOut(QWidget *widget, bool grayedOut)
 //{
 //    if (grayedOut)
@@ -157,8 +169,9 @@ void DialogPersonDetails::on_pushButtonRemovePhoto_clicked()
 void DialogPersonDetails::on_listWidgetPhotos_itemDoubleClicked(QListWidgetItem *item)
 {
     auto fullFileName = item->data(Qt::UserRole).toString();
-    QString url = QString("file://") + fullFileName;
-    QDesktopServices::openUrl(url);
+//    QString url = QString("file://") + fullFileName;
+//    QDesktopServices::openUrl(url);
+    viewPhoto(fullFileName);
 }
 
 
