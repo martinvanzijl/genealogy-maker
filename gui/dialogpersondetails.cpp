@@ -43,6 +43,11 @@ void DialogPersonDetails::setItem(DiagramItem *item)
     m_item = item;
 }
 
+void DialogPersonDetails::viewDefaultTab()
+{
+    ui->tabWidgetMain->setCurrentIndex(0);
+}
+
 void DialogPersonDetails::on_pushButtonClose_clicked()
 {
     close();

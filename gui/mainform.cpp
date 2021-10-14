@@ -1289,6 +1289,7 @@ void MainForm::viewPersonDetails(DiagramItem *person)
         dialogPersonDetails = new DialogPersonDetails(this);
     }
     dialogPersonDetails->setItem(person);
+    dialogPersonDetails->viewDefaultTab();
     dialogPersonDetails->show();
 }
 //! [32]

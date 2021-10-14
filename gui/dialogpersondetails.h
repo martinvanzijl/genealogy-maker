@@ -20,6 +20,7 @@ public:
     ~DialogPersonDetails();
 
     void setItem(DiagramItem *item);
+    void viewDefaultTab();
 
 private slots:
     void on_pushButtonClose_clicked();
