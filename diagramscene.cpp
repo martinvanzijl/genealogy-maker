@@ -584,7 +584,7 @@ bool DiagramScene::isItemChange(int type)
 void DiagramScene::parseItemElement(const QDomElement &element)
 {
     auto item = new DiagramItem(DiagramItem::Step, myItemMenu);
-    item->setBrush(myItemColor);
+    item->setBrush(Qt::white);
     addItem(item);
     auto x = element.attribute("x").toDouble();
     auto y = element.attribute("y").toDouble();
