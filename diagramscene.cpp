@@ -222,6 +222,7 @@ void DiagramScene::save(QIODevice *device)
                 itemElement.setAttribute("date_of_death", diagramItem->getDateOfDeath().toString());
 //            }
             itemElement.setAttribute("place_of_death", diagramItem->getPlaceOfDeath());
+            itemElement.setAttribute("fill_color", diagramItem->brush().color().name());
 
             for (auto photo: diagramItem->photos()) {
                 QDomElement photoElement = domDocument.createElement("photo");
@@ -604,6 +605,12 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     }
     if (element.hasAttribute("date_of_death")) {
         item->setDateOfDeath(QDate::fromString(element.attribute("date_of_death")));
+    }
+
+    if (element.hasAttribute("fill_color")) {
+        QColor color;
+        color.setNamedColor(element.attribute("fill_color"));
+        item->setBrush(color);
     }
 
     QStringList photos;
