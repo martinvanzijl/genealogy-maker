@@ -12,7 +12,8 @@ MarriageUndo::MarriageUndo(DiagramScene *scene, DiagramItem *person1, DiagramIte
     m_person2(person2),
     m_undone(false)
 {
-
+    m_person1Pos = person1->pos();
+    m_person2Pos = person2->pos();
 }
 
 void MarriageUndo::undo()
@@ -29,6 +30,8 @@ void MarriageUndo::redo()
     if (m_undone)
     {
         m_scene->marry(m_person1, m_person2, true);
+        m_person1->setPos(m_person1Pos);
+        m_person2->setPos(m_person2Pos);
         m_undone = false;
     }
 }

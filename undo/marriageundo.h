@@ -1,6 +1,7 @@
 #ifndef MARRIAGEUNDO_H
 #define MARRIAGEUNDO_H
 
+#include <QPointF>
 #include <QUndoCommand>
 
 class DiagramItem;
@@ -18,6 +19,8 @@ private:
     DiagramScene *m_scene;
     DiagramItem *m_person1;
     DiagramItem *m_person2;
+    QPointF m_person1Pos;
+    QPointF m_person2Pos;
     bool m_undone;
 };
 

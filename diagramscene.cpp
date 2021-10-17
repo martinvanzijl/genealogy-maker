@@ -685,9 +685,21 @@ void DiagramScene::unHighlightAll()
 
 void DiagramScene::marry(DiagramItem *item1, DiagramItem *item2, bool fromUndo)
 {
-    item1->marryTo(item2);
+//    item1->marryTo(item2);
 
     if (!fromUndo) {
-        emit peopleMarried(item1, item2);
+        // Make sure to use "left->marryTo(right)".
+        if (item2->x() < item1->x()) {
+            item2->marryTo(item1);
+            item1->moveBy(-1, 0); // Hack to avoid positioning bug.
+            emit peopleMarried(item2, item1);
+        }
+        else {
+            item1->marryTo(item2);
+            emit peopleMarried(item1, item2);
+        }
+    }
+    else {
+        item1->marryTo(item2);
     }
 }
