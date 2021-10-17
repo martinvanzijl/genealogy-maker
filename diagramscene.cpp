@@ -453,7 +453,16 @@ void DiagramScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
         }
 
         // Check for marriage.
-        if (draggedItem && draggedItem->type() == DiagramItem::Type) {
+        bool checkForMarriage = false;
+        if (draggedItem && draggedItem->type() == DiagramItem::Type)
+        {
+            auto draggedDiagramItem = qgraphicsitem_cast<DiagramItem *>(draggedItem);
+            if (!draggedDiagramItem->isMarried()) {
+                checkForMarriage = true;
+            }
+        }
+
+        if (checkForMarriage) {
 //            auto pos = mouseEvent->scenePos();
 //            QList<QGraphicsItem *> list = items(pos);
             QList<QGraphicsItem *> list = draggedItem->collidingItems();
