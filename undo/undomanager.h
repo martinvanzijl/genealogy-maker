@@ -11,6 +11,9 @@ public:
 
     static void add(QUndoCommand *command);
     static void setStack(QUndoStack *stack);
+
+private:
+    static QUndoStack *m_stack;
 };
 
 #endif // UNDOMANAGER_H

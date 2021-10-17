@@ -69,6 +69,7 @@
 #include "undo/removemarriageundo.h"
 #include "gui/dialoghelp.h"
 #include "gui/dialogchangesize.h"
+#include "undo/undomanager.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -87,6 +88,7 @@ MainForm::MainForm(QWidget *parent) :
 
     undoStack = new QUndoStack(this);
     connect(undoStack, SIGNAL(cleanChanged(bool)), this, SLOT(onUndoStackCleanChanged(bool)));
+    UndoManager::setStack(undoStack);
     m_appName = "Genealogy Maker Qt";
 
     createActions();

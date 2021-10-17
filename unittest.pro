@@ -22,7 +22,8 @@ HEADERS	    =   \
     gui/mainform.h \
     gui/dialoghelp.h \
     gui/dialogchangesize.h \
-    gui/dialogviewphoto.h
+    gui/dialogviewphoto.h \
+    undo/changefillcolorundo.h
 SOURCES	    =   \
 		diagramitem.cpp \
 		testcases.cpp \
@@ -45,7 +46,8 @@ SOURCES	    =   \
     gui/mainform.cpp \
     gui/dialoghelp.cpp \
     gui/dialogchangesize.cpp \
-    gui/dialogviewphoto.cpp
+    gui/dialogviewphoto.cpp \
+    undo/changefillcolorundo.cpp
 RESOURCES   =	genealogymaker.qrc
 
 FORMS += \

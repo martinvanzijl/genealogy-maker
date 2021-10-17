@@ -51,6 +51,8 @@
 #include "diagramscene.h"
 #include "arrow.h"
 #include "marriageitem.h"
+#include "undo/changefillcolorundo.h"
+#include "undo/undomanager.h"
 
 #include <QDebug>
 #include <QDomDocument>
@@ -105,6 +107,7 @@ void DiagramScene::setItemColor(const QColor &color)
     myItemColor = color;
     if (isItemChange(DiagramItem::Type)) {
         DiagramItem *item = qgraphicsitem_cast<DiagramItem *>(selectedItems().first());
+        UndoManager::add(new ChangeFillColorUndo(item, color));
         item->setBrush(myItemColor);
     }
 }
