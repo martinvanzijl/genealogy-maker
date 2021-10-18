@@ -1,6 +1,8 @@
 #include <QtWidgets>
 #include <QtTest/QtTest>
 
+#include "diagramitem.h"
+#include "diagramscene.h"
 #include "gui/mainform.h"
 
 #include <QDebug>
@@ -17,6 +19,7 @@ class TestCaseHelper : public QObject
 public:
     virtual ~TestCaseHelper();
     void setOpenFileName(const QString &fileName);
+    void setSaveFileName(const QString &saveFileName);
 
 private slots:
     void handleOpenDialog();
@@ -24,6 +27,7 @@ private slots:
 
 private:
     QString m_openFileName;
+    QString m_saveFileName;
 };
 
 TestCaseHelper::~TestCaseHelper()
@@ -56,9 +60,14 @@ void TestCaseHelper::handleSaveDialog()
 
     if (dialog)
     {
-        dialog->selectFile("saved-diagram.xml");
+        dialog->selectFile(m_saveFileName);
         QTimer::singleShot(0, dialog, SLOT(accept()));
     }
+}
+
+void TestCaseHelper::setSaveFileName(const QString &saveFileName)
+{
+m_saveFileName = saveFileName;
 }
 
 // =============================================================================
@@ -80,6 +89,7 @@ private slots:
     void testSave();
     void testExit();
     void testBug1();
+    void volumeTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -132,6 +142,7 @@ void TestCases::testOpen()
 void TestCases::testSave()
 {
     m_helper = new TestCaseHelper();
+    m_helper->setSaveFileName("saved-diagram.xml");
     QTimer::singleShot(1000, m_helper, SLOT(handleSaveDialog()));
     QTest::keyClicks(m_mainWindow, "S", Qt::ControlModifier);
 
@@ -166,6 +177,30 @@ void TestCases::testBug1()
     QTest::keyClick(m_mainWindow, Qt::Key_Delete);
 
     // TODO: Check that all are deleted. For this I must add a getter for the "scene" field.
+}
+
+void TestCases::volumeTest()
+{
+    // Create parameters.
+    const int personCount = 100;
+    const int leftOffset = 200;
+    const int topOffset = 100;
+
+    // Create the diagram.
+    for (int i = 0; i < personCount; ++i)
+    {
+        auto person = new DiagramItem(DiagramItem::Step, nullptr);
+        person->setBrush(Qt::white);
+        person->setPos(leftOffset, topOffset + i * 100);
+        person->setName(QString("Person #%1").arg(i));
+        m_mainWindow->getScene()->addItem(person);
+    }
+
+    // Save the diagram.
+    m_helper = new TestCaseHelper();
+    m_helper->setSaveFileName("volume-test.xml");
+    QTimer::singleShot(1000, m_helper, SLOT(handleSaveDialog()));
+    QTest::keyClicks(m_mainWindow, "S", Qt::ControlModifier);
 }
 
 QTEST_MAIN(TestCases)

@@ -1294,6 +1294,11 @@ void MainForm::viewPersonDetails(DiagramItem *person)
     dialogPersonDetails->viewDefaultTab();
     dialogPersonDetails->show();
 }
+
+DiagramScene *MainForm::getScene() const
+{
+    return scene;
+}
 //! [32]
 
 void MainForm::showHelpContents()

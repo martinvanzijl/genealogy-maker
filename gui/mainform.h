@@ -95,8 +95,10 @@ public:
     ~MainForm();
    void moveToCenter();
 
+   DiagramScene *getScene() const;
+
 public slots:
-    void onItemTextEdited(QGraphicsItem *item);
+   void onItemTextEdited(QGraphicsItem *item);
 
 private slots:
     void backgroundButtonGroupClicked(QAbstractButton *button);
