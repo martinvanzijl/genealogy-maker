@@ -3,6 +3,7 @@
 
 #include "diagramitem.h"
 #include "diagramscene.h"
+#include "fileutils.h"
 #include "marriageitem.h"
 #include "gui/dialogpersondetails.h"
 #include "gui/mainform.h"
@@ -49,6 +50,8 @@ public:
     bool isFinished() const;
 
 public slots:
+    void addPhotoTest();
+    void addTwoPhotosWithSameNameTest();
     void closeWindow();
     void setDisplayNameTest();
     void setGenderTest();
@@ -72,6 +75,66 @@ DetailsWindowHelper::~DetailsWindowHelper()
 bool DetailsWindowHelper::isFinished() const
 {
     return m_finished;
+}
+
+void DetailsWindowHelper::addPhotoTest()
+{
+    // Get the window.
+    QWidget *widget = QApplication::activeWindow();
+    DialogPersonDetails *dialog = dynamic_cast<DialogPersonDetails *>(widget);
+    QVERIFY(dialog);
+
+    // Get the button.
+    QPushButton *pushButtonAddPhoto = dialog->findChild<QPushButton*>("pushButtonAddPhoto");
+    QVERIFY(pushButtonAddPhoto);
+
+    // Create the helper.
+    auto helper = new TestCaseHelper();
+    helper->setOpenFileName("/home/martin/Documents/build-unittest-Desktop-Debug/save-files/test-pictures/Photo.png");
+
+    // Add the photo.
+    QTimer::singleShot(1000, helper, SLOT(handleOpenDialog()));
+    pushButtonAddPhoto->click();
+
+    // Save changes.
+    QPushButton *pushButtonSave = dialog->findChild<QPushButton*>("pushButtonSave");
+    QVERIFY(pushButtonSave);
+    pushButtonSave->click();
+
+    // Set flag.
+    m_finished = true;
+}
+
+void DetailsWindowHelper::addTwoPhotosWithSameNameTest()
+{
+    // Get the window.
+    QWidget *widget = QApplication::activeWindow();
+    DialogPersonDetails *dialog = dynamic_cast<DialogPersonDetails *>(widget);
+    QVERIFY(dialog);
+
+    // Get the button.
+    QPushButton *pushButtonAddPhoto = dialog->findChild<QPushButton*>("pushButtonAddPhoto");
+    QVERIFY(pushButtonAddPhoto);
+
+    // Create the helper.
+    auto helper = new TestCaseHelper();
+
+    // Add the photos.
+    helper->setOpenFileName("/home/martin/Pictures/Test/Ouma/Photo.png");
+    QTimer::singleShot(1000, helper, SLOT(handleOpenDialog()));
+    pushButtonAddPhoto->click();
+
+    helper->setOpenFileName("/home/martin/Pictures/Test/Oupa/Photo.png");
+    QTimer::singleShot(1000, helper, SLOT(handleOpenDialog()));
+    pushButtonAddPhoto->click();
+
+    // Save changes.
+    QPushButton *pushButtonSave = dialog->findChild<QPushButton*>("pushButtonSave");
+    QVERIFY(pushButtonSave);
+    pushButtonSave->click();
+
+    // Set flag.
+    m_finished = true;
 }
 
 void DetailsWindowHelper::closeWindow()
@@ -274,6 +337,7 @@ void TestCaseHelper::handleSaveDialog()
     if (dialog)
     {
         dialog->selectFile(m_saveFileName);
+        QTest::qWait(100); // Hack to ensure file is selected.
         QTimer::singleShot(0, dialog, SLOT(accept()));
     }
 
@@ -299,7 +363,13 @@ class TestCases: public QObject
     Q_OBJECT
 
 public:
+    TestCases();
     virtual ~TestCases();
+
+private:
+    void openTestFile(const QString &fileName);
+    void saveTestFileAs(const QString &fileName);
+    DiagramItem *getFirstPerson() const;
 
 private slots:
     void cleanup();
@@ -329,22 +399,91 @@ private slots:
     void testLongName();
     void testLongNameMarriage();
     void testRenameWhileMarried();
+    void savePhotosTest();
+    void addPhotoTest();
+    void saveInOtherFolderTest();
+    void testUndoEditPersonDetails();
+    void saveTwoPhotosWithSameNameTest();
 
 private slots:
-    void testUndoEditPersonDetails();
+    void saveMoveThenOpenAgainTest();
 
 private:
     TestCaseHelper *m_helper;
     MainForm *m_mainWindow;
 
+    void addPhotoToSelectedPerson();
     DiagramItem *clickToAddPerson();
     void importGedcomFile(const QString &fileName);
-    void openTestFile(const QString &fileName);
 };
+
+TestCases::TestCases()
+{
+
+}
 
 TestCases::~TestCases()
 {
     // Avoid compiler bug.
+}
+
+void TestCases::saveTestFileAs(const QString &fileName)
+{
+    // Create helper.
+    if (!m_helper)
+    {
+        m_helper = new TestCaseHelper();
+    }
+
+    // Save the file.
+    m_helper->setSaveFileName(fileName);
+    QTimer::singleShot(1000, m_helper, SLOT(handleSaveDialog()));
+
+//    QTest::keyClicks(m_mainWindow, "S", Qt::ControlModifier | Qt::ShiftModifier);
+    QAction *action = m_mainWindow->findChild<QAction*>("saveAsAction");
+    if (!action)
+    {
+        qDebug() << "Action does not exist.";
+        return;
+    }
+    action->trigger();
+
+    QFileInfo info(fileName);
+    QString baseName = info.fileName();
+    QString expectedTtle = QString("Genealogy Maker Qt - ") + baseName;
+    QString windowTitle = m_mainWindow->windowTitle();
+    if (windowTitle != expectedTtle)
+    {
+        qDebug() << "File not saved OK.";
+        qDebug() << " - Actual:" << windowTitle;
+        qDebug() << " - Expected:" << expectedTtle;
+    }
+}
+
+DiagramItem *TestCases::getFirstPerson() const
+{
+    // Get the list.
+    QList<QGraphicsItem *> items = m_mainWindow->getScene()->items();
+
+//    QVERIFY(items.size() >= 1); // Can only use inside test function.
+    if (items.empty())
+    {
+        qDebug() << "Items is empty.";
+        return nullptr;
+    }
+
+    // Get the person.
+    QGraphicsItem *graphicsItem = items.last();
+    DiagramItem *person = qgraphicsitem_cast<DiagramItem *>(graphicsItem);
+
+//    QVERIFY(person); // Can only use inside test function.
+    if (!person)
+    {
+        qDebug() << "Person is null.";
+    }
+
+    // Return.
+    return person;
 }
 
 void TestCases::cleanup()
@@ -354,6 +493,13 @@ void TestCases::cleanup()
     m_mainWindow->deleteLater();
     m_mainWindow = nullptr;
 
+    // Delete helper.
+    if (m_helper)
+    {
+        m_helper->deleteLater();
+        m_helper = nullptr;
+    }
+
     // Wait for window to be destroyed.
     QTest::qWait(100);
 }
@@ -362,6 +508,8 @@ void TestCases::init()
 {
     // Performed before each test case.
     Q_INIT_RESOURCE(genealogymaker);
+
+    m_helper = nullptr;
 
     m_mainWindow = new MainForm();
     m_mainWindow->moveToCenter();
@@ -1169,6 +1317,234 @@ void TestCases::openTestFile(const QString &fileName)
     // Open the file.
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
     action->trigger();
+}
+
+void TestCases::savePhotosTest()
+{
+    // Open the test file.
+    openTestFile("save-photos-test.xml");
+
+    // Get the first person.
+    DiagramItem *person = getFirstPerson();
+    QVERIFY(person);
+
+    // Save the diagram.
+    saveTestFileAs("save-photos-test-updated.xml");
+
+    // Check that directory exists.
+    QDir photosDir("save-files/save-photos-test-updated-photos");
+    QVERIFY(photosDir.exists());
+
+    // Check that directory for person exists.
+    QString personPhotosDirName = person->id().toString();
+    QDir personPhotosDir(photosDir.filePath(personPhotosDirName));
+    QVERIFY(personPhotosDir.exists());
+
+    // Check that photo is in folder.
+    QVERIFY(personPhotosDir.entryList().contains("Photo.png"));
+}
+
+void TestCases::addPhotoTest()
+{
+    // Add person.
+    auto person = new DiagramItem(DiagramItem::Person, nullptr);
+    m_mainWindow->getScene()->addItem(person);
+
+    // Select the person.
+    m_mainWindow->getScene()->selectAll();
+
+    // Set up helper to close the window.
+    auto helper = new DetailsWindowHelper();
+    QTimer::singleShot(1000, helper, SLOT(addPhotoTest()));
+
+    // Show the person details window.
+    QTest::keyClicks(m_mainWindow, "D", Qt::ControlModifier);
+
+    // Wait till helper is done.
+    while (!helper->isFinished())
+    {
+        QTest::qWait(1000);
+    }
+
+    // Check that photo was added.
+    QCOMPARE(person->photos().size(), 1);
+    QVERIFY(person->photos().first().endsWith("Photo.png"));
+
+    // Save the diagram.
+    saveTestFileAs("add-photos-test.xml");
+
+    // Check that directory exists.
+    QDir photosDir("save-files/add-photos-test-photos");
+    QVERIFY(photosDir.exists());
+
+    // Check that directory for person exists.
+    QString personPhotosDirName = person->id().toString();
+    QDir personPhotosDir(photosDir.filePath(personPhotosDirName));
+    QVERIFY(personPhotosDir.exists());
+
+    // Check that photo is in folder.
+    QVERIFY(personPhotosDir.entryList().contains("Photo.png"));
+}
+
+void TestCases::saveInOtherFolderTest()
+{
+    // Add person.
+    auto person = new DiagramItem(DiagramItem::Person, nullptr);
+    m_mainWindow->getScene()->addItem(person);
+
+    // Select the person.
+    m_mainWindow->getScene()->selectAll();
+
+    // Set up helper to close the window.
+    auto helper = new DetailsWindowHelper();
+    QTimer::singleShot(1000, helper, SLOT(addPhotoTest()));
+
+    // Show the person details window.
+    QTest::keyClicks(m_mainWindow, "D", Qt::ControlModifier);
+
+    // Wait till helper is done.
+    while (!helper->isFinished())
+    {
+        QTest::qWait(1000);
+    }
+
+    // Check that photo was added.
+    QCOMPARE(person->photos().size(), 1);
+    QVERIFY(person->photos().first().endsWith("Photo.png"));
+
+    // Save the diagram.
+    saveTestFileAs("other-folder/save-in-other-folder-test.xml");
+
+    // Check that directory exists.
+    QDir photosDir("save-files/other-folder/save-in-other-folder-test-photos");
+    QVERIFY(photosDir.exists());
+
+    // Check that directory for person exists.
+    QString personPhotosDirName = person->id().toString();
+    QDir personPhotosDir(photosDir.filePath(personPhotosDirName));
+    QVERIFY(personPhotosDir.exists());
+
+    // Check that photo is in folder.
+    QVERIFY(personPhotosDir.entryList().contains("Photo.png"));
+}
+
+void TestCases::saveTwoPhotosWithSameNameTest()
+{
+    // Add person.
+    auto person = new DiagramItem(DiagramItem::Person, nullptr);
+    m_mainWindow->getScene()->addItem(person);
+
+    // Select the person.
+    m_mainWindow->getScene()->selectAll();
+
+    // Set up helper to close the window.
+    auto helper = new DetailsWindowHelper();
+    QTimer::singleShot(1000, helper, SLOT(addTwoPhotosWithSameNameTest()));
+
+    // Show the person details window.
+    QTest::keyClicks(m_mainWindow, "D", Qt::ControlModifier);
+
+    // Wait till helper is done.
+    while (!helper->isFinished())
+    {
+        QTest::qWait(1000);
+    }
+
+    // Check that photos were added.
+    QCOMPARE(person->photos().size(), 2);
+    QVERIFY(person->photos().first().endsWith("Photo.png"));
+    QVERIFY(person->photos().last().endsWith("Photo.png"));
+
+    // Save the diagram.
+    saveTestFileAs("add-two-photos-with-same-name-test.xml");
+
+    // Check that directory exists.
+    QDir photosDir("save-files/add-two-photos-with-same-name-test-photos");
+    QVERIFY(photosDir.exists());
+
+    // Check that directory for person exists.
+    QString personPhotosDirName = person->id().toString();
+    QDir personPhotosDir(photosDir.filePath(personPhotosDirName));
+    QVERIFY(personPhotosDir.exists());
+
+    // Check that photo is in folder.
+    QStringList nameFilters;
+    nameFilters << "*.png";
+    QCOMPARE(personPhotosDir.entryList(nameFilters).size(), 2);
+    QVERIFY(personPhotosDir.entryList(nameFilters).size() >= 2);
+}
+
+void TestCases::saveMoveThenOpenAgainTest()
+{
+    // Add person.
+    DiagramItem *person = clickToAddPerson();
+
+    // Select the person.
+    m_mainWindow->getScene()->selectAll();
+
+    // Add a photo.
+    addPhotoToSelectedPerson();
+
+    // Save the diagram.
+    const QString originalSaveFileName = "save-move-then-open-again-test.xml";
+    saveTestFileAs(originalSaveFileName);
+
+    const QString photosDirName = "save-move-then-open-again-test-photos";
+
+    // Move the diagram files.
+    QDir originalSaveFileDir("save-files/");
+
+    // Create new folder.
+    QDir newSaveFileDir(originalSaveFileDir.filePath("other-folder"));
+    newSaveFileDir.mkpath(".");
+
+    QVERIFY(newSaveFileDir.exists());
+
+    // Move the XML file.
+    QString newSaveFileName = newSaveFileDir.absoluteFilePath(originalSaveFileName);
+    FileUtils::copyAndReplace(originalSaveFileDir.absoluteFilePath(originalSaveFileName), newSaveFileName);
+
+    QVERIFY(QFile(newSaveFileName).exists());
+
+    // Move the photos directory.
+    QString originalPhotosDirName = originalSaveFileDir.absoluteFilePath(photosDirName);
+    QString newPhotosDir = newSaveFileDir.absoluteFilePath(photosDirName);
+    bool renameOK = FileUtils::moveFolder(originalPhotosDirName, newPhotosDir);
+
+    QVERIFY(renameOK);
+    QVERIFY(QFile(newPhotosDir).exists());
+
+    // Open the test file in the new location.
+    openTestFile(newSaveFileName);
+
+    // Get the person.
+    person = getFirstPerson();
+
+    // Check photos exist.
+    for (QString photo: person->photos()) {
+        QVERIFY(!photo.isEmpty());
+        QVERIFY(QFile(photo).exists());
+    }
+}
+
+void TestCases::addPhotoToSelectedPerson()
+{
+    auto helper = new DetailsWindowHelper();
+    QTimer::singleShot(1000, helper, SLOT(addTwoPhotosWithSameNameTest()));
+
+    // Show the person details window.
+    QTest::keyClicks(m_mainWindow, "D", Qt::ControlModifier);
+
+    // Wait till helper is done.
+    while (!helper->isFinished())
+    {
+        QTest::qWait(1000);
+    }
+
+    // Check that photos were added.
+//    QCOMPARE(person->photos().size(), 2);
+//    QVERIFY(person->photos().first().endsWith("Photo.png"));
+//    QVERIFY(person->photos().last().endsWith("Photo.png"));
 }
 
 QTEST_MAIN(TestCases)

@@ -390,7 +390,7 @@ void DiagramItem::updateThumbnail()
     // Read image.
     const QImage image = reader.read();
     if (image.isNull()) {
-        qDebug() << "Could not read thumbnail image.";
+        qDebug() << "Could not read thumbnail image:" << fileName;
         return;
     }
 

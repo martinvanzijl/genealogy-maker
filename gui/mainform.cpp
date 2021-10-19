@@ -55,6 +55,7 @@
 #include "diagramitem.h"
 #include "diagramscene.h"
 #include "diagramtextitem.h"
+#include "fileutils.h"
 #include "mygraphicsview.h"
 #include "percentvalidator.h"
 #include "undo/addarrowundo.h"
@@ -500,7 +501,7 @@ void MainForm::save()
      }
 
      // Save to file.
-     scene->save(&file);
+     scene->save(&file, FileUtils::getPhotosFolderFor(m_saveFileName));
 
      // Reset flag.
      m_gedcomWasImported = false;
@@ -542,7 +543,7 @@ void MainForm::saveAs()
      m_saveFileName = fileName;
 
      // Save to file.
-     scene->save(&file);
+     scene->save(&file, getPhotosFolderFor(m_saveFileName));
 
      // Set flag.
      m_gedcomWasImported = false;
@@ -1224,6 +1225,11 @@ void MainForm::styleToolButton(QToolButton *button) const
     button->setStyleSheet(styleSheet);
 }
 
+QString MainForm::getPhotosFolderFor(const QString &fileName) const
+{
+    return FileUtils::getPhotosFolderFor(fileName);
+}
+
 void MainForm::open(const QString &fileName)
 {
     // Ask whether to save unsaved changes.
@@ -1240,7 +1246,7 @@ void MainForm::open(const QString &fileName)
         return;
     }
 
-    scene->open(&file);
+    scene->open(&file, getPhotosFolderFor(fileName));
 
     // Scroll to first item.
     if (!scene->isEmpty()) {
@@ -1454,6 +1460,7 @@ void MainForm::viewPersonDetails(DiagramItem *person)
         dialogPersonDetails = new DialogPersonDetails(this);
     }
     dialogPersonDetails->setItem(person);
+    dialogPersonDetails->setXmlFile(m_saveFileName);
     dialogPersonDetails->viewDefaultTab();
     dialogPersonDetails->show();
 }
@@ -1646,7 +1653,7 @@ void MainForm::on_actionImportGedcomFile_triggered()
     qApp->processEvents();
 
     QFile outputXmlFile(outputFilePath);
-    scene->open(&outputXmlFile);
+    scene->open(&outputXmlFile, getPhotosFolderFor(outputFilePath));
     scene->autoLayout();
 
     // Scroll to first item.
@@ -1697,7 +1704,7 @@ void MainForm::on_actionExportGedcomFile_triggered()
     //if (hasUnsavedChanges()) {
     QTemporaryFile inputXmlFile;
     if (inputXmlFile.open()) {
-        scene->save(&inputXmlFile);
+        scene->save(&inputXmlFile, "");
         inputXmlFile.close();
     }
     else {

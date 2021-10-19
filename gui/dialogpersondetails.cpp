@@ -3,9 +3,11 @@
 
 #include "diagramitem.h"
 #include "dialogviewphoto.h"
+#include "fileutils.h"
 #include "undo/editpersondetailsundo.h"
 #include "undo/undomanager.h"
 
+#include <QDebug>
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QImage>
@@ -74,6 +76,11 @@ void DialogPersonDetails::setItem(DiagramItem *item)
 void DialogPersonDetails::viewDefaultTab()
 {
     ui->tabWidgetMain->setCurrentIndex(0);
+}
+
+void DialogPersonDetails::setXmlFile(const QString &xmlFile)
+{
+    m_xmlFile = xmlFile;
 }
 
 void DialogPersonDetails::on_pushButtonClose_clicked()
@@ -167,6 +174,11 @@ void DialogPersonDetails::viewPhoto(const QString &fileName)
     m_viewPhotoDialog->show();
 }
 
+QString DialogPersonDetails::getPhotosFolder() const
+{
+    return FileUtils::getPhotosFolderFor(m_xmlFile);
+}
+
 //void DialogPersonDetails::setTextGrayedOut(QWidget *widget, bool grayedOut)
 //{
 //    if (grayedOut)
@@ -199,6 +211,37 @@ void DialogPersonDetails::on_pushButtonAddPhoto_clicked()
 
     // Add to list view.
     if (!fileName.isEmpty()) {
+
+        //
+        // TODO: Copy the photo to the save-file directory, if enabled.
+        //
+//        bool copyImmediatelyToProjectFolder = false;
+
+//        if (copyImmediatelyToProjectFolder)
+//        {
+//            // Create the directory.
+//            QDir photoFolder(getPhotosFolder());
+//            QString personFolderName = m_item->id().toString();
+//            photoFolder.mkdir(personFolderName);
+//            QDir personFolder(photoFolder.filePath(personFolderName));
+
+//            // Copy photo to folder.
+//            QFileInfo info(fileName);
+//            QString destFilePath = personFolder.filePath(info.fileName());
+//            bool copiedOK = QFile::copy(fileName, destFilePath);
+
+//            // Check for existing files.
+//            if (copiedOK) {
+//                qDebug() << "Photo copied successfully.";
+//                fileName = destFilePath;
+//            }
+//            else {
+//                // TODO: Try renaming the copied file.
+//                qDebug() << "Could not copy photo" << fileName << "to" << destFilePath;
+//            }
+//        }
+
+        // Add the photo.
         addPhoto(fileName);
     }
 }

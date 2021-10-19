@@ -23,6 +23,7 @@ public:
 
     void setItem(DiagramItem *item);
     void viewDefaultTab();
+    void setXmlFile(const QString &xmlFile);
 
 private slots:
     void on_pushButtonClose_clicked();
@@ -48,10 +49,12 @@ private:
     void addPhoto(const QString &fileName);
 //    void setTextGrayedOut(QWidget *widget, bool grayedOut);
     void viewPhoto(const QString &fileName);
+    QString getPhotosFolder() const;
 
     Ui::DialogPersonDetails *ui;
     DiagramItem *m_item;
     DialogViewPhoto *m_viewPhotoDialog;
+    QString m_xmlFile;
 };
 
 #endif // DIALOGPERSONDETAILS_H

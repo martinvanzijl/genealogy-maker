@@ -50,11 +50,13 @@
 
 #include "diagramscene.h"
 #include "arrow.h"
+#include "fileutils.h"
 #include "marriageitem.h"
 #include "undo/changefillcolorundo.h"
 #include "undo/undomanager.h"
 
 #include <QDebug>
+#include <QDir>
 #include <QDomDocument>
 #include <QTextCursor>
 #include <QTextStream>
@@ -153,7 +155,7 @@ void DiagramScene::setFont(const QFont &font)
     }
 }
 
-void DiagramScene::open(QIODevice *device)
+void DiagramScene::open(QIODevice *device, const QString &photosFolderPath)
 {
     QString errorStr;
     int errorLine;
@@ -188,7 +190,7 @@ void DiagramScene::open(QIODevice *device)
     // Load persons.
     QDomElement child = root.firstChildElement("item");
     while (!child.isNull()) {
-        parseItemElement(child);
+        parseItemElement(child, photosFolderPath);
         child = child.nextSiblingElement("item");
     }
 
@@ -215,7 +217,7 @@ void DiagramScene::print()
     }
 }
 
-void DiagramScene::save(QIODevice *device)
+void DiagramScene::save(QIODevice *device, const QString &photosFolderPath)
 {
     const int indentSize = 4;
 
@@ -230,6 +232,9 @@ void DiagramScene::save(QIODevice *device)
     auto diagramRect = sceneRect();
     rootElement.setAttribute("width", diagramRect.width());
     rootElement.setAttribute("height", diagramRect.height());
+
+    // Check if photos should be copied.
+    bool copyPhotos = !photosFolderPath.isEmpty();
 
     //
     // Save persons.
@@ -257,12 +262,31 @@ void DiagramScene::save(QIODevice *device)
             itemElement.setAttribute("place_of_death", diagramItem->getPlaceOfDeath());
             itemElement.setAttribute("fill_color", diagramItem->brush().color().name());
 
-            for (auto photo: diagramItem->photos()) {
+            // Copy photos to project directory if required.
+            if (copyPhotos) {
+                copyPhotosForPerson(diagramItem, QDir(photosFolderPath));
+            }
+
+            // Save photo file names.
+            for (QString photo: diagramItem->photos()) {
                 QDomElement photoElement = domDocument.createElement("photo");
+
+                // Hack: remove folder path to save relative file name.
+                if (copyPhotos) {
+                    QString prefix = photosFolderPath + "/";
+
+                    if (photo.startsWith(prefix)) {
+                        QString relativePath = photo;
+                        relativePath.remove(prefix);
+                        photoElement.setAttribute("project_dir_path", relativePath);
+                    }
+                }
+
                 photoElement.setAttribute("path", photo);
                 itemElement.appendChild(photoElement);
             }
 
+            // Save gender.
             if (diagramItem->isGenderKnown()) {
                 itemElement.setAttribute("gender", diagramItem->getGender());
             }
@@ -554,6 +578,84 @@ DiagramItem *DiagramScene::createPerson(const QPointF &pos)
     return item;
 }
 
+void DiagramScene::copyPhotosForPerson(DiagramItem *diagramItem, const QDir &photosDir)
+{
+    // Create photos folder for person.
+    QString personPhotosDirName = diagramItem->id().toString();
+    QDir personPhotosDir(photosDir.filePath(personPhotosDirName));
+    QString personPhotosFolderPath = personPhotosDir.absolutePath();
+
+    // Get list of photos.
+    auto photos = diagramItem->photos();
+
+    // Ensure photos with the same name do not overwrite each other.
+    QStringList destFileNames;
+    for (QString path: photos) {
+
+        // Get the file name.
+        QFileInfo info(path);
+        QString destFileName = info.fileName();
+
+        // Choose a different name if it exists.
+        if (destFileNames.contains(destFileName)) {
+            QString baseName = info.baseName();
+            QString ext = info.suffix();
+
+            for (int suffix = 2; suffix < 10; ++suffix)
+            {
+                destFileName = baseName + "_" + QString::number(suffix) + "." + ext;
+
+                if (!destFileNames.contains(destFileName)) {
+                    break;
+                }
+            }
+        }
+
+        // Add to list.
+        destFileNames << destFileName;
+    }
+
+    Q_ASSERT(destFileNames.size() == photos.size());
+
+    // Save the photo details.
+    QStringList photosUpdated;
+
+    for (int i = 0; i < photos.size(); ++i) {
+
+        // Get photo.
+        QString photo = photos[i];
+
+        // Ensure photo is saved in project directory.
+        if (!photo.startsWith(personPhotosFolderPath))
+        {
+            // Create photos folder for person.
+            if (!personPhotosDir.exists())
+            {
+                personPhotosDir.mkpath(".");
+            }
+
+            // Copy photo to folder.
+            QString destFileName = destFileNames[i];
+            QString destFilePath = personPhotosDir.absoluteFilePath(destFileName);
+            bool copiedOK = FileUtils::copyAndReplace(photo, destFilePath);
+
+            // Check for existing files.
+            if (copiedOK) {
+                photo = destFilePath;
+            }
+            else {
+                qDebug() << "Could not copy photo" << photo << "to" << destFilePath;
+            }
+        }
+
+        // Add to list.
+        photosUpdated << photo;
+    }
+
+    // Update the list.
+    diagramItem->setPhotos(photosUpdated);
+}
+
 void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     if (mouseEvent->button() != Qt::LeftButton)
@@ -816,7 +918,7 @@ bool DiagramScene::isItemChange(int type)
     return false;
 }
 
-void DiagramScene::parseItemElement(const QDomElement &element)
+void DiagramScene::parseItemElement(const QDomElement &element, const QString &photosFolderPath)
 {
     auto item = new DiagramItem(DiagramItem::Person, myItemMenu);
     item->setBrush(Qt::white);
@@ -868,7 +970,22 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     QStringList photos;
     QDomElement photoElement = element.firstChildElement("photo");
     while (!photoElement.isNull()) {
-        photos << photoElement.attribute("path");
+
+        // Get the path.
+        QString path = photoElement.attribute("path");
+
+        // Check for relative (project dir) path.
+        if (photoElement.hasAttribute("project_dir_path")) {
+
+            // Use the relative path.
+            path = photoElement.attribute("project_dir_path");
+
+            // Hack: Prepend photos folder.
+            path.prepend(photosFolderPath + "/");
+        }
+
+        // Add to the person.
+        photos << path;
         photoElement = photoElement.nextSiblingElement("photo");
     }
     item->setPhotos(photos);

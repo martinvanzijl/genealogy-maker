@@ -188,6 +188,7 @@ private:
     void addPythonPath(QProcess *process) const;
     QString getPythonPath() const;
     void styleToolButton(QToolButton *button) const;
+    QString getPhotosFolderFor(const QString &fileName) const;
     void open(const QString &fileName);
 
     // "Recent Files" menu.

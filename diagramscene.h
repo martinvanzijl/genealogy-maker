@@ -54,6 +54,7 @@
 #include "diagramitem.h"
 #include "diagramtextitem.h"
 
+#include <QDir>
 #include <QGraphicsScene>
 
 QT_BEGIN_NAMESPACE
@@ -84,9 +85,9 @@ public:
     void setTextColor(const QColor &color);
     void setItemColor(const QColor &color);
     void setFont(const QFont &font);
-    void open(QIODevice *device);
+    void open(QIODevice *device, const QString &photosFolderPath);
     void print();
-    void save(QIODevice *device);
+    void save(QIODevice *device, const QString &photosFolderPath);
     DiagramItem *itemWithId(const QUuid &id);
     bool isEmpty() const;
     QGraphicsItem *firstItem() const;
@@ -133,7 +134,7 @@ protected:
 
 private:
     bool isItemChange(int type);
-    void parseItemElement(const QDomElement& element);
+    void parseItemElement(const QDomElement& element, const QString &photosFolderPath);
     void parseArrowElement(const QDomElement& element);
     void parseMarriageElement(const QDomElement& element);
     void highlight(DiagramItem *item);
@@ -157,6 +158,13 @@ private:
     long m_nextId;
     bool m_busyMoving;
     DiagramItem *createPerson(const QPointF &pos);
+
+    /**
+     * @brief copyPhotosForPerson Copy the photos for the person to a photo directory.
+     * @param diagramItem The person.
+     * @param photosDir The project photos directory. The person will have a subdirectory created here, if required.
+     */
+    void copyPhotosForPerson(DiagramItem *diagramItem, const QDir &photosDir);
 };
 //! [0]
 
