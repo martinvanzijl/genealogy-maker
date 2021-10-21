@@ -71,6 +71,7 @@
 #include "gui/dialogchangesize.h"
 #include "undo/undomanager.h"
 #include "draggablebutton.h"
+#include "preferenceswindow.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -135,6 +136,13 @@ MainForm::MainForm(QWidget *parent) :
     dialogPersonDetails = nullptr;
     dialogMarriageDetails = nullptr;
     dialogHelp = nullptr;
+    preferencesWindow = nullptr;
+
+    // Load preferences.
+    QCoreApplication::setOrganizationName("Martin van Zijl");
+    QCoreApplication::setOrganizationDomain("martinvz.com");
+    QCoreApplication::setApplicationName("Genealogy Maker");
+    scene->loadPreferences();
 }
 
 MainForm::~MainForm()
@@ -805,6 +813,11 @@ void MainForm::onItemDragDropFinished()
     buttonGroup->button(int(DiagramItem::Step))->setChecked(false);
 }
 
+void MainForm::onPreferencesChanged()
+{
+    scene->loadPreferences();
+}
+
 void MainForm::closeEvent(QCloseEvent *event)
 {
     if (maybeSave()) {
@@ -1333,4 +1346,15 @@ void MainForm::on_actionChangeSize_triggered()
     if (result == QDialog::Accepted) {
         scene->setSceneRect(0, 0, dialog->getNewWidth(), dialog->getNewHeight());
     }
+}
+
+void MainForm::on_actionPreferences_triggered()
+{
+    if (!preferencesWindow) {
+        preferencesWindow = new PreferencesWindow(this);
+        connect(preferencesWindow, SIGNAL(preferencesChanged()), this, SLOT(onPreferencesChanged()));
+    }
+
+    preferencesWindow->loadPreferences();
+    preferencesWindow->show();
 }

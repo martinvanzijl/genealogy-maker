@@ -81,6 +81,10 @@ public:
     DiagramItem *endItem() const { return myEndItem; }
 
     void updatePosition();
+    void setLineWidth(int width);
+
+    static int getDefaultLineWidth();
+    static void setDefaultLineWidth(int width);
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;

@@ -50,6 +50,8 @@
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
     <addaction name="findAction"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="itemMenu">
     <property name="title">
@@ -337,6 +339,11 @@
   <action name="actionChangeSize">
    <property name="text">
     <string>&amp;Change Size...</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>&amp;Preferences...</string>
    </property>
   </action>
  </widget>

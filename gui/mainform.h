@@ -83,6 +83,7 @@ class DialogFind;
 class DialogPersonDetails;
 class DialogMarriageDetails;
 class DialogHelp;
+class PreferencesWindow;
 QT_END_NAMESPACE
 
 //! [0]
@@ -148,10 +149,13 @@ private slots:
     void onUndoStackCleanChanged(bool clean);
     void onPersonDoubleClicked(DiagramItem *person);
     void onItemDragDropFinished();
+    void onPreferencesChanged();
 
     void showHelpContents();
 
     void on_actionChangeSize_triggered();
+
+    void on_actionPreferences_triggered();
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -253,6 +257,8 @@ private:
 
     QString m_saveFileName;
     QString m_appName;
+
+    PreferencesWindow *preferencesWindow;
 };
 
 #endif // MAINFORM_H

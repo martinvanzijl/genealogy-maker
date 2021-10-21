@@ -23,7 +23,8 @@ HEADERS	    =   \
     gui/dialogchangesize.h \
     gui/dialogviewphoto.h \
     undo/changefillcolorundo.h \
-    draggablebutton.h
+    draggablebutton.h \
+    gui/preferenceswindow.h
 SOURCES	    =   \
 		diagramitem.cpp \
 		main.cpp \
@@ -48,7 +49,8 @@ SOURCES	    =   \
     gui/dialogchangesize.cpp \
     gui/dialogviewphoto.cpp \
     undo/changefillcolorundo.cpp \
-    draggablebutton.cpp
+    draggablebutton.cpp \
+    gui/preferenceswindow.cpp
 RESOURCES   =	genealogymaker.qrc
 
 FORMS += \
@@ -58,4 +60,5 @@ FORMS += \
     gui/mainform.ui \
     gui/dialoghelp.ui \
     gui/dialogchangesize.ui \
-    gui/dialogviewphoto.ui
+    gui/dialogviewphoto.ui \
+    gui/preferenceswindow.ui

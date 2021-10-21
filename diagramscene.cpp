@@ -62,6 +62,7 @@
 #include <QMessageBox>
 #include <QGraphicsSceneDragDropEvent>
 #include <QMimeData>
+#include <QSettings>
 
 //! [0]
 DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
@@ -322,6 +323,21 @@ void DiagramScene::removeMarriage(DiagramItem *person1, DiagramItem *person2)
 bool DiagramScene::isDrawingArrow() const
 {
     return myMode == InsertLine;
+}
+
+void DiagramScene::loadPreferences()
+{
+    QSettings settings;
+
+    int arrowLineWidth = settings.value("diagram/arrowLineWidth", 2).toInt();
+    for (auto item: items()) {
+        if (item->type() == Arrow::Type) {
+            Arrow *arrow = qgraphicsitem_cast<Arrow*> (item);
+            arrow->setLineWidth(arrowLineWidth);
+        }
+    }
+
+    Arrow::setDefaultLineWidth(arrowLineWidth);
 }
 
 //! [4]

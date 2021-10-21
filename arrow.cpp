@@ -60,6 +60,8 @@
 
 const qreal Pi = 3.14;
 
+static int mDefaultLineWidth = 2;
+
 //! [0]
 Arrow::Arrow(DiagramItem *startItem, DiagramItem *endItem, QGraphicsItem *parent)
     : QGraphicsLineItem(parent)
@@ -68,7 +70,8 @@ Arrow::Arrow(DiagramItem *startItem, DiagramItem *endItem, QGraphicsItem *parent
     myEndItem = endItem;
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     myColor = Qt::black;
-    setPen(QPen(myColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    int lineWidth = getDefaultLineWidth();
+    setPen(QPen(myColor, lineWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 }
 //! [0]
 
@@ -87,13 +90,53 @@ QRectF Arrow::boundingRect() const
 //! [2]
 QPainterPath Arrow::shape() const
 {
+    // Get the original path.
     QPainterPath path = QGraphicsLineItem::shape();
     path.addPolygon(arrowHead);
     return path;
-}
-//! [2]
 
-//! [3]
+    // TEST: The code below makes the line click arrow wider,
+    // but does not detect clicks on the arrowhead.
+
+//    // Get translation coordinates.
+//    auto translateX = path.boundingRect().center().x();
+//    auto translateY = path.boundingRect().center().y();
+
+//    // Translate the path to the origin.
+//    path.translate(-translateX, -translateY);
+
+//    // Scale the path.
+//    QTransform transform;
+//    transform.scale(100, 100);
+//    path = transform.map(path);
+
+//    // Translate the path back to its original position.
+//    path.translate(translateX, translateY);
+
+//    // Return the path.
+//    return path;
+}
+
+static QPainterPath pathScaled(QPainterPath path, double scale) {
+    // Get translation coordinates.
+    auto translateX = path.boundingRect().center().x();
+    auto translateY = path.boundingRect().center().y();
+
+    // Translate the path to the origin.
+    path.translate(-translateX, -translateY);
+
+    // Scale the path.
+    QTransform transform;
+    transform.scale(scale, scale);
+    path = transform.map(path);
+
+    // Translate the path back to its original position.
+    path.translate(translateX, translateY);
+
+    // Return the path.
+    return path;
+}
+
 void Arrow::updatePosition()
 {
     QGraphicsItem *startItem = myStartItem;
@@ -104,9 +147,24 @@ void Arrow::updatePosition()
     QLineF line(mapFromItem(startItem, 0, 0), mapFromItem(myEndItem, 0, 0));
     setLine(line);
 }
-//! [3]
 
-//! [4]
+void Arrow::setLineWidth(int width)
+{
+    QPen myPen = pen();
+    myPen.setWidth(width);
+    setPen(myPen);
+}
+
+int Arrow::getDefaultLineWidth()
+{
+    return mDefaultLineWidth;
+}
+
+void Arrow::setDefaultLineWidth(int width)
+{
+    mDefaultLineWidth = width;
+}
+
 void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
           QWidget *)
 {
@@ -118,7 +176,6 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
     qreal arrowSize = 20;
     painter->setPen(myPen);
     painter->setBrush(myColor);
-//! [4] //! [5]
 
     QPointF startPos = myStartItem->pos();
     if (myStartItem->isMarried()) {
@@ -142,7 +199,6 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
     }
 
     setLine(QLineF(intersectPoint, startPos));
-//! [5] //! [6]
 
     double angle = ::acos(line().dx() / line().length());
     if (line().dy() >= 0)
@@ -155,16 +211,34 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
 
     arrowHead.clear();
     arrowHead << line().p1() << arrowP1 << arrowP2;
-//! [6] //! [7]
+
     painter->drawLine(line());
     painter->drawPolygon(arrowHead);
     if (isSelected()) {
-        painter->setPen(QPen(myColor, 1, Qt::DashLine));
+        // Get the original line.
         QLineF myLine = line();
-        myLine.translate(0, 4.0);
-        painter->drawLine(myLine);
-        myLine.translate(0,-8.0);
-        painter->drawLine(myLine);
+
+        if (myPen.width() > 2) {
+            // Draw a white dotted line along the middle if the line width is large.
+            painter->setPen(QPen(Qt::white, 1, Qt::DashLine));
+            painter->drawLine(myLine);
+        }
+        else
+        {
+            // Draw two dotted lines beside the arrow if the line width is small.
+            painter->setPen(QPen(myColor, 1, Qt::DashLine));
+            myLine.translate(0, 4.0);
+            painter->drawLine(myLine);
+            myLine.translate(0,-8.0);
+            painter->drawLine(myLine);
+        }
+
+        // Draw the scaled dotted line in red.
+        // This does not quite work.
+//        painter->setBrush(QBrush());
+//        painter->setPen(QPen(Qt::red, 1, Qt::DashLine));
+//        auto scaledPath = pathScaled(shape(), 1.2);
+//        painter->drawPath(scaledPath);
     }
 }
-//! [7]
+
