@@ -60,6 +60,8 @@
 #include <QTextStream>
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>
+#include <QGraphicsSceneDragDropEvent>
+#include <QMimeData>
 
 //! [0]
 DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
@@ -360,6 +362,25 @@ void DiagramScene::editorLostFocus(DiagramTextItem *item)
 //! [5]
 
 //! [6]
+DiagramItem *DiagramScene::createPerson(const QPointF &pos)
+{
+    // Create the item.
+    DiagramItem *item = new DiagramItem(myItemType, myItemMenu);
+//        item->setBrush(myItemColor);
+    item->setBrush(Qt::white);
+    addItem(item);
+    item->setPos(pos);
+
+    // Assign ID.
+    auto id = QUuid::createUuid();
+    item->setId(id);
+    m_itemsDict[id] = item;
+    emit itemInserted(item, false);
+
+    // Return the item.
+    return item;
+}
+
 void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     if (mouseEvent->button() != Qt::LeftButton)
@@ -370,17 +391,7 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     case InsertItem:
     {
         // Create person.
-        item = new DiagramItem(myItemType, myItemMenu);
-//        item->setBrush(myItemColor);
-        item->setBrush(Qt::white);
-        addItem(item);
-        item->setPos(mouseEvent->scenePos());
-
-        // Assign ID.
-        auto id = QUuid::createUuid();
-        item->setId(id);
-        m_itemsDict[id] = item;
-        emit itemInserted(item, false);
+        item = createPerson(mouseEvent->scenePos());
 
         break;
     }
@@ -581,6 +592,45 @@ void DiagramScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     auto item = DiagramItem::getDoubleClickedItem();
     if (item) {
         emit personDoubleClicked(item);
+    }
+}
+
+void DiagramScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
+{
+    if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
+        event->acceptProposedAction();
+    } else {
+        event->ignore();
+    }
+}
+
+void DiagramScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
+{
+    if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
+        event->acceptProposedAction();
+    } else {
+        event->ignore();
+    }
+}
+
+void DiagramScene::dropEvent(QGraphicsSceneDragDropEvent *event)
+{
+    if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
+        QByteArray itemData = event->mimeData()->data("application/x-dnditemdata");
+        QDataStream dataStream(&itemData, QIODevice::ReadOnly);
+        QString action;
+        dataStream >> action;
+
+        event->acceptProposedAction();
+
+        DiagramItem *item = createPerson(event->scenePos());
+        item->setSelected(true);
+        item->editName();
+
+        // TODO: Simulate mouse click event on the text.
+        // I hope this lets the user start editing the text.
+    } else {
+        event->ignore();
     }
 }
 

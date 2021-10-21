@@ -124,6 +124,10 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
+    void dragEnterEvent(QGraphicsSceneDragDropEvent *event) override;
+    void dragMoveEvent(QGraphicsSceneDragDropEvent *event) override;
+    void dropEvent(QGraphicsSceneDragDropEvent *event) override;
+
 private:
     bool isItemChange(int type);
     void parseItemElement(const QDomElement& element);
@@ -148,6 +152,7 @@ private:
     DiagramItem *m_highlightedItem;
     long m_nextId;
     bool m_busyMoving;
+    DiagramItem *createPerson(const QPointF &pos);
 };
 //! [0]
 

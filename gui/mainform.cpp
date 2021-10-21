@@ -70,6 +70,7 @@
 #include "gui/dialoghelp.h"
 #include "gui/dialogchangesize.h"
 #include "undo/undomanager.h"
+#include "draggablebutton.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -275,7 +276,6 @@ void MainForm::itemInserted(DiagramItem *item, bool fromLoad)
 
     if (!fromLoad)
     {
-        // Update widgets.
         pointerTypeGroup->button(int(DiagramScene::MoveItem))->setChecked(true);
         scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
         buttonGroup->button(int(item->diagramType()))->setChecked(false);
@@ -795,6 +795,16 @@ void MainForm::onPersonDoubleClicked(DiagramItem *person)
     viewPersonDetails(person);
 }
 
+void MainForm::onItemDragDropFinished()
+{
+    // Return to "pointer" mode.
+    pointerTypeGroup->button(int(DiagramScene::MoveItem))->setChecked(true);
+    scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
+
+    // Deselect "add item" buttons.
+    buttonGroup->button(int(DiagramItem::Step))->setChecked(false);
+}
+
 void MainForm::closeEvent(QCloseEvent *event)
 {
     if (maybeSave()) {
@@ -1186,13 +1196,15 @@ QWidget *MainForm::createCellWidget(const QString &text, DiagramItem::DiagramTyp
     DiagramItem item(type, ui->itemMenu);
     QIcon icon(item.image());
 
-    QToolButton *button = new QToolButton;
+//    QToolButton *button = new QToolButton;
+    DraggableButton *button = new DraggableButton(nullptr);
     button->setIcon(icon);
     button->setIconSize(QSize(50, 50));
     button->setCheckable(true);
     button->setToolTip(QString("Add ") + text);
     button->setShortcut(shortcut);
     buttonGroup->addButton(button, int(type));
+    connect(button, SIGNAL(dragDropFinished()), this, SLOT(onItemDragDropFinished()));
 
     QGridLayout *layout = new QGridLayout;
     layout->addWidget(button, 0, 0, Qt::AlignHCenter);

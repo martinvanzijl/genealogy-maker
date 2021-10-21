@@ -147,6 +147,7 @@ private slots:
     void updateWindowTitle();
     void onUndoStackCleanChanged(bool clean);
     void onPersonDoubleClicked(DiagramItem *person);
+    void onItemDragDropFinished();
 
     void showHelpContents();
 
