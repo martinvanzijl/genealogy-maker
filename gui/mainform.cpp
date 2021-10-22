@@ -1358,3 +1358,89 @@ void MainForm::on_actionPreferences_triggered()
     preferencesWindow->loadPreferences();
     preferencesWindow->show();
 }
+
+void MainForm::on_actionImportGedcomFile_triggered()
+{
+    // Ask whether to save unsaved changes.
+    if (!maybeSave()) {
+        return;
+    }
+
+    // Show the "open file" dialog.
+    QString fileName =
+            QFileDialog::getOpenFileName(this, tr("Import GEDCOM File"),
+                                         saveFileDir(),
+                                         tr("GEDCOM Files (*.ged)"));
+
+    // Exit if no file was chosen.
+    if (fileName.isEmpty())
+        return;
+
+    // Open file.
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(this, tr("Genealogy Maker"),
+                             tr("Cannot read file %1:\n%2.")
+                             .arg(fileName)
+                             .arg(file.errorString()));
+        return;
+    }
+
+    // Transform the file using Python.
+//    QString path = "/home/martin/lib/python-gedcom-1.0.0/";
+    QString path = "python-gedcom-1.0.0/";
+    QString command("python3");
+    QString outputFileName("imported.xml");
+    QFileInfo outuptFileInfo(outputFileName);
+    QString outputFilePath = outuptFileInfo.absoluteFilePath();
+    QStringList params = QStringList() << "import_gedcom.py" << fileName << outputFilePath;
+
+    QProcess *process = new QProcess();
+    bool successful = process->startDetached(command, params, path);
+
+    if (!successful) {
+        // Warn the user if the import failed.
+        QString title = tr("Import Error");
+        QString message = tr("<p>Could not import GEDCOM file, due to the following error:<br/>");
+        message += tr("%1</p>").arg(process->errorString());
+
+        // Advise about downloading Python 3.
+//        if (process->error() == QProcess::FailedToStart) {
+            message += tr("<p>The program requires Python 3 to import GEDCOM files. "
+                    "You can download this from "
+                    "<a href=\"https://www.python.org/downloads/\">https://www.python.org/downloads/</a>.</p>");
+//        }
+
+        // Show the warning box.
+        QMessageBox msgBox(QMessageBox::Warning, title, message, QMessageBox::Ok, this);
+        msgBox.setTextFormat(Qt::RichText); // Make the link clickable.
+        msgBox.exec();
+
+        // Close the process and exit.
+        process->close();
+        return;
+    }
+
+    process->waitForFinished();
+    process->close();
+
+    // Load the transformed file.
+    QFile outputXmlFile(outputFilePath);
+    scene->open(&outputXmlFile);
+    scene->autoLayout();
+
+    // Scroll to first item.
+    if (!scene->isEmpty()) {
+        view->centerOn(scene->firstItem());
+    }
+
+    // Store save file.
+    m_saveFileName = fileName;
+
+    // Update window title.
+    updateWindowTitle();
+
+    // Clear undo stack.
+    undoStack->clear();
+    undoStack->setClean();
+}

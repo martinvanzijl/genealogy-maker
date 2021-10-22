@@ -97,6 +97,7 @@ public:
     void removeMarriage(DiagramItem *person1, DiagramItem *person2);
     bool isDrawingArrow() const;
     void loadPreferences();
+    void autoLayout();
 
 public slots:
     void setMode(Mode mode);

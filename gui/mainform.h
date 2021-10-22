@@ -157,6 +157,8 @@ private slots:
 
     void on_actionPreferences_triggered();
 
+    void on_actionImportGedcomFile_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

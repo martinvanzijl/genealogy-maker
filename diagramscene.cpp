@@ -64,6 +64,30 @@
 #include <QMimeData>
 #include <QSettings>
 
+///
+/// \brief parseXmlDate Parse the string from an XML file into a date.
+/// \param string The attribute value.
+/// \return The date object.
+///
+static QDate parseXmlDate(const QString &string)
+{
+    // Try parsing as a normal date.
+    QDate date = QDate::fromString(string);
+
+    if (!date.isValid())
+    {
+        // Try parsing as a GEDCOM date.
+        date = QDate::fromString(string, "d MMM yyyy");
+    }
+
+    if (!date.isValid())
+    {
+        qDebug() << "Invalid date of birth:" << string;
+    }
+
+    return date;
+}
+
 //! [0]
 DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
     : QGraphicsScene(parent)
@@ -338,6 +362,36 @@ void DiagramScene::loadPreferences()
     }
 
     Arrow::setDefaultLineWidth(arrowLineWidth);
+}
+
+void DiagramScene::autoLayout()
+{
+    // Place the persons.
+    double startX = 128;
+    double startY = 64;
+
+    double x = startX;
+    double y = startY;
+
+    double horizontalSpacing = 16;
+    double verticalSpacing = 16;
+
+    for (auto item: items()) {
+        if (item->type() == DiagramItem::Type) {
+            // Place the person.
+            DiagramItem *person = qgraphicsitem_cast<DiagramItem*> (item);
+            person->setPos(x, y);
+
+            // Prepare the next position.
+            x += person->boundingRect().width() + horizontalSpacing;
+
+            // Wrap to next line if required.
+            if (x > sceneRect().right()) {
+                y += person->boundingRect().height() + verticalSpacing;
+                x = startX;
+            }
+        }
+    }
 }
 
 //! [4]
@@ -679,7 +733,8 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     item->setPlaceOfDeath(placeOfDeath);
 
     if (element.hasAttribute("date_of_birth")) {
-        item->setDateOfBirth(QDate::fromString(element.attribute("date_of_birth")));
+//        item->setDateOfBirth(QDate::fromString(element.attribute("date_of_birth")));
+        item->setDateOfBirth(parseXmlDate(element.attribute("date_of_birth")));
     }
     if (element.hasAttribute("date_of_death")) {
         item->setDateOfDeath(QDate::fromString(element.attribute("date_of_death")));
