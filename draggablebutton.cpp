@@ -57,7 +57,7 @@ void DraggableButton::onDragStartTimerTimeout()
     drag->setMimeData(mimeData);
     drag->setPixmap(pixmap);
 
-    drag->exec();
+    int result = drag->exec();
 
     // Have to simulate release event.
     QMouseEvent *fakeMouseReleaseEvent = new QMouseEvent(QMouseEvent::MouseButtonRelease,
@@ -67,6 +67,8 @@ void DraggableButton::onDragStartTimerTimeout()
                                                          m_latestMousePressEvent->modifiers());
     mouseReleaseEvent(fakeMouseReleaseEvent);
 
-    // Alert that drop has finished.
-    emit dragDropFinished();
+    if (result == Qt::MoveAction) {
+        // Alert that drop has finished.
+        emit dragDropFinished();
+    }
 }
