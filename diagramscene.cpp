@@ -625,7 +625,7 @@ void DiagramScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 
         DiagramItem *item = createPerson(event->scenePos());
         item->setSelected(true);
-        item->editName();
+//        item->editName(); // This does not work yet.
 
         // TODO: Simulate mouse click event on the text.
         // I hope this lets the user start editing the text.
