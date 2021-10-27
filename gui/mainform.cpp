@@ -399,7 +399,7 @@ void MainForm::about()
                          "open-source and you are welcome to contribute "
                          "to it."
                          "\n\n"
-                         "Version: 4");
+                         "Version: 5");
     QMessageBox::about(this, tr("About Genealogy Maker"), message);
 }
 
