@@ -61,13 +61,15 @@
 #include <QGraphicsItemGroup>
 #include <QDebug>
 #include <QStyleOptionGraphicsItem>
+#include <QImageReader>
 
 DiagramItem *DiagramItem::m_doubleClickedItem = nullptr;
 
 //! [0]
 DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
              QGraphicsItem *parent)
-    : QGraphicsPolygonItem(parent)
+    : QGraphicsPolygonItem(parent),
+      m_thumbnail(nullptr)
 {
     myDiagramType = diagramType;
     myContextMenu = contextMenu;
@@ -113,6 +115,7 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
         m_textItem = new DiagramTextItem(this);
         m_textItem->setPlainText("New Person");
         fitToText();
+        updateThumbnail();
     }
     else {
         m_textItem = nullptr;
@@ -271,6 +274,7 @@ QStringList DiagramItem::photos() const
 void DiagramItem::setPhotos(const QStringList &value)
 {
     m_photos = value;
+    updateThumbnail();
 }
 
 bool DiagramItem::isMarried() const
@@ -375,6 +379,51 @@ void DiagramItem::updateSpousePosition()
             m_spouse->setPos(spouseX, spouseY);
         }
     }
+}
+
+void DiagramItem::updateThumbnail()
+{
+    // Exit if there are no photos.
+    if (m_photos.isEmpty()) {
+
+        // Remove thumbnail if it exists.
+        if (m_thumbnail) {
+            delete m_thumbnail;
+            m_thumbnail = nullptr;
+        }
+
+        // Exit.
+        return;
+    }
+
+    // Get the first photo.
+    QString fileName = m_photos.first();
+
+    // Create image reader.
+    QImageReader reader(fileName);
+    reader.setAutoTransform(true);
+
+    // Read image.
+    const QImage image = reader.read();
+    if (image.isNull()) {
+        qDebug() << "Could not read thumbnail image.";
+        return;
+    }
+
+    // Scale image to thumbnail size.
+    QPixmap pixmap = QPixmap::fromImage(image).scaled(32, 32);
+
+    // Create thumbnail item if required
+    if (!m_thumbnail) {
+        m_thumbnail = new QGraphicsPixmapItem(this);
+    }
+
+    // Set the picture.
+    m_thumbnail->setPixmap(pixmap);
+
+    // Set the position.
+    m_thumbnail->setX(boundingRect().left() + 8);
+    m_thumbnail->setY(boundingRect().center().y() - m_thumbnail->boundingRect().height() / 2);
 }
 
 void DiagramItem::fitToText()

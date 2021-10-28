@@ -140,6 +140,7 @@ protected:
 private:
     void updateArrowPositions();
     void updateSpousePosition();
+    void updateThumbnail();
 
     DiagramType myDiagramType;
     QPolygonF myPolygon;
@@ -160,6 +161,8 @@ private:
     SpousePosition m_spousePosition;
     bool m_movedBySpouse;
     MarriageItem *m_marriageItem;
+
+    QGraphicsPixmapItem *m_thumbnail;
 
     static DiagramItem *m_doubleClickedItem;
 };
