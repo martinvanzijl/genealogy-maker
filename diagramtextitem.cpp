@@ -50,15 +50,18 @@
 
 #include "diagramtextitem.h"
 #include "diagramscene.h"
+#include "diagramitem.h"
 
 #include <QTextCursor>
 #include <QKeyEvent>
 
-DiagramTextItem::DiagramTextItem(QGraphicsItem *parent)
+DiagramTextItem::DiagramTextItem(DiagramItem *parent)
     : QGraphicsTextItem(parent)
 {
     //setFlag(QGraphicsItem::ItemIsMovable);
     //setFlag(QGraphicsItem::ItemIsSelectable);
+
+    m_person = parent;
 }
 
 QString DiagramTextItem::text() const
@@ -97,6 +100,11 @@ void DiagramTextItem::focusOutEvent(QFocusEvent *event)
     setTextInteractionFlags(Qt::NoTextInteraction);
     emit lostFocus(this);
     QGraphicsTextItem::focusOutEvent(event);
+
+    // Update person box.
+    if (m_person) {
+        m_person->fitToText();
+    }
 
     // Send signal.
     emit textEdited(this);

@@ -123,6 +123,8 @@ public:
     MarriageItem *getMarriageItem() const;
     QPointF getMarriageItemPos() const;
 
+    void fitToText();
+
     static DiagramItem *getDoubleClickedItem();
     static void resetDoubleClickedItem();
 

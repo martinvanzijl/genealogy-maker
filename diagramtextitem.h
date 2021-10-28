@@ -59,6 +59,7 @@ class QFocusEvent;
 class QGraphicsItem;
 class QGraphicsScene;
 class QGraphicsSceneMouseEvent;
+class DiagramItem;
 QT_END_NAMESPACE
 
 //! [0]
@@ -69,7 +70,7 @@ class DiagramTextItem : public QGraphicsTextItem
 public:
     enum { Type = UserType + 3 };
 
-    DiagramTextItem(QGraphicsItem *parent = 0);
+    DiagramTextItem(DiagramItem *parent = 0);
 
     int type() const override { return Type; }
     QString text() const;
@@ -85,6 +86,9 @@ protected:
     void focusOutEvent(QFocusEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+
+private:
+    DiagramItem *m_person;
 };
 //! [0]
 

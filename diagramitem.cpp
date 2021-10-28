@@ -112,8 +112,7 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     if (myDiagramType == Step) {
         m_textItem = new DiagramTextItem(this);
         m_textItem->setPlainText("New Person");
-        m_textItem->setX(boundingRect().center().x() - m_textItem->boundingRect().width() / 2);
-        m_textItem->setY(boundingRect().center().y() - m_textItem->boundingRect().height() / 2);
+        fitToText();
     }
     else {
         m_textItem = nullptr;
@@ -189,6 +188,7 @@ void DiagramItem::setName(QString value)
 {
     if (m_textItem) {
         m_textItem->setPlainText(value);
+        fitToText();
     }
 }
 
@@ -375,6 +375,18 @@ void DiagramItem::updateSpousePosition()
             m_spouse->setPos(spouseX, spouseY);
         }
     }
+}
+
+void DiagramItem::fitToText()
+{
+    // TODO: Expand box if required.
+//    if (boundingRect().width() < m_textItem->boundingRect().width()) {
+
+//    }
+
+    // Center the text.
+    m_textItem->setX(boundingRect().center().x() - m_textItem->boundingRect().width() / 2);
+    m_textItem->setY(boundingRect().center().y() - m_textItem->boundingRect().height() / 2);
 }
 
 MarriageItem *DiagramItem::getMarriageItem() const
