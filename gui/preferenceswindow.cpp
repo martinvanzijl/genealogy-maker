@@ -32,6 +32,10 @@ void PreferencesWindow::loadPreferences()
     QSettings settings;
     int arrowLineWidth = settings.value("diagram/arrowLineWidth", 2).toInt();
     ui->spinBoxArrowLineThickness->setValue(arrowLineWidth);
+
+    // Load thumbnail setting.
+    bool showThumbnails = settings.value("diagram/showThumbnails", false).toBool();
+    ui->checkBoxShowTumbnail->setChecked(showThumbnails);
 }
 
 void PreferencesWindow::on_pushButtonApply_clicked()
@@ -46,6 +50,10 @@ void PreferencesWindow::apply()
     QSettings settings;
     int arrowLineWidth = ui->spinBoxArrowLineThickness->value();
     settings.setValue("diagram/arrowLineWidth", arrowLineWidth);
+
+    // Store the thumbnail setting.
+    bool showThumbnails =  ui->checkBoxShowTumbnail->isChecked();
+    settings.setValue("diagram/showThumbnails", showThumbnails);
 
     // Send signal.
     emit preferencesChanged();

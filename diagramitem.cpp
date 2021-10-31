@@ -64,6 +64,7 @@
 #include <QImageReader>
 
 DiagramItem *DiagramItem::m_doubleClickedItem = nullptr;
+static bool m_showThumbnailByDefault = false;
 
 //! [0]
 DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
@@ -115,7 +116,6 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
         m_textItem = new DiagramTextItem(this);
         m_textItem->setPlainText("New Person");
         fitToText();
-        updateThumbnail();
     }
     else {
         m_textItem = nullptr;
@@ -128,6 +128,9 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     // Set default dates.
     m_dateOfBirth = defaultDateOfBirth();
     m_dateOfDeath = defaultDateOfDeath();
+
+    // Set flag.
+    m_showThumbnail = m_showThumbnailByDefault;
 }
 //! [0]
 
@@ -424,6 +427,9 @@ void DiagramItem::updateThumbnail()
     // Set the position.
     m_thumbnail->setX(boundingRect().left() + 8);
     m_thumbnail->setY(boundingRect().center().y() - m_thumbnail->boundingRect().height() / 2);
+
+    // Set visibility.
+    m_thumbnail->setVisible(m_showThumbnail);
 }
 
 void DiagramItem::fitToText()
@@ -481,6 +487,20 @@ QDate DiagramItem::defaultDateOfBirth()
 QDate DiagramItem::defaultDateOfDeath()
 {
     return QDate(7999, 12, 31);
+}
+
+void DiagramItem::setShowThumbnail(bool value)
+{
+    m_showThumbnail = value;
+
+    if (m_thumbnail) {
+        m_thumbnail->setVisible(m_showThumbnail);
+    }
+}
+
+void DiagramItem::setShowThumbnailByDefault(bool value)
+{
+    m_showThumbnailByDefault = value;
 }
 
 QString DiagramItem::getPlaceOfDeath() const

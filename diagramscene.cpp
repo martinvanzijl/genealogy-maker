@@ -354,14 +354,20 @@ void DiagramScene::loadPreferences()
     QSettings settings;
 
     int arrowLineWidth = settings.value("diagram/arrowLineWidth", 2).toInt();
+    bool showThumbnails = settings.value("diagram/showThumbnails", false).toBool();
     for (auto item: items()) {
         if (item->type() == Arrow::Type) {
             Arrow *arrow = qgraphicsitem_cast<Arrow*> (item);
             arrow->setLineWidth(arrowLineWidth);
         }
+        else if (item->type() == DiagramItem::Type) {
+            DiagramItem *person= qgraphicsitem_cast<DiagramItem*> (item);
+            person->setShowThumbnail(showThumbnails);
+        }
     }
 
     Arrow::setDefaultLineWidth(arrowLineWidth);
+    DiagramItem::setShowThumbnailByDefault(showThumbnails);
 }
 
 void DiagramScene::autoLayout()

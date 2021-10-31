@@ -131,6 +131,9 @@ public:
     static QDate defaultDateOfBirth();
     static QDate defaultDateOfDeath();
 
+    void setShowThumbnail(bool value);
+    static void setShowThumbnailByDefault(bool value);
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -165,6 +168,8 @@ private:
     QGraphicsPixmapItem *m_thumbnail;
 
     static DiagramItem *m_doubleClickedItem;
+
+    bool m_showThumbnail;
 };
 //! [0]
 
