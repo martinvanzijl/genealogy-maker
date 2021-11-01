@@ -407,7 +407,7 @@ void MainForm::about()
                          "open-source and you are welcome to contribute "
                          "to it."
                          "\n\n"
-                         "Version: 5");
+                         "Version: 6");
     QMessageBox::about(this, tr("About Genealogy Maker"), message);
 }
 
@@ -1320,6 +1320,54 @@ void MainForm::viewPersonDetails(DiagramItem *person)
     dialogPersonDetails->show();
 }
 
+void MainForm::addPythonPath(QProcess *process) const
+{
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+
+    // Add Python library path if required.
+    QString key = "PYTHONPATH";
+    if (!env.contains(key)) {
+        env.insert(key, getPythonPath());
+    }
+
+    process->setProcessEnvironment(env);
+}
+
+QString MainForm::getPythonPath() const
+{
+    // Default path.
+    QString pythonPath = "C:\\Python27\\Lib";
+
+    // Run "where" to find the Python path
+    QString command("where");
+    QStringList params = QStringList() << "python";
+
+    // Create the process.
+    QProcess *process = new QProcess();
+
+    // Start the command.
+    process->start(command, params);
+    bool successful = process->waitForFinished(1000);
+
+    if (successful) {
+        // Read the path.
+        QString output(process->readAllStandardOutput());
+        QStringList lines = output.split("\n");
+        if (!lines.isEmpty()) {
+            pythonPath = lines.first().trimmed().replace("python.exe", "Lib");
+        }
+    }
+    else {
+        qDebug() << "Could not run 'where' to find Python path.";
+    }
+
+    // End the process.
+    process->close();
+
+    // Return the path.
+    return pythonPath;
+}
+
 DiagramScene *MainForm::getScene() const
 {
     return scene;
@@ -1386,17 +1434,42 @@ void MainForm::on_actionImportGedcomFile_triggered()
         return;
     }
 
+    // Create progress dialog.
+    QProgressDialog progress("Importing GEDCOM File...", "Cancel", 0, 100, this);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.setLabelText("Setting up command...");
+    progress.show();
+    qApp->processEvents();
+
     // Transform the file using Python.
 //    QString path = "/home/martin/lib/python-gedcom-1.0.0/";
     QString path = "python-gedcom-1.0.0/";
-    QString command("python3");
+    QString command("python");
     QString outputFileName("imported.xml");
     QFileInfo outuptFileInfo(outputFileName);
     QString outputFilePath = outuptFileInfo.absoluteFilePath();
     QStringList params = QStringList() << "import_gedcom.py" << fileName << outputFilePath;
 
+    // Create the process.
     QProcess *process = new QProcess();
-    bool successful = process->startDetached(command, params, path);
+    process->setWorkingDirectory(path);
+
+    // Hack to set Python library path.
+#ifdef Q_OS_WIN
+    progress.setValue(10);
+    progress.setLabelText("Ensuring Python path exists...");
+    qApp->processEvents();
+
+    addPythonPath(process);
+#endif
+
+    // Start the command.
+    progress.setValue(20);
+    progress.setLabelText("Running conversion script...");
+    qApp->processEvents();
+
+    process->start(command, params);
+    bool successful = process->waitForFinished(3000);
 
     if (!successful) {
         // Warn the user if the import failed.
@@ -1404,9 +1477,9 @@ void MainForm::on_actionImportGedcomFile_triggered()
         QString message = tr("<p>Could not import GEDCOM file, due to the following error:<br/>");
         message += tr("%1</p>").arg(process->errorString());
 
-        // Advise about downloading Python 3.
+        // Advise about downloading Python.
 //        if (process->error() == QProcess::FailedToStart) {
-            message += tr("<p>The program requires Python 3 to import GEDCOM files. "
+            message += tr("<p>The program requires Python to import GEDCOM files. "
                     "You can download this from "
                     "<a href=\"https://www.python.org/downloads/\">https://www.python.org/downloads/</a>.</p>");
 //        }
@@ -1422,9 +1495,18 @@ void MainForm::on_actionImportGedcomFile_triggered()
     }
 
     process->waitForFinished();
+
+    // Debug.
+//    qDebug() << "Std Error:" << process->readAllStandardError();
+//    qDebug() << "Std Output:" << process->readAllStandardOutput();
+
     process->close();
 
     // Load the transformed file.
+    progress.setValue(50);
+    progress.setLabelText("Opening transformed XML file...");
+    qApp->processEvents();
+
     QFile outputXmlFile(outputFilePath);
     scene->open(&outputXmlFile);
     scene->autoLayout();

@@ -84,6 +84,7 @@ class DialogPersonDetails;
 class DialogMarriageDetails;
 class DialogHelp;
 class PreferencesWindow;
+class QProcess;
 QT_END_NAMESPACE
 
 //! [0]
@@ -180,6 +181,8 @@ private:
     bool saveFileExists() const;
     bool maybeSave();
     void viewPersonDetails(DiagramItem *person);
+    void addPythonPath(QProcess *process) const;
+    QString getPythonPath() const;
 
     DiagramScene *scene;
     QGraphicsView *view;
