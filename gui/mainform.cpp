@@ -879,6 +879,7 @@ void MainForm::createToolBox()
     arrowButton->setIconSize(QSize(50, 50));
     arrowButton->setToolTip("Add Relationship");
     arrowButton->setShortcut(tr("R"));
+    styleToolButton(arrowButton);
     QGridLayout *textLayout = new QGridLayout;
     textLayout->addWidget(arrowButton, 0, 0, Qt::AlignHCenter);
     textLayout->addWidget(new QLabel(tr("Relationship")), 1, 0, Qt::AlignCenter);
@@ -1204,6 +1205,17 @@ QWidget *MainForm::createBackgroundCellWidget(const QString &text, const QString
     return widget;
 }
 
+void MainForm::styleToolButton(QToolButton *button) const
+{
+    QString styleSheet = button->styleSheet();
+    QString extraStyle =
+            "QToolButton:checked {"
+                "border: 4px solid green;"
+            "}";
+    styleSheet += extraStyle;
+    button->setStyleSheet(styleSheet);
+}
+
 QWidget *MainForm::createCellWidget(const QString &text, DiagramItem::DiagramType type, QKeySequence shortcut)
 {
     DiagramItem item(type, ui->itemMenu);
@@ -1219,6 +1231,10 @@ QWidget *MainForm::createCellWidget(const QString &text, DiagramItem::DiagramTyp
     buttonGroup->addButton(button, int(type));
     connect(button, SIGNAL(dragDropFinished()), this, SLOT(onItemDragDropFinished()));
 
+    // Set button style to indicate clearly when it is active.
+    styleToolButton(button);
+
+    // Add button to layout.
     QGridLayout *layout = new QGridLayout;
     layout->addWidget(button, 0, 0, Qt::AlignHCenter);
     layout->addWidget(new QLabel(text), 1, 0, Qt::AlignCenter);

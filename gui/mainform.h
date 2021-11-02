@@ -183,6 +183,7 @@ private:
     void viewPersonDetails(DiagramItem *person);
     void addPythonPath(QProcess *process) const;
     QString getPythonPath() const;
+    void styleToolButton(QToolButton *button) const;
 
     DiagramScene *scene;
     QGraphicsView *view;
