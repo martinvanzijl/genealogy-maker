@@ -75,22 +75,9 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     myDiagramType = diagramType;
     myContextMenu = contextMenu;
 
-//    QPainterPath path;
+    // Create the polygon.
     switch (myDiagramType) {
-    //        case StartEnd:
-    //            path.moveTo(200, 50);
-    //            path.arcTo(150, 0, 50, 50, 0, 90);
-    //            path.arcTo(50, 0, 50, 50, 90, 90);
-    //            path.arcTo(50, 50, 50, 50, 180, 90);
-    //            path.arcTo(150, 50, 50, 50, 270, 90);
-    //            path.lineTo(200, 25);
-    //            myPolygon = path.toFillPolygon();
-    //            break;
-    //        case Conditional:
-    //            myPolygon << QPointF(-100, 0) << QPointF(0, 100)
-    //                      << QPointF(100, 0) << QPointF(0, -100)
-    //                      << QPointF(-100, 0);
-    //            break;
+
     case Person:
     {
         int height = 25;
@@ -101,11 +88,11 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
         break;
     }
     default:
-        myPolygon << QPointF(-120, -80) << QPointF(-70, 80)
-                  << QPointF(120, 80) << QPointF(70, -80)
-                  << QPointF(-120, -80);
+        // This should not happen.
+        qDebug() << "Unknown diagram item type:" << myDiagramType;
         break;
     }
+
     setPolygon(myPolygon);
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -121,6 +108,7 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
         m_textItem = nullptr;
     }
 
+    // Set marriage fields.
     m_spouse = nullptr;
     m_movedBySpouse = false;
     m_marriageItem = nullptr;
