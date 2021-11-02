@@ -74,7 +74,6 @@ class Arrow;
 class DiagramTextItem;
 class MarriageItem;
 
-//! [0]
 class DiagramItem : public QGraphicsPolygonItem
 {
 public:
@@ -108,11 +107,9 @@ public:
 
     QDate getDateOfBirth() const;
     void setDateOfBirth(const QDate &dateOfBirth);
-//    bool isDateOfBirthKnown() const;
 
     QDate getDateOfDeath() const;
     void setDateOfDeath(const QDate &dateOfDeath);
-//    bool isDateOfDeathKnown() const;
 
     QString getPlaceOfBirth() const;
     void setPlaceOfBirth(const QString &placeOfBirth);
@@ -175,6 +172,5 @@ private:
 
     bool m_showThumbnail;
 };
-//! [0]
 
 #endif // DIAGRAMITEM_H

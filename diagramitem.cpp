@@ -66,7 +66,6 @@
 DiagramItem *DiagramItem::m_doubleClickedItem = nullptr;
 static bool m_showThumbnailByDefault = false;
 
-//! [0]
 DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
              QGraphicsItem *parent)
     : QGraphicsPolygonItem(parent),
@@ -120,9 +119,7 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     // Set flag.
     m_showThumbnail = m_showThumbnailByDefault;
 }
-//! [0]
 
-//! [1]
 void DiagramItem::removeArrow(Arrow *arrow)
 {
     int index = arrows.indexOf(arrow);
@@ -130,9 +127,7 @@ void DiagramItem::removeArrow(Arrow *arrow)
     if (index != -1)
         arrows.removeAt(index);
 }
-//! [1]
 
-//! [2]
 void DiagramItem::removeArrows()
 {
     foreach (Arrow *arrow, arrows) {
@@ -142,16 +137,12 @@ void DiagramItem::removeArrows()
         //delete arrow;
     }
 }
-//! [2]
 
-//! [3]
 void DiagramItem::addArrow(Arrow *arrow)
 {
     arrows.append(arrow);
 }
-//! [3]
 
-//! [4]
 QPixmap DiagramItem::image() const
 {
     QPixmap pixmap(250, 250);
@@ -291,17 +282,13 @@ void DiagramItem::removeMarriage()
         m_spouse = nullptr;
     }
 }
-//! [4]
 
-//! [5]
 void DiagramItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     scene()->clearSelection();
     setSelected(true);
     myContextMenu->exec(event->screenPos());
 }
-//! [5]
-
 
 QVariant DiagramItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
@@ -531,11 +518,6 @@ void DiagramItem::setDateOfDeath(const QDate &dateOfDeath)
     m_dateOfDeath = dateOfDeath;
 }
 
-//bool DiagramItem::isDateOfDeathKnown() const
-//{
-//    return m_dateOfDeath.isValid();
-//}
-
 QDate DiagramItem::getDateOfBirth() const
 {
     return m_dateOfBirth;
@@ -545,8 +527,3 @@ void DiagramItem::setDateOfBirth(const QDate &dateOfBirth)
 {
     m_dateOfBirth = dateOfBirth;
 }
-
-//bool DiagramItem::isDateOfBirthKnown() const
-//{
-//    return m_dateOfBirth.isValid();
-//}
