@@ -94,7 +94,7 @@ DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
 {
     myItemMenu = itemMenu;
     myMode = MoveItem;
-    myItemType = DiagramItem::Step;
+    myItemType = DiagramItem::Person;
     line = 0;
     textItem = 0;
     myItemColor = Qt::white;
@@ -722,7 +722,7 @@ bool DiagramScene::isItemChange(int type)
 
 void DiagramScene::parseItemElement(const QDomElement &element)
 {
-    auto item = new DiagramItem(DiagramItem::Step, myItemMenu);
+    auto item = new DiagramItem(DiagramItem::Person, myItemMenu);
     item->setBrush(Qt::white);
     addItem(item);
     auto x = element.attribute("x").toDouble();

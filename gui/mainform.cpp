@@ -810,7 +810,7 @@ void MainForm::onItemDragDropFinished()
     scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
 
     // Deselect "add item" buttons.
-    buttonGroup->button(int(DiagramItem::Step))->setChecked(false);
+    buttonGroup->button(int(DiagramItem::Person))->setChecked(false);
 }
 
 void MainForm::onPreferencesChanged()
@@ -867,7 +867,7 @@ void MainForm::createToolBox()
     //
     // "Person" button
     //
-    layout->addWidget(createCellWidget(tr("Person"), DiagramItem::Step, tr("P")), 0, 0);
+    layout->addWidget(createCellWidget(tr("Person"), DiagramItem::Person, tr("P")), 0, 0);
 
     //
     // "Relationship" button

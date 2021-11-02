@@ -91,7 +91,7 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     //                      << QPointF(100, 0) << QPointF(0, -100)
     //                      << QPointF(-100, 0);
     //            break;
-    case Step:
+    case Person:
     {
         int height = 25;
         int width = 100;
@@ -112,7 +112,7 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     // Add child text.
-    if (myDiagramType == Step) {
+    if (myDiagramType == Person) {
         m_textItem = new DiagramTextItem(this);
         m_textItem->setPlainText("New Person");
         fitToText();

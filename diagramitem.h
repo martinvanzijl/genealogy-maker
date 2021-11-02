@@ -79,7 +79,7 @@ class DiagramItem : public QGraphicsPolygonItem
 {
 public:
     enum { Type = UserType + 15 };
-    enum DiagramType { Step, Conditional, StartEnd, Io, Marriage };
+    enum DiagramType { Person, Marriage };
 
     DiagramItem(DiagramType diagramType, QMenu *contextMenu, QGraphicsItem *parent = 0);
 
