@@ -134,6 +134,9 @@ public:
     void setShowThumbnail(bool value);
     static void setShowThumbnailByDefault(bool value);
 
+    QString getCountryOfBirth() const;
+    void setCountryOfBirth(const QString &countryOfBirth);
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -156,6 +159,7 @@ private:
     QDate m_dateOfBirth;
     QDate m_dateOfDeath;
     QString m_placeOfBirth;
+    QString m_countryOfBirth;
     QString m_placeOfDeath;
     DiagramItem *m_spouse;
 

@@ -90,6 +90,13 @@
            <widget class="QLineEdit" name="lineEditPlaceOfBirth"/>
           </item>
           <item row="3" column="0">
+           <widget class="QLabel" name="labelCountryOfBirth">
+            <property name="text">
+             <string>Country of birth:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
            <widget class="QLabel" name="labelDateOfDeath">
             <property name="text">
              <string>Date of death:</string>
@@ -99,7 +106,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="4" column="1">
            <widget class="QDateEdit" name="dateEditDeath">
             <property name="calendarPopup">
              <bool>true</bool>
@@ -113,15 +120,18 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="5" column="0">
            <widget class="QLabel" name="labelPlaceOfDeath">
             <property name="text">
              <string>Place of death:</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="5" column="1">
            <widget class="QLineEdit" name="lineEditPlaceOfDeath"/>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="lineEditCountryOfBirth"/>
           </item>
          </layout>
         </widget>

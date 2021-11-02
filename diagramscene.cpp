@@ -248,6 +248,7 @@ void DiagramScene::save(QIODevice *device)
                 itemElement.setAttribute("date_of_birth", diagramItem->getDateOfBirth().toString());
 //            }
             itemElement.setAttribute("place_of_birth", diagramItem->getPlaceOfBirth());
+            itemElement.setAttribute("country_of_birth", diagramItem->getCountryOfBirth());
 //            if (diagramItem->isDateOfDeathKnown()) {
                 itemElement.setAttribute("date_of_death", diagramItem->getDateOfDeath().toString());
 //            }
@@ -730,12 +731,14 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     auto id = QUuid(element.attribute("id"));
     auto bio = element.attribute("bio");
     auto placeOfBirth = element.attribute("place_of_birth");
+    auto countryOfBirth = element.attribute("country_of_birth");
     auto placeOfDeath = element.attribute("place_of_death");
     item->setPos(x, y);
     item->setName(name);
     item->setId(id);
     item->setBio(bio);
     item->setPlaceOfBirth(placeOfBirth);
+    item->setCountryOfBirth(countryOfBirth);
     item->setPlaceOfDeath(placeOfDeath);
 
     if (element.hasAttribute("date_of_birth")) {

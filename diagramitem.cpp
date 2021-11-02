@@ -432,6 +432,16 @@ void DiagramItem::updateThumbnail()
     m_thumbnail->setVisible(m_showThumbnail);
 }
 
+QString DiagramItem::getCountryOfBirth() const
+{
+    return m_countryOfBirth;
+}
+
+void DiagramItem::setCountryOfBirth(const QString &countryOfBirth)
+{
+    m_countryOfBirth = countryOfBirth;
+}
+
 void DiagramItem::fitToText()
 {
     // TODO: Expand box if required.

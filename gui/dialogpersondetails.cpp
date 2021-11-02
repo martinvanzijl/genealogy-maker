@@ -34,6 +34,7 @@ void DialogPersonDetails::setItem(DiagramItem *item)
     ui->dateEditDeath->setDate(item->getDateOfDeath());
 //    ui->checkBoxDateOfDeathUnknown->setChecked(item->getDateOfDeath().isNull());
     ui->lineEditPlaceOfBirth->setText(item->getPlaceOfBirth());
+    ui->lineEditCountryOfBirth->setText(item->getCountryOfBirth());
     ui->lineEditPlaceOfDeath->setText(item->getPlaceOfDeath());
 
     ui->listWidgetPhotos->clear();
@@ -88,6 +89,7 @@ void DialogPersonDetails::save()
 //        }
 
         m_item->setPlaceOfBirth(ui->lineEditPlaceOfBirth->text());
+        m_item->setCountryOfBirth(ui->lineEditCountryOfBirth->text());
         m_item->setPlaceOfDeath(ui->lineEditPlaceOfDeath->text());
 
         QStringList photos;
