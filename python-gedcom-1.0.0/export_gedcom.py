@@ -33,12 +33,19 @@ def test_parse_file():
     personElements = doc.getElementsByTagName("item")
 
     # Add the persons from the list.
+    number = 1
     for element in personElements:
-        pointer = element.getAttribute("pointer")
+
+        if element.hasAttribute("pointer"):
+            pointer = element.getAttribute("pointer")
+        else:
+            pointer = "@" + str(number) + "@"
+
         name = element.getAttribute("name")
         dateOfBirth = element.getAttribute("date_of_birth")
         placeOfBirth = element.getAttribute("place_of_birth")
         persons.append(Person(pointer, name, dateOfBirth, placeOfBirth))
+        number += 1
 
     # Write the GEDCOM file.
     parser = Parser()
@@ -61,7 +68,8 @@ def test_parse_file():
         # Add birth details.
         root.add_child_element(Element(level=1, pointer="", tag=gedcom.tags.GEDCOM_TAG_BIRTH, value=""))
         root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_DATE, value=person.dateOfBirth))
-        root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_PLACE, value=person.placeOfBirth))
+        if person.placeOfBirth:
+            root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_PLACE, value=person.placeOfBirth))
 
     # Add footer element.
     root.add_child_element(Element(level=0, pointer="", tag="TRLR", value=""))

@@ -1542,3 +1542,117 @@ void MainForm::on_actionImportGedcomFile_triggered()
     undoStack->clear();
     undoStack->setClean();
 }
+
+void MainForm::on_actionExportGedcomFile_triggered()
+{
+    // Select output file.
+    QString outputFileName = "exported.ged";
+
+    if (!saveFileExists()) {
+        QString title = tr("Choose Output File");
+        QString dir = saveFileDir();
+        QString filter = tr("GEDCOM Files (*.ged)");
+        outputFileName = QFileDialog::getSaveFileName(this, title, dir, filter);
+
+        if (outputFileName.isEmpty())
+            return;
+
+        if (!outputFileName.endsWith(".ged")) {
+            outputFileName += ".ged";
+        }
+    }
+
+    // Open file for writing.
+    QFile file(outputFileName);
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        QString message = tr("Cannot write file %1:\n%2.").arg(m_saveFileName).arg(file.errorString());
+        QMessageBox::warning(this, tr("Genealogy Maker"), message);
+        return;
+    }
+
+    // Save a copy of the diagram.
+    //if (hasUnsavedChanges()) {
+    QTemporaryFile inputXmlFile;
+    if (inputXmlFile.open()) {
+        scene->save(&inputXmlFile);
+        inputXmlFile.close();
+    }
+    else {
+        QString message = tr("Cannot save temporary XML file %1:\n%2.")
+                .arg(inputXmlFile.fileName()).arg(inputXmlFile.errorString());
+        QMessageBox::warning(this, tr("Genealogy Maker"), message);
+        return;
+    }
+    //}
+
+    // Create progress dialog.
+    QProgressDialog progress("Exporting GEDCOM File...", "Cancel", 0, 100, this);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.setLabelText("Setting up command...");
+    progress.show();
+    qApp->processEvents();
+
+    // Transform the file using Python.
+    QString path = "python-gedcom-1.0.0/";
+    QString command("python");
+    QFileInfo outuptFileInfo(outputFileName);
+    QString outputFilePath = outuptFileInfo.absoluteFilePath();
+    QStringList params = QStringList() << "export_gedcom.py" << inputXmlFile.fileName() << outputFilePath;
+
+    // Create the process.
+    QProcess *process = new QProcess();
+    process->setWorkingDirectory(path);
+
+    // Hack to set Python library path.
+#ifdef Q_OS_WIN
+    progress.setValue(10);
+    progress.setLabelText("Ensuring Python path exists...");
+    qApp->processEvents();
+
+    addPythonPath(process);
+#endif
+
+    // Start the command.
+    progress.setValue(20);
+    progress.setLabelText("Running conversion script...");
+    qApp->processEvents();
+
+    process->start(command, params);
+    bool successful = process->waitForFinished(3000);
+
+    if (!successful) {
+        // Warn the user if the import failed.
+        QString title = tr("Export Error");
+        QString message = tr("<p>Could not export GEDCOM file, due to the following error:<br/>");
+        message += tr("%1</p>").arg(process->errorString());
+
+        // Advise about downloading Python.
+//        if (process->error() == QProcess::FailedToStart) {
+            message += tr("<p>The program requires Python to export GEDCOM files. "
+                    "You can download this from "
+                    "<a href=\"https://www.python.org/downloads/\">https://www.python.org/downloads/</a>.</p>");
+//        }
+
+        // Show the warning box.
+        QMessageBox msgBox(QMessageBox::Warning, title, message, QMessageBox::Ok, this);
+        msgBox.setTextFormat(Qt::RichText); // Make the link clickable.
+        msgBox.exec();
+
+        // Close the process and exit.
+        process->close();
+        return;
+    }
+
+    process->waitForFinished();
+
+    // Debug.
+//    qDebug() << "Std Error:" << process->readAllStandardError();
+//    qDebug() << "Std Output:" << process->readAllStandardOutput();
+
+    process->close();
+
+    // Finish.
+    progress.setValue(100);
+    progress.setLabelText("Done.");
+    qApp->processEvents();
+}

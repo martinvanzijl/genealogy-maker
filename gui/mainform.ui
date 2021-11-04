@@ -40,6 +40,8 @@
     <addaction name="separator"/>
     <addaction name="actionImportGedcomFile"/>
     <addaction name="separator"/>
+    <addaction name="actionExportGedcomFile"/>
+    <addaction name="separator"/>
     <addaction name="printAction"/>
     <addaction name="separator"/>
     <addaction name="exitAction"/>
@@ -351,6 +353,11 @@
   <action name="actionImportGedcomFile">
    <property name="text">
     <string>&amp;Import GEDCOM File...</string>
+   </property>
+  </action>
+  <action name="actionExportGedcomFile">
+   <property name="text">
+    <string>&amp;Export GEDCOM File...</string>
    </property>
   </action>
  </widget>
