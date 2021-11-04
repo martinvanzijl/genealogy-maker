@@ -44,6 +44,9 @@ def test_parse_file():
     parser = Parser()
     root = parser.get_root_element()
 
+    # Add head element.
+    root.add_child_element(Element(level=0, pointer="", tag="HEAD", value=""))
+
     # Add the persons to the GEDCOM file.
     for person in persons:
         # Create person.
@@ -59,6 +62,9 @@ def test_parse_file():
         root.add_child_element(Element(level=1, pointer="", tag=gedcom.tags.GEDCOM_TAG_BIRTH, value=""))
         root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_DATE, value=person.dateOfBirth))
         root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_PLACE, value=person.placeOfBirth))
+
+    # Add footer element.
+    root.add_child_element(Element(level=0, pointer="", tag="TRLR", value=""))
 
     # Get output file name.
     outputFileName = 'output.ged'
