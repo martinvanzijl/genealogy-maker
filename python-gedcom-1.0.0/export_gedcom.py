@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import gedcom
+from gedcom.element.element import Element
 from gedcom.element.individual import IndividualElement
 from gedcom.parser import Parser
 import sys
@@ -33,19 +34,31 @@ def test_parse_file():
 
     # Add the persons from the list.
     for element in personElements:
-        personId = element.getAttribute("id")
+        pointer = element.getAttribute("pointer")
         name = element.getAttribute("name")
         dateOfBirth = element.getAttribute("date_of_birth")
         placeOfBirth = element.getAttribute("place_of_birth")
-        persons.append(Person(personId, name, dateOfBirth, placeOfBirth))
+        persons.append(Person(pointer, name, dateOfBirth, placeOfBirth))
 
     # Write the GEDCOM file.
     parser = Parser()
+    root = parser.get_root_element()
 
     # Add the persons to the GEDCOM file.
     for person in persons:
-        element = IndividualElement(level=1, pointer=person.pointer, tag=gedcom.tags.GEDCOM_TAG_INDIVIDUAL, value="")
-        parser.get_root_element().add_child_element(element)
+        # Create person.
+        element = IndividualElement(level=0, pointer=person.pointer, tag=gedcom.tags.GEDCOM_TAG_INDIVIDUAL, value="")
+
+        # Add to parser.
+        root.add_child_element(element)
+
+        # Add name.
+        root.add_child_element(Element(level=1, pointer="", tag=gedcom.tags.GEDCOM_TAG_NAME, value=person.name))
+
+        # Add birth details.
+        root.add_child_element(Element(level=1, pointer="", tag=gedcom.tags.GEDCOM_TAG_BIRTH, value=""))
+        root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_DATE, value=person.dateOfBirth))
+        root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_PLACE, value=person.placeOfBirth))
 
     # Get output file name.
     outputFileName = 'output.ged'
@@ -55,10 +68,10 @@ def test_parse_file():
         outputFileName = sys.argv[2]
 
     # Write the XML file.
-    parser.print_gedcom()
-    #outputFile = open(outputFileName, "w")
-    #parser.save_gedcom(outputFile)
-    #outputFile.close()
+    #parser.print_gedcom()
+    outputFile = open(outputFileName, "w")
+    parser.save_gedcom(outputFile)
+    outputFile.close()
 
 if __name__ == "__main__":
     test_parse_file()

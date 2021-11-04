@@ -61,7 +61,7 @@ def test_parse_file():
     # Add the persons from the list.
     for person in persons:
         element = doc.createElement("item")
-        #element.setAttribute("pointer", person.pointer)
+        element.setAttribute("pointer", person.pointer)
         element.setAttribute("name", person.name)
         element.setAttribute("date_of_birth", person.dateOfBirth)
         element.setAttribute("place_of_birth", person.placeOfBirth)
