@@ -407,7 +407,7 @@ void MainForm::about()
                          "open-source and you are welcome to contribute "
                          "to it."
                          "\n\n"
-                         "Version: 6");
+                         "Version: 7");
     QMessageBox::about(this, tr("About Genealogy Maker"), message);
 }
 
@@ -1645,11 +1645,22 @@ void MainForm::on_actionExportGedcomFile_triggered()
 
     process->waitForFinished();
 
-    // Debug.
-//    qDebug() << "Std Error:" << process->readAllStandardError();
-//    qDebug() << "Std Output:" << process->readAllStandardOutput();
+    // Store error output.
+    QString errorOutput(process->readAllStandardError());
 
     process->close();
+
+    // Check exit code.
+    int exitCode = process->exitCode();
+    if (exitCode != 0) {
+        // There was an error.
+        QString title = tr("Problem Exporting GEDCOM");
+        QString message = tr("There was a problem exporting the GEDCOM file:\n\n");
+        message += errorOutput;
+        QMessageBox msgBox(QMessageBox::Warning, title, message, QMessageBox::Ok, this);
+        msgBox.exec();
+        return;
+    }
 
     // Finish.
     progress.setValue(100);
