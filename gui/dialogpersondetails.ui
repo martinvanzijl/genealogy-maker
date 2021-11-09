@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidgetMain">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabDetails">
       <attribute name="title">
@@ -84,6 +84,9 @@
             <property name="text">
              <string>Place of birth:</string>
             </property>
+            <property name="buddy">
+             <cstring>lineEditPlaceOfBirth</cstring>
+            </property>
            </widget>
           </item>
           <item row="2" column="1">
@@ -93,6 +96,9 @@
            <widget class="QLabel" name="labelCountryOfBirth">
             <property name="text">
              <string>Country of birth:</string>
+            </property>
+            <property name="buddy">
+             <cstring>lineEditCountryOfBirth</cstring>
             </property>
            </widget>
           </item>
@@ -124,6 +130,9 @@
            <widget class="QLabel" name="labelPlaceOfDeath">
             <property name="text">
              <string>Place of death:</string>
+            </property>
+            <property name="buddy">
+             <cstring>lineEditPlaceOfDeath</cstring>
             </property>
            </widget>
           </item>
@@ -157,6 +166,9 @@
             <property name="text">
              <string>Biography:</string>
             </property>
+            <property name="buddy">
+             <cstring>plainTextEditBio</cstring>
+            </property>
            </widget>
           </item>
           <item>
@@ -185,6 +197,9 @@
            <widget class="QLabel" name="labelPhotos">
             <property name="text">
              <string>Photos:</string>
+            </property>
+            <property name="buddy">
+             <cstring>listWidgetPhotos</cstring>
             </property>
            </widget>
           </item>
@@ -280,6 +295,21 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidgetMain</tabstop>
+  <tabstop>lineEditName</tabstop>
+  <tabstop>dateEditBirth</tabstop>
+  <tabstop>lineEditPlaceOfBirth</tabstop>
+  <tabstop>lineEditCountryOfBirth</tabstop>
+  <tabstop>dateEditDeath</tabstop>
+  <tabstop>lineEditPlaceOfDeath</tabstop>
+  <tabstop>plainTextEditBio</tabstop>
+  <tabstop>listWidgetPhotos</tabstop>
+  <tabstop>pushButtonAddPhoto</tabstop>
+  <tabstop>pushButtonRemovePhoto</tabstop>
+  <tabstop>pushButtonSave</tabstop>
+  <tabstop>pushButtonClose</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
