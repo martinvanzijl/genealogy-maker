@@ -417,6 +417,43 @@ void DiagramItem::setCountryOfBirth(const QString &countryOfBirth)
     m_countryOfBirth = countryOfBirth;
 }
 
+bool DiagramItem::hasParent() const
+{
+    for (auto arrow : arrows) {
+        if (arrow->endItem() == this) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+QList<DiagramItem *> DiagramItem::getParents() const
+{
+    QList<DiagramItem *> parents;
+
+    for (auto arrow : arrows) {
+        if (arrow->endItem() == this) {
+            parents << arrow->startItem();
+        }
+    }
+
+    return parents;
+}
+
+QList<DiagramItem *> DiagramItem::getChildren() const
+{
+    QList<DiagramItem *> children;
+
+    for (auto arrow : arrows) {
+        if (arrow->startItem() == this) {
+            children << arrow->endItem();
+        }
+    }
+
+    return children;
+}
+
 void DiagramItem::fitToText()
 {
     // TODO: Expand box if required.

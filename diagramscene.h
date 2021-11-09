@@ -98,6 +98,7 @@ public:
     bool isDrawingArrow() const;
     void loadPreferences();
     void autoLayout();
+    int autoLayoutRow(const QList<DiagramItem *> &items, int startY);
 
 public slots:
     void setMode(Mode mode);
@@ -151,6 +152,7 @@ private:
     QColor myLineColor;
 
     QMap<QUuid, DiagramItem *> m_itemsDict;
+    QMap<QString, DiagramItem *> m_pointerDict;
     DiagramItem *m_highlightedItem;
     long m_nextId;
     bool m_busyMoving;

@@ -134,6 +134,10 @@ public:
     QString getCountryOfBirth() const;
     void setCountryOfBirth(const QString &countryOfBirth);
 
+    bool hasParent() const;
+    QList<DiagramItem *> getParents() const;
+    QList<DiagramItem *> getChildren() const;
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;

@@ -13,9 +13,16 @@ class Person():
         self.dateOfBirth = dateOfBirth
         self.placeOfBirth = placeOfBirth
 
+class Relationship():
+    
+    def __init__(self, parent, child):
+        self.parent = parent
+        self.child = child
+
 def test_parse_file():
     # Create list.
     persons = []
+    relationships = []
 
     # Get input file.
     inputFileName = 'tests/files/Musterstammbaum.ged'
@@ -50,8 +57,10 @@ def test_parse_file():
             # List parents.
             parents = parser.get_parents(element)
             #print("Parents of", fullName, "are", parents)
-            #for parent in parents:
+            for parent in parents:
                 #print("--", parent.get_pointer())
+                parentPointer = parent.get_pointer()
+                relationships.append(Relationship(parentPointer, pointer))
     
     # Create the XML document.
     doc = xml.Document()
@@ -65,6 +74,13 @@ def test_parse_file():
         element.setAttribute("name", person.name)
         element.setAttribute("date_of_birth", person.dateOfBirth)
         element.setAttribute("place_of_birth", person.placeOfBirth)
+        root.appendChild(element)
+
+    # Add the relationships from the list.
+    for relationship in relationships:
+        element = doc.createElement("relationship")
+        element.setAttribute("from_pointer", relationship.parent)
+        element.setAttribute("to_pointer", relationship.child)
         root.appendChild(element)
 
     # Get output file name.

@@ -371,11 +371,9 @@ void DiagramScene::loadPreferences()
     DiagramItem::setShowThumbnailByDefault(showThumbnails);
 }
 
-void DiagramScene::autoLayout()
-{
-    // Place the persons.
+int DiagramScene::autoLayoutRow(const QList<DiagramItem *> &items, int startY) {
+
     double startX = 128;
-    double startY = 64;
 
     double x = startX;
     double y = startY;
@@ -383,21 +381,113 @@ void DiagramScene::autoLayout()
     double horizontalSpacing = 16;
     double verticalSpacing = 16;
 
+    // Lay out each item in the row.
+    for (auto item: items) {
+        // Place the person.
+        DiagramItem *person = qgraphicsitem_cast<DiagramItem*> (item);
+        person->setPos(x, y);
+
+        // Prepare the next position.
+        x += person->boundingRect().width() + horizontalSpacing;
+
+        // Wrap to next line if required.
+        if (x > sceneRect().right()) {
+            y += person->boundingRect().height() + verticalSpacing;
+            x = startX;
+        }
+    }
+
+    return y;
+}
+
+// A temporary map to store the depth of each person.
+static QMap<DiagramItem *, int> m_depthMap;
+
+//
+// Get the "depth" of the person, i.e. how many layers of ancestors they have.
+//
+//static int getAncestorDepth(DiagramItem *person) {
+
+//    // Check if depth already calculated.
+//    if (m_depthMap.contains(person)) {
+//        return m_depthMap[person];
+//    }
+
+//    // Get maximum depth of parents.
+//    QList<DiagramItem *> parents = person->getParents();
+
+//    int maxParentDepth = -1;
+//    for (DiagramItem *parent: parents) {
+//        int parentDepth = getDepth(parent);
+//        if (parentDepth > maxParentDepth) {
+//            maxParentDepth = parentDepth;
+//        }
+//    }
+
+//    // Add one.
+//    int personDepth = maxParentDepth + 1;
+//    m_depthMap[person] = personDepth;
+
+//    // Return.
+//    return personDepth;
+//}
+
+//
+// Get the "depth" of the person, i.e. how many layers of descendants they have.
+//
+static int getDepth(DiagramItem *person) {
+
+    // Check if depth already calculated.
+    if (m_depthMap.contains(person)) {
+        return m_depthMap[person];
+    }
+
+    // Get maximum depth of parents.
+    QList<DiagramItem *> children = person->getChildren();
+
+    int maxChildDepth = -1;
+    for (DiagramItem *child: children) {
+        int childDepth = getDepth(child);
+        if (childDepth > maxChildDepth) {
+            maxChildDepth = childDepth;
+        }
+    }
+
+    // Add one.
+    int personDepth = maxChildDepth + 1;
+    m_depthMap[person] = personDepth;
+
+    // Return.
+    return personDepth;
+}
+
+void DiagramScene::autoLayout()
+{
+    // Clear depth map.
+    m_depthMap.clear();
+
+    // Set up map of depth to persons.
+    QMultiMap<int, DiagramItem* > depthMultiMap;
+
+    // Find the right depth for each person.
     for (auto item: items()) {
         if (item->type() == DiagramItem::Type) {
-            // Place the person.
             DiagramItem *person = qgraphicsitem_cast<DiagramItem*> (item);
-            person->setPos(x, y);
 
-            // Prepare the next position.
-            x += person->boundingRect().width() + horizontalSpacing;
-
-            // Wrap to next line if required.
-            if (x > sceneRect().right()) {
-                y += person->boundingRect().height() + verticalSpacing;
-                x = startX;
-            }
+            int depth = getDepth(person);
+            depthMultiMap.insert(depth, person);
         }
+    }
+
+    // Get maximum depth.
+    auto maxDepth = depthMultiMap.lastKey();
+
+    // Place the persons.
+    double y = 64;
+
+    for (int depth = maxDepth; depth >= 0; --depth) {
+        y = autoLayoutRow(depthMultiMap.values(depth), y);
+        y += 256;
     }
 }
 
@@ -765,14 +855,33 @@ void DiagramScene::parseItemElement(const QDomElement &element)
 
     emit itemInserted(item, true);
     m_itemsDict[id] = item;
+
+    // Check for GEDCOM pointer.
+    if (element.hasAttribute("pointer")) {
+        QString pointer = element.attribute("pointer");
+        m_pointerDict[pointer] = item;
+    }
 }
 
 void DiagramScene::parseArrowElement(const QDomElement &element)
 {
-    auto fromId = element.attribute("from");
-    auto toId = element.attribute("to");
-    auto startItem = m_itemsDict[fromId];
-    auto endItem = m_itemsDict[toId];
+    DiagramItem *startItem = nullptr;
+    DiagramItem *endItem = nullptr;
+
+    if (element.hasAttribute("from_pointer") && element.hasAttribute("to_pointer")) {
+        // GEDCOM import.
+        auto fromId = element.attribute("from_pointer");
+        auto toId = element.attribute("to_pointer");
+        startItem = m_pointerDict[fromId];
+        endItem = m_pointerDict[toId];
+    }
+    else {
+        // Normal diagram.
+        auto fromId = element.attribute("from");
+        auto toId = element.attribute("to");
+        startItem = m_itemsDict[fromId];
+        endItem = m_itemsDict[toId];
+    }
 
     if (startItem && endItem) {
         Arrow *arrow = new Arrow(startItem, endItem);
