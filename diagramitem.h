@@ -138,6 +138,12 @@ public:
     QList<DiagramItem *> getParents() const;
     QList<DiagramItem *> getChildren() const;
 
+    QString getFirstName() const;
+    void setFirstName(const QString &firstName);
+
+    QString getLastName() const;
+    void setLastName(const QString &lastName);
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -175,6 +181,8 @@ private:
     static DiagramItem *m_doubleClickedItem;
 
     bool m_showThumbnail;
+    QString m_firstName;
+    QString m_lastName;
 };
 
 #endif // DIAGRAMITEM_H

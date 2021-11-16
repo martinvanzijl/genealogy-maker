@@ -27,6 +27,8 @@ DialogPersonDetails::~DialogPersonDetails()
 
 void DialogPersonDetails::setItem(DiagramItem *item)
 {
+    ui->lineEditFirstName->setText(item->getFirstName());
+    ui->lineEditLastName->setText(item->getLastName());
     ui->lineEditName->setText(item->name());
     ui->plainTextEditBio->setPlainText(item->bio());
     ui->dateEditBirth->setDate(item->getDateOfBirth());
@@ -67,6 +69,8 @@ void DialogPersonDetails::save()
 {
     if (m_item)
     {
+        m_item->setFirstName(ui->lineEditFirstName->text());
+        m_item->setLastName(ui->lineEditLastName->text());
         m_item->setName(ui->lineEditName->text());
         m_item->setBio(ui->plainTextEditBio->toPlainText());
 

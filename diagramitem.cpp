@@ -407,6 +407,26 @@ void DiagramItem::updateThumbnail()
     m_thumbnail->setVisible(m_showThumbnail);
 }
 
+QString DiagramItem::getLastName() const
+{
+    return m_lastName;
+}
+
+void DiagramItem::setLastName(const QString &lastName)
+{
+    m_lastName = lastName;
+}
+
+QString DiagramItem::getFirstName() const
+{
+    return m_firstName;
+}
+
+void DiagramItem::setFirstName(const QString &firstName)
+{
+    m_firstName = firstName;
+}
+
 QString DiagramItem::getCountryOfBirth() const
 {
     return m_countryOfBirth;

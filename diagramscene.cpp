@@ -241,6 +241,8 @@ void DiagramScene::save(QIODevice *device)
             QDomElement itemElement = domDocument.createElement("item");
             itemElement.setAttribute("x", item->pos().x());
             itemElement.setAttribute("y", item->pos().y());
+            itemElement.setAttribute("first_name", diagramItem->getFirstName());
+            itemElement.setAttribute("last_name", diagramItem->getLastName());
             itemElement.setAttribute("name", diagramItem->name());
             itemElement.setAttribute("id", diagramItem->id().toString());
             itemElement.setAttribute("bio", diagramItem->bio());
@@ -817,6 +819,8 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     addItem(item);
     auto x = element.attribute("x").toDouble();
     auto y = element.attribute("y").toDouble();
+    auto firstName = element.attribute("first_name");
+    auto lastName = element.attribute("last_name");
     auto name = element.attribute("name");
     auto id = QUuid(element.attribute("id"));
     auto bio = element.attribute("bio");
@@ -824,6 +828,8 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     auto countryOfBirth = element.attribute("country_of_birth");
     auto placeOfDeath = element.attribute("place_of_death");
     item->setPos(x, y);
+    item->setFirstName(firstName);
+    item->setLastName(lastName);
     item->setName(name);
     item->setId(id);
     item->setBio(bio);

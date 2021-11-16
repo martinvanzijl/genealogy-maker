@@ -7,9 +7,11 @@ import xml.dom.minidom as xml
 
 class Person():
     
-    def __init__(self, pointer, name, dateOfBirth, placeOfBirth):
+    def __init__(self, pointer, name, firstName, lastName, dateOfBirth, placeOfBirth):
         self.pointer = pointer
         self.name = name
+        self.firstName = firstName
+        self.lastName = lastName
         self.dateOfBirth = dateOfBirth
         self.placeOfBirth = placeOfBirth
 
@@ -46,13 +48,17 @@ def test_parse_file():
             allNames = element.get_name()
             fullName = " ".join(allNames)
             
+            # Store the first and last name.
+            firstName = allNames[0]
+            lastName = allNames[1]
+            
             # Store the date of birth.
             birthData = element.get_birth_data()
             dateOfBirth = birthData[0]
             placeOfBirth = birthData[1]
 
             # Add to the list.
-            persons.append(Person(pointer, fullName, dateOfBirth, placeOfBirth))
+            persons.append(Person(pointer, fullName, firstName, lastName, dateOfBirth, placeOfBirth))
 
             # List parents.
             parents = parser.get_parents(element)
@@ -72,6 +78,8 @@ def test_parse_file():
         element = doc.createElement("item")
         element.setAttribute("pointer", person.pointer)
         element.setAttribute("name", person.name)
+        element.setAttribute("first_name", person.firstName)
+        element.setAttribute("last_name", person.lastName)
         element.setAttribute("date_of_birth", person.dateOfBirth)
         element.setAttribute("place_of_birth", person.placeOfBirth)
         root.appendChild(element)

@@ -9,9 +9,11 @@ import xml.dom.minidom as xml
 
 class Person():
     
-    def __init__(self, pointer, name, dateOfBirth, placeOfBirth):
+    def __init__(self, pointer, name, firstName, lastName, dateOfBirth, placeOfBirth):
         self.pointer = pointer
         self.name = name
+        self.firstName = firstName
+        self.lastName = lastName
         self.dateOfBirth = dateOfBirth
         self.placeOfBirth = placeOfBirth
 
@@ -20,7 +22,8 @@ def test_parse_file():
     persons = []
 
     # Get input file.
-    inputFileName = 'test-export/diagram.xml'
+    #inputFileName = 'test-export/diagram.xml'
+    inputFileName = 'output.xml'
 
     numberOfArgs = len(sys.argv)
     if numberOfArgs >= 2:
@@ -42,9 +45,11 @@ def test_parse_file():
             pointer = "@" + str(number) + "@"
 
         name = element.getAttribute("name")
+        firstName = element.getAttribute("first_name")
+        lastName = element.getAttribute("last_name")
         dateOfBirth = element.getAttribute("date_of_birth")
         placeOfBirth = element.getAttribute("place_of_birth")
-        persons.append(Person(pointer, name, dateOfBirth, placeOfBirth))
+        persons.append(Person(pointer, name, firstName, lastName, dateOfBirth, placeOfBirth))
         number += 1
 
     # Write the GEDCOM file.
@@ -64,6 +69,14 @@ def test_parse_file():
 
         # Add name.
         root.add_child_element(Element(level=1, pointer="", tag=gedcom.tags.GEDCOM_TAG_NAME, value=person.name))
+
+        # Add last name.
+        if len(person.lastName) > 0:
+            root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_SURNAME, value=person.lastName))
+
+        # Add first name.
+        if len(person.firstName) > 0:
+            root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_GIVEN_NAME, value=person.firstName))
 
         # Add birth details.
         root.add_child_element(Element(level=1, pointer="", tag=gedcom.tags.GEDCOM_TAG_BIRTH, value=""))
