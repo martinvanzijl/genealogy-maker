@@ -1548,18 +1548,16 @@ void MainForm::on_actionExportGedcomFile_triggered()
     // Select output file.
     QString outputFileName = "exported.ged";
 
-    if (!saveFileExists()) {
-        QString title = tr("Choose Output File");
-        QString dir = saveFileDir();
-        QString filter = tr("GEDCOM Files (*.ged)");
-        outputFileName = QFileDialog::getSaveFileName(this, title, dir, filter);
+    QString title = tr("Choose Output File");
+    QString dir = saveFileDir();
+    QString filter = tr("GEDCOM Files (*.ged)");
+    outputFileName = QFileDialog::getSaveFileName(this, title, dir, filter);
 
-        if (outputFileName.isEmpty())
-            return;
+    if (outputFileName.isEmpty())
+        return;
 
-        if (!outputFileName.endsWith(".ged")) {
-            outputFileName += ".ged";
-        }
+    if (!outputFileName.endsWith(".ged")) {
+        outputFileName += ".ged";
     }
 
     // Open file for writing.
