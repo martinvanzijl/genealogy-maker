@@ -51,7 +51,7 @@ def test_parse_file():
             # Store the first and last name.
             firstName = allNames[0]
             lastName = allNames[1]
-            
+
             # Store the date of birth.
             birthData = element.get_birth_data()
             dateOfBirth = birthData[0]
