@@ -144,6 +144,9 @@ public:
     QString getLastName() const;
     void setLastName(const QString &lastName);
 
+    /// Callback for after the diagram text is edited by the user.
+    void onTextEdited();
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;

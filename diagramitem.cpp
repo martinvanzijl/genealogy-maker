@@ -417,6 +417,26 @@ void DiagramItem::setLastName(const QString &lastName)
     m_lastName = lastName;
 }
 
+void DiagramItem::onTextEdited()
+{
+    // Make sure the text fits in the box.
+    fitToText();
+
+    // Extract first and last name.
+    QString fullName = m_textItem->text();
+    int firstSpacePos = fullName.indexOf(" ");
+
+    if (firstSpacePos == -1) {
+        // No spaces. Use full name as first name.
+        m_firstName = fullName;
+    }
+    else {
+        // There is a space. Split the parts.
+        m_firstName = fullName.mid(0, firstSpacePos);
+        m_lastName = fullName.mid(firstSpacePos + 1);
+    }
+}
+
 QString DiagramItem::getFirstName() const
 {
     return m_firstName;

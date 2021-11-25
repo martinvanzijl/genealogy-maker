@@ -101,9 +101,9 @@ void DiagramTextItem::focusOutEvent(QFocusEvent *event)
     emit lostFocus(this);
     QGraphicsTextItem::focusOutEvent(event);
 
-    // Update person box.
+    // Update person.
     if (m_person) {
-        m_person->fitToText();
+        m_person->onTextEdited();
     }
 
     // Send signal.
