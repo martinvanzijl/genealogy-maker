@@ -9,6 +9,10 @@
 #include <QImage>
 #include <QDesktopServices>
 
+const static int CBOX_GENDER_MALE = 0;
+const static int CBOX_GENDER_FEMALE = 1;
+const static int CBOX_GENDER_UNKNOWN = 2;
+
 DialogPersonDetails::DialogPersonDetails(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogPersonDetails)
@@ -38,6 +42,22 @@ void DialogPersonDetails::setItem(DiagramItem *item)
     ui->lineEditPlaceOfBirth->setText(item->getPlaceOfBirth());
     ui->lineEditCountryOfBirth->setText(item->getCountryOfBirth());
     ui->lineEditPlaceOfDeath->setText(item->getPlaceOfDeath());
+
+    if (item->isGenderKnown())
+    {
+        if (item->getGender() == "M")
+        {
+            ui->comboBoxGender->setCurrentIndex(CBOX_GENDER_MALE);
+        }
+        else
+        {
+            ui->comboBoxGender->setCurrentIndex(CBOX_GENDER_FEMALE);
+        }
+    }
+    else
+    {
+        ui->comboBoxGender->setCurrentIndex(CBOX_GENDER_UNKNOWN);
+    }
 
     ui->listWidgetPhotos->clear();
 
@@ -95,6 +115,20 @@ void DialogPersonDetails::save()
         m_item->setPlaceOfBirth(ui->lineEditPlaceOfBirth->text());
         m_item->setCountryOfBirth(ui->lineEditCountryOfBirth->text());
         m_item->setPlaceOfDeath(ui->lineEditPlaceOfDeath->text());
+
+        switch (ui->comboBoxGender->currentIndex()) {
+        case CBOX_GENDER_MALE:
+            m_item->setGender("M");
+            break;
+
+        case CBOX_GENDER_FEMALE:
+            m_item->setGender("F");
+            break;
+
+        case CBOX_GENDER_UNKNOWN:
+            m_item->setGender("");
+            break;
+        }
 
         QStringList photos;
         for (int i = 0; i < ui->listWidgetPhotos->count(); ++i)
