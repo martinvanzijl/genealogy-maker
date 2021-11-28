@@ -263,6 +263,10 @@ void DiagramScene::save(QIODevice *device)
                 itemElement.appendChild(photoElement);
             }
 
+            if (diagramItem->isGenderKnown()) {
+                itemElement.setAttribute("gender", diagramItem->getGender());
+            }
+
             rootElement.appendChild(itemElement);
 
             arrows << diagramItem->getArrows();
@@ -827,6 +831,7 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     auto placeOfBirth = element.attribute("place_of_birth");
     auto countryOfBirth = element.attribute("country_of_birth");
     auto placeOfDeath = element.attribute("place_of_death");
+    auto gender = element.attribute("gender");
     item->setPos(x, y);
     item->setFirstName(firstName);
     item->setLastName(lastName);
@@ -836,6 +841,7 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     item->setPlaceOfBirth(placeOfBirth);
     item->setCountryOfBirth(countryOfBirth);
     item->setPlaceOfDeath(placeOfDeath);
+    item->setGender(gender);
 
     if (element.hasAttribute("date_of_birth")) {
 //        item->setDateOfBirth(QDate::fromString(element.attribute("date_of_birth")));

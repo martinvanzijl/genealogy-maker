@@ -147,6 +147,10 @@ public:
     /// Callback for after the diagram text is edited by the user.
     void onTextEdited();
 
+    QString getGender() const;
+    void setGender(const QString &gender);
+    bool isGenderKnown() const;
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -186,6 +190,7 @@ private:
     bool m_showThumbnail;
     QString m_firstName;
     QString m_lastName;
+    QString m_gender;
 };
 
 #endif // DIAGRAMITEM_H

@@ -407,6 +407,21 @@ void DiagramItem::updateThumbnail()
     m_thumbnail->setVisible(m_showThumbnail);
 }
 
+QString DiagramItem::getGender() const
+{
+    return m_gender;
+}
+
+void DiagramItem::setGender(const QString &gender)
+{
+    m_gender = gender;
+}
+
+bool DiagramItem::isGenderKnown() const
+{
+    return !m_gender.isEmpty();
+}
+
 QString DiagramItem::getLastName() const
 {
     return m_lastName;
