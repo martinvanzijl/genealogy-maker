@@ -9,13 +9,14 @@ import xml.dom.minidom as xml
 
 class Person():
     
-    def __init__(self, pointer, name, firstName, lastName, dateOfBirth, placeOfBirth):
+    def __init__(self, pointer, name, firstName, lastName, dateOfBirth, placeOfBirth, gender):
         self.pointer = pointer
         self.name = name
         self.firstName = firstName
         self.lastName = lastName
         self.dateOfBirth = dateOfBirth
         self.placeOfBirth = placeOfBirth
+        self.gender = gender
 
 def test_parse_file():
     # Create list.
@@ -49,7 +50,8 @@ def test_parse_file():
         lastName = element.getAttribute("last_name")
         dateOfBirth = element.getAttribute("date_of_birth")
         placeOfBirth = element.getAttribute("place_of_birth")
-        persons.append(Person(pointer, name, firstName, lastName, dateOfBirth, placeOfBirth))
+        gender = element.getAttribute("gender")
+        persons.append(Person(pointer, name, firstName, lastName, dateOfBirth, placeOfBirth, gender))
         number += 1
 
     # Write the GEDCOM file.
@@ -77,6 +79,10 @@ def test_parse_file():
         # Add first name.
         if len(person.firstName) > 0:
             root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_GIVEN_NAME, value=person.firstName))
+
+        # Add gender.
+        if len(person.gender) > 0:
+            root.add_child_element(Element(level=1, pointer="", tag=gedcom.tags.GEDCOM_TAG_SEX, value=person.gender))
 
         # Add birth details.
         root.add_child_element(Element(level=1, pointer="", tag=gedcom.tags.GEDCOM_TAG_BIRTH, value=""))

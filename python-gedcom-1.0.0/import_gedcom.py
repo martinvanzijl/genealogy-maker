@@ -7,13 +7,14 @@ import xml.dom.minidom as xml
 
 class Person():
     
-    def __init__(self, pointer, name, firstName, lastName, dateOfBirth, placeOfBirth):
+    def __init__(self, pointer, name, firstName, lastName, dateOfBirth, placeOfBirth, gender):
         self.pointer = pointer
         self.name = name
         self.firstName = firstName
         self.lastName = lastName
         self.dateOfBirth = dateOfBirth
         self.placeOfBirth = placeOfBirth
+        self.gender = gender
 
 class Relationship():
     
@@ -57,8 +58,11 @@ def test_parse_file():
             dateOfBirth = birthData[0]
             placeOfBirth = birthData[1]
 
+            # Store the gender.
+            gender = element.get_gender()
+
             # Add to the list.
-            persons.append(Person(pointer, fullName, firstName, lastName, dateOfBirth, placeOfBirth))
+            persons.append(Person(pointer, fullName, firstName, lastName, dateOfBirth, placeOfBirth, gender))
 
             # List parents.
             parents = parser.get_parents(element)
@@ -82,6 +86,7 @@ def test_parse_file():
         element.setAttribute("last_name", person.lastName)
         element.setAttribute("date_of_birth", person.dateOfBirth)
         element.setAttribute("place_of_birth", person.placeOfBirth)
+        element.setAttribute("gender", person.gender)
         root.appendChild(element)
 
     # Add the relationships from the list.
