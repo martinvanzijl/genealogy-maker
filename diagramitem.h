@@ -79,6 +79,7 @@ class DiagramItem : public QGraphicsPolygonItem
 public:
     enum { Type = UserType + 15 };
     enum DiagramType { Person };
+    enum SpousePosition { SpouseToLeft, SpouseToRight };
 
     DiagramItem(DiagramType diagramType, QMenu *contextMenu, QGraphicsItem *parent = 0);
 
@@ -154,6 +155,12 @@ public:
     void onShapeChanged();
     void setMarriageItemPosition();
 
+    DiagramItem *getSpouse() const;
+
+    SpousePosition getSpousePosition() const;
+
+    int getWidthIncludingSpouse() const;
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -179,8 +186,6 @@ private:
     QString m_countryOfBirth;
     QString m_placeOfDeath;
     DiagramItem *m_spouse;
-
-    enum SpousePosition { SpouseToLeft, SpouseToRight };
 
     SpousePosition m_spousePosition;
     bool m_movedBySpouse;

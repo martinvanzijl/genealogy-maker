@@ -413,12 +413,20 @@ int DiagramScene::autoLayoutRow(const QList<DiagramItem *> &items, int startY) {
 
     // Lay out each item in the row.
     for (auto item: items) {
-        // Place the person.
+        // Get the person.
         DiagramItem *person = qgraphicsitem_cast<DiagramItem*> (item);
+
+        // Only place the *left* spouse of married couples. The right spouse will
+        // move along with them.
+        if (person->isMarried() && person->getSpousePosition() == DiagramItem::SpouseToLeft) {
+            continue;
+        }
+
+        // Place the person.
         person->setPos(x, y);
 
         // Prepare the next position.
-        x += person->boundingRect().width() + horizontalSpacing;
+        x += person->getWidthIncludingSpouse() + horizontalSpacing;
 
         // Wrap to next line if required.
         if (x > sceneRect().right()) {
@@ -485,6 +493,14 @@ static int getDepth(DiagramItem *person) {
 
     // Add one.
     int personDepth = maxChildDepth + 1;
+
+    // Check position of spouse if required.
+    if (person->isMarried() && person->getSpousePosition() == DiagramItem::SpouseToRight) {
+        int spouseDepth = getDepth(person->getSpouse());
+        personDepth = qMax(personDepth, spouseDepth);
+    }
+
+    // Add to map.
     m_depthMap[person] = personDepth;
 
     // Return.
@@ -1033,10 +1049,23 @@ void DiagramScene::parseArrowElement(const QDomElement &element)
 
 void DiagramScene::parseMarriageElement(const QDomElement &element)
 {
-    auto leftId = element.attribute("person_left");
-    auto rightId = element.attribute("person_right");
-    auto personLeft = m_itemsDict[leftId];
-    auto personRight = m_itemsDict[rightId];
+    DiagramItem *personLeft = nullptr;
+    DiagramItem *personRight = nullptr;
+
+    if (element.hasAttribute("left_pointer") && element.hasAttribute("right_pointer")) {
+        // GEDCOM import.
+        auto leftId = element.attribute("left_pointer");
+        auto rightId = element.attribute("right_pointer");
+        personLeft = m_pointerDict[leftId];
+        personRight = m_pointerDict[rightId];
+    }
+    else {
+        // Normal diagram.
+        auto leftId = element.attribute("person_left");
+        auto rightId = element.attribute("person_right");
+        personLeft = m_itemsDict[leftId];
+        personRight = m_itemsDict[rightId];
+    }
 
     if (personLeft && personRight) {
         personLeft->marryTo(personRight);

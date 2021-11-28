@@ -414,9 +414,11 @@ private slots:
     void testUndoEditPersonDetails();
     void saveTwoPhotosWithSameNameTest();
     void saveMoveThenOpenAgainTest();
+    void recentFilesMenuTest();
+    void importLatestMarriagesTest();
 
 private slots:
-    void recentFilesMenuTest();
+    void exportThenImportGedcomTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -1571,6 +1573,81 @@ void TestCases::recentFilesMenuTest()
 
     QAction *firstAction = actions.first();
     qDebug() << "Action: " << firstAction->data().toString();
+}
+
+void TestCases::importLatestMarriagesTest()
+{
+    // Get the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionImportGedcomFile");
+    QVERIFY(action);
+
+    // Create the helper.
+    m_helper = new TestCaseHelper();
+    m_helper->setOpenFileName(getTestInputFilePathFor("Musterstammbaum.ged"));
+
+    // Import the GEDCOM file.
+    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
+    action->trigger();
+
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
+
+    // Get the items.
+    QList<QGraphicsItem *> items = m_mainWindow->getScene()->items();
+    QVERIFY(items.size() >= 1);
+
+    // Debug.
+    QTest::qWait(10000);
+
+    // Check the marriage.
+    for (auto item: items)
+    {
+        if (item->type() == DiagramItem::Type)
+        {
+            // Cast to person.
+            DiagramItem *person = qgraphicsitem_cast<DiagramItem *>(item);
+            QVERIFY(person);
+
+            // Check if the right person.
+            if (person->name() == "Anneliese Mustereisen")
+            {
+                // Check person is married.
+                QVERIFY(person->isMarried());
+
+                // Check spouse exists.
+                DiagramItem *spouse = person->getSpouse();
+                QVERIFY(spouse);
+
+                // Check spouse is correct.
+                QCOMPARE(spouse->name(), QString("Theodor Mustermann"));
+
+                // Exit loop.
+                break;
+            }
+        }
+    }
+}
+
+void TestCases::exportThenImportGedcomTest()
+{
+    // Import original GEDCOM file.
+    importGedcomFile(getTestInputFilePathFor("Musterstammbaum.ged"));
+
+    // Get the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionExportGedcomFile");
+    QVERIFY(action);
+
+    // Export to GEDCOM.
+    const QString saveFileName = "Musterstammbaum-exported.ged";
+    m_helper->setSaveFileName(saveFileName);
+    QTimer::singleShot(1000, m_helper, SLOT(handleSaveDialog()));
+    action->trigger();
+
+    // Check that the exported file exists.
+    QFile file(QString("save-files/") + saveFileName);
+    QVERIFY(file.exists());
+
+    // Import the exported GEDCOM file.
+    importGedcomFile(saveFileName);
 }
 
 void TestCases::addPhotoToSelectedPerson()

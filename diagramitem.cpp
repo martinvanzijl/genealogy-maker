@@ -413,6 +413,34 @@ void DiagramItem::updateThumbnail()
     m_thumbnail->setVisible(m_showThumbnail);
 }
 
+DiagramItem::SpousePosition DiagramItem::getSpousePosition() const
+{
+    return m_spousePosition;
+}
+
+/**
+ * @brief DiagramItem::getWidthIncludingSpouse
+ * @return The width of the person, including the spouse if married.
+ */
+int DiagramItem::getWidthIncludingSpouse() const
+{
+    // Get self width.
+    int width = boundingRect().width();
+
+    // Get spouse width.
+    if (isMarried()) {
+        width += m_spouse->boundingRect().width();
+    }
+
+    // Return.
+    return width;
+}
+
+DiagramItem *DiagramItem::getSpouse() const
+{
+    return m_spouse;
+}
+
 QString DiagramItem::getGender() const
 {
     return m_gender;
