@@ -9,6 +9,8 @@ class DiagramItem;
 class MarriageItem : public QGraphicsEllipseItem
 {
 public:
+    enum { Type = UserType + 100 };
+
     MarriageItem(QGraphicsItem *parent = 0);
 
     void setPersonLeft(DiagramItem *item);

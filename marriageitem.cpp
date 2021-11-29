@@ -40,7 +40,7 @@ DiagramItem *MarriageItem::personRight() const
 
 int MarriageItem::type() const
 {
-    return DiagramItem::Marriage;
+    return Type;
 }
 
 void MarriageItem::setContextMenu(QMenu *menu)
