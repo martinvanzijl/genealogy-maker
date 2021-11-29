@@ -189,7 +189,7 @@ void TestCases::volumeTest()
     // Create the diagram.
     for (int i = 0; i < personCount; ++i)
     {
-        auto person = new DiagramItem(DiagramItem::Step, nullptr);
+        auto person = new DiagramItem(DiagramItem::Person, nullptr);
         person->setBrush(Qt::white);
         person->setPos(leftOffset, topOffset + i * 100);
         person->setName(QString("Person #%1").arg(i));
