@@ -3,10 +3,100 @@
 
 #include "diagramitem.h"
 #include "diagramscene.h"
+#include "gui/dialogpersondetails.h"
 #include "gui/mainform.h"
 
 #include <QDebug>
 #include <QObject>
+
+// =============================================================================
+// DetailsWindowHelper
+// =============================================================================
+
+class DetailsWindowHelper : public QObject
+{
+    Q_OBJECT
+
+public:
+    DetailsWindowHelper();
+    virtual ~DetailsWindowHelper();
+
+    bool isFinished() const;
+
+public slots:
+    void closeWindow();
+    void setGenderTest();
+
+private:
+    bool m_finished;
+};
+
+DetailsWindowHelper::DetailsWindowHelper() :
+    m_finished(false)
+{
+    // Avoid compiler error.
+}
+
+DetailsWindowHelper::~DetailsWindowHelper()
+{
+    // Avoid compiler error.
+}
+
+bool DetailsWindowHelper::isFinished() const
+{
+    return m_finished;
+}
+
+void DetailsWindowHelper::closeWindow()
+{
+    // Get the window.
+    QWidget *widget = QApplication::activeWindow();
+    DialogPersonDetails *dialog = dynamic_cast<DialogPersonDetails *>(widget);
+
+    if (dialog)
+    {
+        QTimer::singleShot(0, dialog, SLOT(accept()));
+    }
+
+    // Set flag.
+    m_finished = true;
+}
+
+void DetailsWindowHelper::setGenderTest()
+{
+    // Hack. Copied.
+    const static int CBOX_GENDER_MALE = 0;
+    const static int CBOX_GENDER_FEMALE = 1;
+    const static int CBOX_GENDER_UNKNOWN = 2;
+
+    Q_UNUSED(CBOX_GENDER_FEMALE);
+
+    // Get the window.
+    QWidget *widget = QApplication::activeWindow();
+    DialogPersonDetails *dialog = dynamic_cast<DialogPersonDetails *>(widget);
+    QVERIFY(dialog);
+
+    // Get the box.
+    QComboBox *comboBoxGender = dialog->findChild<QComboBox*>("comboBoxGender");
+    QVERIFY(comboBoxGender);
+
+    // Check the position.
+    QCOMPARE(comboBoxGender->currentIndex(), CBOX_GENDER_UNKNOWN);
+
+    // Set the gender.
+    comboBoxGender->setCurrentIndex(CBOX_GENDER_MALE);
+
+    // Save changes.
+    QPushButton *pushButtonSave = dialog->findChild<QPushButton*>("pushButtonSave");
+    QVERIFY(pushButtonSave);
+    pushButtonSave->click();
+
+    // Close the window.
+    //QTimer::singleShot(0, dialog, SLOT(accept()));
+
+    // Set flag.
+    m_finished = true;
+}
 
 // =============================================================================
 // TestCaseHelper
@@ -90,6 +180,7 @@ private slots:
     void testExit();
     void testBug1();
     void volumeTest();
+    void setGenderTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -201,6 +292,42 @@ void TestCases::volumeTest()
     m_helper->setSaveFileName("volume-test.xml");
     QTimer::singleShot(1000, m_helper, SLOT(handleSaveDialog()));
     QTest::keyClicks(m_mainWindow, "S", Qt::ControlModifier);
+}
+
+void TestCases::setGenderTest()
+{
+    // Add person.
+    auto person = new DiagramItem(DiagramItem::Person, nullptr);
+    m_mainWindow->getScene()->addItem(person);
+
+    // Select the person.
+    m_mainWindow->getScene()->selectAll();
+
+    // Does not work. There are no actions in the list.
+//    for (QAction *action: m_mainWindow->actions())
+//    {
+//        qDebug() << action->objectName();
+//        if (action->objectName() == "viewDetailsAction") {
+//            qDebug() << "View details action found.";
+//            break;
+//        }
+//    }
+
+    // Set up helper to close the window.
+    auto helper = new DetailsWindowHelper();
+    QTimer::singleShot(1000, helper, SLOT(setGenderTest()));
+
+    // Show the window.
+    QTest::keyClicks(m_mainWindow, "D", Qt::ControlModifier);
+
+    // Wait till helper is done.
+    while (!helper->isFinished())
+    {
+        QTest::qWait(1000);
+    }
+
+    // Check gender was set.
+    QCOMPARE(person->getGender(), QString("M"));
 }
 
 QTEST_MAIN(TestCases)
