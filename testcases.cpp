@@ -131,9 +131,11 @@ class TestCaseHelper : public QObject
     Q_OBJECT
 
 public:
+    TestCaseHelper();
     virtual ~TestCaseHelper();
     void setOpenFileName(const QString &fileName);
     void setSaveFileName(const QString &saveFileName);
+    bool isFinished() const;
 
 private slots:
     void handleOpenDialog();
@@ -142,7 +144,14 @@ private slots:
 private:
     QString m_openFileName;
     QString m_saveFileName;
+    bool m_finished;
 };
+
+TestCaseHelper::TestCaseHelper() :
+    m_finished(false)
+{
+
+}
 
 TestCaseHelper::~TestCaseHelper()
 {
@@ -164,6 +173,8 @@ void TestCaseHelper::handleOpenDialog()
         dialog->selectFile(m_openFileName);
         QTimer::singleShot(0, dialog, SLOT(accept()));
     }
+
+    m_finished = true;
 }
 
 
@@ -177,11 +188,18 @@ void TestCaseHelper::handleSaveDialog()
         dialog->selectFile(m_saveFileName);
         QTimer::singleShot(0, dialog, SLOT(accept()));
     }
+
+    m_finished = true;
 }
 
 void TestCaseHelper::setSaveFileName(const QString &saveFileName)
 {
-m_saveFileName = saveFileName;
+    m_saveFileName = saveFileName;
+}
+
+bool TestCaseHelper::isFinished() const
+{
+    return m_finished;
 }
 
 // =============================================================================
@@ -211,9 +229,10 @@ private slots:
     void defaultFillColorTest();
     void exportGedcomTest();
     void setDisplayNameTest();
+    void importGedcomTest();
 
 private slots:
-    void importGedcomTest();
+    void saveFillColorTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -500,7 +519,59 @@ void TestCases::importGedcomTest()
     QCOMPARE(person->getFirstName(), QString("Oupa"));
 
     // Debug.
-//    QTest::qWait(1000);
+    //    QTest::qWait(1000);
+}
+
+void TestCases::saveFillColorTest()
+{
+    // Create person.
+    auto person = new DiagramItem(DiagramItem::Person, nullptr);
+
+    // Set the fill color.
+    QBrush newBrush(Qt::blue);
+    person->setBrush(newBrush);
+
+    // Add person to scene.
+    m_mainWindow->getScene()->addItem(person);
+
+    // Save diagram.
+    QString diagramFileName = "save-fill-color-test.xml";
+    m_helper = new TestCaseHelper();
+    m_helper->setSaveFileName(diagramFileName);
+    QTimer::singleShot(1000, m_helper, SLOT(handleSaveDialog()));
+    QTest::keyClicks(m_mainWindow, "S", Qt::ControlModifier);
+
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - save-fill-color-test.xml"));
+
+    // Get the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("newAction");
+    QVERIFY(action);
+
+    // Create a new diagram.
+    action->trigger();
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram"));
+
+    // Open the saved file.
+    m_helper->setOpenFileName(diagramFileName);
+
+    action = m_mainWindow->findChild<QAction*>("openAction");
+    QVERIFY(action);
+
+    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
+    action->trigger();
+
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - ") + diagramFileName);
+
+    // Get the person.
+    QList<QGraphicsItem *> items = m_mainWindow->getScene()->items();
+    QVERIFY(items.size() >= 1);
+
+    QGraphicsItem *graphicsItem = items.last();
+    person = qgraphicsitem_cast<DiagramItem *>(graphicsItem);
+    QVERIFY(person);
+
+    // Check the fill color.
+    QVERIFY(person->brush() == newBrush);
 }
 
 QTEST_MAIN(TestCases)
