@@ -210,9 +210,10 @@ private slots:
     void thumbnailTest();
     void defaultFillColorTest();
     void exportGedcomTest();
+    void setDisplayNameTest();
 
 private slots:
-    void setDisplayNameTest();
+    void importGedcomTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -469,6 +470,37 @@ void TestCases::setDisplayNameTest()
 
     // Check display name was set.
     QCOMPARE(person->textItem()->text(), QString("New Display Name"));
+}
+
+void TestCases::importGedcomTest()
+{
+    // Get the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionImportGedcomFile");
+    QVERIFY(action);
+
+    // Create the helper.
+    m_helper = new TestCaseHelper();
+    m_helper->setOpenFileName("import-gedcom-test.ged");
+
+    // Import the GEDCOM file.
+    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
+    action->trigger();
+
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - import-gedcom-test.ged"));
+
+    // Get the person.
+    QList<QGraphicsItem *> items = m_mainWindow->getScene()->items();
+    QVERIFY(items.size() >= 1);
+
+    QGraphicsItem *graphicsItem = items.last();
+    DiagramItem *person = qgraphicsitem_cast<DiagramItem *>(graphicsItem);
+    QVERIFY(person);
+
+    // Check the name.
+    QCOMPARE(person->getFirstName(), QString("Oupa"));
+
+    // Debug.
+//    QTest::qWait(1000);
 }
 
 QTEST_MAIN(TestCases)
