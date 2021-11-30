@@ -181,6 +181,7 @@ private slots:
     void testBug1();
     void volumeTest();
     void setGenderTest();
+    void thumbnailTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -328,6 +329,41 @@ void TestCases::setGenderTest()
 
     // Check gender was set.
     QCOMPARE(person->getGender(), QString("M"));
+}
+
+void TestCases::thumbnailTest()
+{
+    // Open the test file.
+    m_helper = new TestCaseHelper();
+    m_helper->setOpenFileName("thumbnail-test.xml");
+
+    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
+    QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
+
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - thumbnail-test.xml"));
+
+    // Get the person.
+    QList<QGraphicsItem *> items = m_mainWindow->getScene()->items();
+    QVERIFY(items.size() >= 1);
+
+    QGraphicsItem *graphicsItem = items.last();
+    DiagramItem *person = qgraphicsitem_cast<DiagramItem *>(graphicsItem);
+    QVERIFY(person);
+
+    // Check that the thumbnail is shown.
+    bool thumbnailShown = false;
+
+    QList<QGraphicsItem *> childItems = person->childItems();
+    for (auto childItem: childItems)
+    {
+        if (childItem->type() == QGraphicsPixmapItem::Type)
+        {
+            thumbnailShown = childItem->isVisible();
+            break;
+        }
+    }
+
+    QVERIFY(thumbnailShown);
 }
 
 QTEST_MAIN(TestCases)
