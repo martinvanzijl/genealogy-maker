@@ -184,9 +184,10 @@ private slots:
     void volumeTest();
     void setGenderTest();
     void thumbnailTest();
+    void defaultFillColorTest();
 
 private slots:
-    void defaultFillColorTest();
+    void exportGedcomTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -203,6 +204,9 @@ void TestCases::cleanup()
     // Performed after each test case.
     m_mainWindow->deleteLater();
     m_mainWindow = nullptr;
+
+    // Wait for window to be destroyed.
+    QTest::qWait(100);
 }
 
 void TestCases::init()
@@ -397,6 +401,32 @@ void TestCases::defaultFillColorTest()
 
     // Check the fill color.
     QVERIFY(person->brush() == QBrush(Qt::white));
+}
+
+void TestCases::exportGedcomTest()
+{
+    // Open the test file.
+    m_helper = new TestCaseHelper();
+    m_helper->setOpenFileName("export-gedcom-test.xml");
+
+    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
+    QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
+
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - export-gedcom-test.xml"));
+
+    // Get the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionExportGedcomFile");
+    QVERIFY(action);
+
+    // Export to GEDCOM.
+    const QString saveFileName = "export-gedcom-test.ged";
+    m_helper->setSaveFileName(saveFileName);
+    QTimer::singleShot(1000, m_helper, SLOT(handleSaveDialog()));
+    action->trigger();
+
+    // Check that the exported file exists.
+    QFile file(QString("save-files/") + saveFileName);
+    QVERIFY(file.exists());
 }
 
 QTEST_MAIN(TestCases)
