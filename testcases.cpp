@@ -174,6 +174,8 @@ public:
 private slots:
     void cleanup();
     void init();
+
+//private:
     void testNew();
     void testOpen();
     void testSave();
@@ -182,6 +184,9 @@ private slots:
     void volumeTest();
     void setGenderTest();
     void thumbnailTest();
+
+private slots:
+    void defaultFillColorTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -196,7 +201,7 @@ TestCases::~TestCases()
 void TestCases::cleanup()
 {
     // Performed after each test case.
-    delete m_mainWindow;
+    m_mainWindow->deleteLater();
     m_mainWindow = nullptr;
 }
 
@@ -364,6 +369,34 @@ void TestCases::thumbnailTest()
     }
 
     QVERIFY(thumbnailShown);
+}
+
+void TestCases::defaultFillColorTest()
+{
+    // Press the hotkey for adding a person.
+    QTest::keyClicks(m_mainWindow, "P");
+
+    // Allow hotkey to take effect.
+    QTest::qWait(500);
+
+    // Get the diagram widget.
+    auto views = m_mainWindow->getScene()->views();
+    QCOMPARE(views.size(), 1);
+    auto widget = views.first();
+
+    // Click on the diagram to create the person.
+    QTest::mouseClick(widget, Qt::LeftButton);
+
+    // Get the person.
+    QList<QGraphicsItem *> items = m_mainWindow->getScene()->items();
+    QVERIFY(items.size() >= 1);
+
+    QGraphicsItem *graphicsItem = items.last();
+    DiagramItem *person = qgraphicsitem_cast<DiagramItem *>(graphicsItem);
+    QVERIFY(person);
+
+    // Check the fill color.
+    QVERIFY(person->brush() == QBrush(Qt::white));
 }
 
 QTEST_MAIN(TestCases)
