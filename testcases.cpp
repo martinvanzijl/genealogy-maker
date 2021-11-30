@@ -25,6 +25,7 @@ public:
 
 public slots:
     void closeWindow();
+    void setDisplayNameTest();
     void setGenderTest();
 
 private:
@@ -57,6 +58,29 @@ void DetailsWindowHelper::closeWindow()
     {
         QTimer::singleShot(0, dialog, SLOT(accept()));
     }
+
+    // Set flag.
+    m_finished = true;
+}
+
+void DetailsWindowHelper::setDisplayNameTest()
+{
+    // Get the window.
+    QWidget *widget = QApplication::activeWindow();
+    DialogPersonDetails *dialog = dynamic_cast<DialogPersonDetails *>(widget);
+    QVERIFY(dialog);
+
+    // Get the edit box.
+    QLineEdit *lineEditName = dialog->findChild<QLineEdit*>("lineEditName");
+    QVERIFY(lineEditName);
+
+    // Set the display name.
+    lineEditName->setText("New Display Name");
+
+    // Save changes.
+    QPushButton *pushButtonSave = dialog->findChild<QPushButton*>("pushButtonSave");
+    QVERIFY(pushButtonSave);
+    pushButtonSave->click();
 
     // Set flag.
     m_finished = true;
@@ -185,9 +209,10 @@ private slots:
     void setGenderTest();
     void thumbnailTest();
     void defaultFillColorTest();
+    void exportGedcomTest();
 
 private slots:
-    void exportGedcomTest();
+    void setDisplayNameTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -202,6 +227,7 @@ TestCases::~TestCases()
 void TestCases::cleanup()
 {
     // Performed after each test case.
+    m_mainWindow->disconnect();
     m_mainWindow->deleteLater();
     m_mainWindow = nullptr;
 
@@ -313,16 +339,6 @@ void TestCases::setGenderTest()
     // Select the person.
     m_mainWindow->getScene()->selectAll();
 
-    // Does not work. There are no actions in the list.
-//    for (QAction *action: m_mainWindow->actions())
-//    {
-//        qDebug() << action->objectName();
-//        if (action->objectName() == "viewDetailsAction") {
-//            qDebug() << "View details action found.";
-//            break;
-//        }
-//    }
-
     // Set up helper to close the window.
     auto helper = new DetailsWindowHelper();
     QTimer::singleShot(1000, helper, SLOT(setGenderTest()));
@@ -427,6 +443,32 @@ void TestCases::exportGedcomTest()
     // Check that the exported file exists.
     QFile file(QString("save-files/") + saveFileName);
     QVERIFY(file.exists());
+}
+
+void TestCases::setDisplayNameTest()
+{
+    // Add person.
+    auto person = new DiagramItem(DiagramItem::Person, nullptr);
+    m_mainWindow->getScene()->addItem(person);
+
+    // Select the person.
+    m_mainWindow->getScene()->selectAll();
+
+    // Set up helper to close the window.
+    auto helper = new DetailsWindowHelper();
+    QTimer::singleShot(1000, helper, SLOT(setDisplayNameTest()));
+
+    // Show the person details window.
+    QTest::keyClicks(m_mainWindow, "D", Qt::ControlModifier);
+
+    // Wait till helper is done.
+    while (!helper->isFinished())
+    {
+        QTest::qWait(1000);
+    }
+
+    // Check display name was set.
+    QCOMPARE(person->textItem()->text(), QString("New Display Name"));
 }
 
 QTEST_MAIN(TestCases)

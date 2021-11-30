@@ -84,7 +84,8 @@ const int InsertArrowButton = 11;
 
 MainForm::MainForm(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainForm)
+    ui(new Ui::MainForm),
+    m_beingDestroyed(false)
 {
     ui->setupUi(this);
 
@@ -147,6 +148,7 @@ MainForm::MainForm(QWidget *parent) :
 
 MainForm::~MainForm()
 {
+    m_beingDestroyed = true;
     delete ui;
 }
 
@@ -840,6 +842,8 @@ void MainForm::moveToCenter()
 
 void MainForm::onItemTextEdited(QGraphicsItem *item)
 {
+    if (m_beingDestroyed) return;
+
     auto parent = item->parentItem();
 
     if (parent) {

@@ -267,6 +267,9 @@ private:
     QString m_appName;
 
     PreferencesWindow *preferencesWindow;
+
+    // Hack to avoid seg-faults.
+    bool m_beingDestroyed;
 };
 
 #endif // MAINFORM_H
