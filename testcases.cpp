@@ -231,9 +231,10 @@ private slots:
     void setDisplayNameTest();
     void importGedcomTest();
     void saveFillColorTest();
+//    void doubleClickToViewDetailsTest();
 
 private slots:
-//    void doubleClickToViewDetailsTest();
+    void deletePersonTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -618,6 +619,74 @@ void TestCases::saveFillColorTest()
 //    // Check that the window was shown.
 //    QVERIFY(helper->isFinished());
 //}
+
+void TestCases::deletePersonTest()
+{
+    // Open the test file.
+    m_helper = new TestCaseHelper();
+    m_helper->setOpenFileName("delete-person-test.xml");
+
+    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
+    QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
+
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - delete-person-test.xml"));
+
+    // Get the persons.
+    DiagramItem *pa = nullptr;
+    DiagramItem *oupa = nullptr;
+
+    DiagramScene *scene = m_mainWindow->getScene();
+    QList<QGraphicsItem *> items = scene->items();
+
+    for (auto item: items)
+    {
+        if (item->type() == DiagramItem::Type)
+        {
+            DiagramItem *person = qgraphicsitem_cast<DiagramItem *>(item);
+            if (person->name() == "Pa")
+            {
+                pa = person;
+            }
+            else if (person->name() == "Oupa")
+            {
+                oupa = person;
+            }
+        }
+    }
+
+    QVERIFY(pa);
+    QVERIFY(oupa);
+
+    // Select the person.
+    oupa->setSelected(true);
+
+    // Get the action.
+    QAction *deleteAction = m_mainWindow->findChild<QAction*>("deleteAction");
+    QVERIFY(deleteAction);
+
+    // Delete the person.
+    QCOMPARE(oupa->scene(), scene);
+    deleteAction->trigger();
+    QCOMPARE(oupa->scene(), nullptr);
+
+    // Check the relationship was deleted, too.
+    QVERIFY(pa->getArrows().empty());
+
+    // Wait before using the hotkey.
+    QTest::qWait(500);
+
+    // Undo the deletion.
+    QTest::keyClicks(m_mainWindow, "Z", Qt::ControlModifier);
+
+    // Allow the hotkey to take effect.
+    QTest::qWait(500);
+
+    // Check the person was restored.
+    QCOMPARE(oupa->scene(), scene);
+
+    // Check the relationship was restored, too.
+    QVERIFY(!pa->getArrows().empty());
+}
 
 QTEST_MAIN(TestCases)
 #include "testcases.moc"
