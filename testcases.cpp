@@ -230,9 +230,10 @@ private slots:
     void exportGedcomTest();
     void setDisplayNameTest();
     void importGedcomTest();
+    void saveFillColorTest();
 
 private slots:
-    void saveFillColorTest();
+//    void doubleClickToViewDetailsTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -573,6 +574,50 @@ void TestCases::saveFillColorTest()
     // Check the fill color.
     QVERIFY(person->brush() == newBrush);
 }
+
+//void TestCases::doubleClickToViewDetailsTest()
+//{
+//    // Get the diagram widget.
+//    auto views = m_mainWindow->getScene()->views();
+//    QCOMPARE(views.size(), 1);
+//    auto widget = views.first();
+
+//    // Press the hotkey for adding a person.
+//    QTest::keyClicks(m_mainWindow, "P");
+
+//    // Allow hotkey to take effect.
+//    QTest::qWait(500);
+
+//    // Click on the diagram to create the person.
+//    QTest::mouseClick(widget, Qt::LeftButton);
+
+//    // Get the person.
+//    QList<QGraphicsItem *> items = m_mainWindow->getScene()->items();
+//    QVERIFY(items.size() >= 1);
+
+//    QGraphicsItem *graphicsItem = items.last();
+//    DiagramItem *person = qgraphicsitem_cast<DiagramItem *>(graphicsItem);
+//    QVERIFY(person);
+
+//    // Press Enter key to finish editing name.
+//    QTest::keyClick(widget, Qt::Key_Return);
+
+//    // Wait for this to take effect.
+//    QTest::qWait(500);
+
+//    // Set up helper to close the window.
+//    auto helper = new DetailsWindowHelper();
+//    QTimer::singleShot(1000, helper, SLOT(closeWindow()));
+
+//    // Double-click on the diagram to view the person's details.
+//    qDebug() << "Trying to double click.";
+
+//    // Does not work.
+//    QTest::mouseDClick(widget, Qt::LeftButton);
+
+//    // Check that the window was shown.
+//    QVERIFY(helper->isFinished());
+//}
 
 QTEST_MAIN(TestCases)
 #include "testcases.moc"
