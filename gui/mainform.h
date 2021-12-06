@@ -151,6 +151,8 @@ private slots:
     void onPersonDoubleClicked(DiagramItem *person);
     void onItemDragDropFinished();
     void onPreferencesChanged();
+    void updateRecentFileActions();
+    void openRecentFile();
 
     void showHelpContents();
 
@@ -186,7 +188,19 @@ private:
     void addPythonPath(QProcess *process) const;
     QString getPythonPath() const;
     void styleToolButton(QToolButton *button) const;
+    void open(const QString &fileName);
 
+    // "Recent Files" menu.
+    static bool hasRecentFiles();
+    void prependToRecentFiles(const QString &fileName);
+    void setRecentFilesVisible(bool visible);
+
+    enum { MaxRecentFiles = 5 };
+
+    QAction *recentFileActs[MaxRecentFiles];
+    QAction *recentFileSubMenuAct;
+
+    // Fields.
     DiagramScene *scene;
     QGraphicsView *view;
 

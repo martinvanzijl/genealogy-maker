@@ -144,6 +144,19 @@ MainForm::MainForm(QWidget *parent) :
     QCoreApplication::setOrganizationDomain("martinvz.com");
     QCoreApplication::setApplicationName("Genealogy Maker");
     scene->loadPreferences();
+
+    // Create "Recent Files" menu.
+    QMenu *recentMenu = new QMenu(tr("Recent Files"), this);
+    ui->menuFile->insertMenu(ui->saveAction, recentMenu);
+    connect(recentMenu, SIGNAL(aboutToShow()), this, SLOT(updateRecentFileActions()));
+    recentFileSubMenuAct = recentMenu->menuAction();
+
+    for (int i = 0; i < MaxRecentFiles; ++i) {
+        recentFileActs[i] = recentMenu->addAction(QString(), this, SLOT(openRecentFile()));
+        recentFileActs[i]->setVisible(false);
+    }
+
+    setRecentFilesVisible(hasRecentFiles());
 }
 
 MainForm::~MainForm()
@@ -441,11 +454,7 @@ void MainForm::newDiagram()
 
 void MainForm::open()
 {
-    // Ask whether to save unsaved changes.
-    if (!maybeSave()) {
-        return;
-    }
-
+    // Choose file to open.
     QString fileName =
             QFileDialog::getOpenFileName(this, tr("Open Genealogy File"),
                                          saveFileDir(),
@@ -454,31 +463,8 @@ void MainForm::open()
     if (fileName.isEmpty())
         return;
 
-    QFile file(fileName);
-    if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        QMessageBox::warning(this, tr("Genealogy Maker"),
-                             tr("Cannot read file %1:\n%2.")
-                             .arg(fileName)
-                             .arg(file.errorString()));
-        return;
-    }
-
-    scene->open(&file);
-
-    // Scroll to first item.
-    if (!scene->isEmpty()) {
-        view->centerOn(scene->firstItem());
-    }
-
-    // Store save file.
-    m_saveFileName = fileName;
-
-    // Update window title.
-    updateWindowTitle();
-
-    // Clear undo stack.
-    undoStack->clear();
-    undoStack->setClean();
+    // Try to open the file.
+    open(fileName);
 }
 
 void MainForm::save()
@@ -1218,6 +1204,119 @@ void MainForm::styleToolButton(QToolButton *button) const
             "}";
     styleSheet += extraStyle;
     button->setStyleSheet(styleSheet);
+}
+
+void MainForm::open(const QString &fileName)
+{
+    // Ask whether to save unsaved changes.
+    if (!maybeSave()) {
+        return;
+    }
+
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(this, tr("Genealogy Maker"),
+                             tr("Cannot read file %1:\n%2.")
+                             .arg(fileName)
+                             .arg(file.errorString()));
+        return;
+    }
+
+    scene->open(&file);
+
+    // Scroll to first item.
+    if (!scene->isEmpty()) {
+        view->centerOn(scene->firstItem());
+    }
+
+    // Store save file.
+    m_saveFileName = fileName;
+
+    // Update window title.
+    updateWindowTitle();
+
+    // Clear undo stack.
+    undoStack->clear();
+    undoStack->setClean();
+
+    // Update "Recent Files" menu.
+    prependToRecentFiles(fileName);
+}
+
+static inline QString recentFilesKey() { return QStringLiteral("recentFileList"); }
+static inline QString fileKey() { return QStringLiteral("file"); }
+
+static QStringList readRecentFiles(QSettings &settings)
+{
+    QStringList result;
+    const int count = settings.beginReadArray(recentFilesKey());
+    for (int i = 0; i < count; ++i) {
+        settings.setArrayIndex(i);
+        result.append(settings.value(fileKey()).toString());
+    }
+    settings.endArray();
+    return result;
+}
+
+static void writeRecentFiles(const QStringList &files, QSettings &settings)
+{
+    const int count = files.size();
+    settings.beginWriteArray(recentFilesKey());
+    for (int i = 0; i < count; ++i) {
+        settings.setArrayIndex(i);
+        settings.setValue(fileKey(), files.at(i));
+    }
+    settings.endArray();
+}
+
+void MainForm::updateRecentFileActions()
+{
+    QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
+
+    const QStringList recentFiles = readRecentFiles(settings);
+    const int count = qMin(int(MaxRecentFiles), recentFiles.size());
+    int i = 0;
+    for ( ; i < count; ++i) {
+        const QString fileName = QFileInfo(recentFiles.at(i)).fileName();
+        recentFileActs[i]->setText(tr("&%1 %2").arg(i + 1).arg(fileName));
+        recentFileActs[i]->setData(recentFiles.at(i));
+        recentFileActs[i]->setVisible(true);
+    }
+    for ( ; i < MaxRecentFiles; ++i)
+        recentFileActs[i]->setVisible(false);
+}
+
+void MainForm::openRecentFile()
+{
+    if (const QAction *action = qobject_cast<const QAction *>(sender()))
+        open(action->data().toString());
+}
+
+bool MainForm::hasRecentFiles()
+{
+    QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
+    const int count = settings.beginReadArray(recentFilesKey());
+    settings.endArray();
+    return count > 0;
+}
+
+void MainForm::prependToRecentFiles(const QString &fileName)
+{
+    QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
+
+    const QStringList oldRecentFiles = readRecentFiles(settings);
+    QStringList recentFiles = oldRecentFiles;
+    recentFiles.removeAll(fileName);
+    recentFiles.prepend(fileName);
+    if (oldRecentFiles != recentFiles)
+        writeRecentFiles(recentFiles, settings);
+
+    setRecentFilesVisible(!recentFiles.isEmpty());
+}
+
+void MainForm::setRecentFilesVisible(bool visible)
+{
+    recentFileSubMenuAct->setVisible(visible);
 }
 
 QWidget *MainForm::createCellWidget(const QString &text, DiagramItem::DiagramType type, QKeySequence shortcut)
