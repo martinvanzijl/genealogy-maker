@@ -1346,6 +1346,7 @@ QWidget *MainForm::createCellWidget(const QString &text, DiagramItem::DiagramTyp
     button->setShortcut(shortcut);
     buttonGroup->addButton(button, int(type));
     connect(button, SIGNAL(dragDropFinished()), this, SLOT(onItemDragDropFinished()));
+    button->setObjectName(QString("buttonAdd") + text);
 
     // Set button style to indicate clearly when it is active.
     styleToolButton(button);

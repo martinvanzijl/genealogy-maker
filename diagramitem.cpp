@@ -102,6 +102,10 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
         m_textItem = new DiagramTextItem(this);
         m_textItem->setPlainText("New Person");
         fitToText();
+
+        // Set default name fields.
+        m_firstName = "New";
+        m_lastName = "Person";
     }
     else {
         m_textItem = nullptr;

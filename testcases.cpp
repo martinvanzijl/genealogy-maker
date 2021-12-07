@@ -235,9 +235,10 @@ private slots:
     void deletePersonTest();
     void treeViewTest();
     void importGedcomThenSaveTest();
+//    void importGedcomTreeViewTest();
 
 private slots:
-//    void importGedcomTreeViewTest();
+//    void dragAndDropNewPersonTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -797,6 +798,31 @@ void TestCases::importGedcomThenSaveTest()
 
 //    // Check that the viewport moved.
 //    QVERIFY(transformFirstPerson != transformSecondPerson);
+//}
+
+// Does not work yet. I cannot seem to simulate a drag and drop action.
+//void TestCases::dragAndDropNewPersonTest()
+//{
+//    // Get the button.
+//    QToolButton *button = m_mainWindow->findChild<QToolButton*>("buttonAddPerson");
+//    QVERIFY(button);
+
+//    // Get the diagram widget.
+//    auto views = m_mainWindow->getScene()->views();
+//    auto diagramWidget = views.first();
+
+//    // Press the button.
+//    QTest::mousePress(button, Qt::LeftButton);
+
+//    // Wait for the drag to start.
+//    QTest::qWait(500);
+
+//    // Move the mouse.
+//    //QTest::mouseMove(m_mainWindow, QPoint(300, 300));
+
+//    // Press the button.
+////    QTest::mouseRelease(button, Qt::LeftButton); // Does not work.
+////    QTest::mouseClick(diagramWidget, Qt::LeftButton); // Does not work.
 //}
 
 DiagramItem *TestCases::clickToAddPerson()
