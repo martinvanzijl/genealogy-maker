@@ -233,9 +233,10 @@ private slots:
     void saveFillColorTest();
 //    void doubleClickToViewDetailsTest();
     void deletePersonTest();
+    void treeViewTest();
 
 private slots:
-    void treeViewTest();
+    void importGedcomThenSaveTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -510,7 +511,7 @@ void TestCases::importGedcomTest()
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
     action->trigger();
 
-    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - import-gedcom-test.ged"));
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
 
     // Get the person.
     QList<QGraphicsItem *> items = m_mainWindow->getScene()->items();
@@ -730,6 +731,34 @@ void TestCases::treeViewTest()
 
     // Check that the entry is renamed.
     QCOMPARE(treeViewItem->text(0), QString("New Display Name"));
+}
+
+void TestCases::importGedcomThenSaveTest()
+{
+    // Get the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionImportGedcomFile");
+    QVERIFY(action);
+
+    // Create the helper.
+    m_helper = new TestCaseHelper();
+    m_helper->setOpenFileName("import-gedcom-test.ged");
+
+    // Import the GEDCOM file.
+    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
+    action->trigger();
+
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
+
+    // Save the diagram.
+    m_helper = new TestCaseHelper();
+    m_helper->setSaveFileName("saved-diagram.xml");
+    QTimer::singleShot(1000, m_helper, SLOT(handleSaveDialog()));
+
+    action = m_mainWindow->findChild<QAction*>("saveAction");
+    action->trigger();
+
+    // Check that diagram was saved correctly.
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - saved-diagram.xml"));
 }
 
 DiagramItem *TestCases::clickToAddPerson()

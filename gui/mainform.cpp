@@ -85,7 +85,8 @@ const int InsertArrowButton = 11;
 MainForm::MainForm(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainForm),
-    m_beingDestroyed(false)
+    m_beingDestroyed(false),
+    m_gedcomWasImported(false)
 {
     ui->setupUi(this);
 
@@ -498,6 +499,9 @@ void MainForm::save()
      // Save to file.
      scene->save(&file);
 
+     // Reset flag.
+     m_gedcomWasImported = false;
+
      // Update window title.
      updateWindowTitle();
 
@@ -536,6 +540,9 @@ void MainForm::saveAs()
 
      // Save to file.
      scene->save(&file);
+
+     // Set flag.
+     m_gedcomWasImported = false;
 
      // Update window title.
      updateWindowTitle();
@@ -766,6 +773,11 @@ void MainForm::updateWindowTitle()
     else
     {
         title += "New Diagram";
+
+        if (m_gedcomWasImported)
+        {
+            title += " (Imported from GEDCOM)";
+        }
     }
 
     // "Unsaved changes" indicator.
@@ -1636,8 +1648,11 @@ void MainForm::on_actionImportGedcomFile_triggered()
         view->centerOn(scene->firstItem());
     }
 
-    // Store save file.
-    m_saveFileName = fileName;
+    // Reset save file.
+    m_saveFileName = "";
+
+    // Set flag.
+    m_gedcomWasImported = true;
 
     // Update window title.
     updateWindowTitle();

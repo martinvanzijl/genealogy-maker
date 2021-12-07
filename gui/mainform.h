@@ -284,6 +284,9 @@ private:
 
     // Hack to avoid seg-faults.
     bool m_beingDestroyed;
+
+    // Hack to flag that a GEDCOM file was just imported.
+    bool m_gedcomWasImported;
 };
 
 #endif // MAINFORM_H
