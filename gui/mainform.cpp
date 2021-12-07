@@ -916,6 +916,7 @@ void MainForm::createToolBox()
     treeViewLayout->addWidget(tree);
     QWidget *treeViewWidget = new QWidget;
     treeViewWidget->setLayout(treeViewLayout);
+    tree->setObjectName("treeViewPersons");
 
     toolBox = new QToolBox;
     toolBox->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Ignored));

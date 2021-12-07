@@ -81,6 +81,11 @@ void DiagramTextItem::startEditing()
     setTextCursor(cursor);
 }
 
+void DiagramTextItem::emitChangedSignal()
+{
+    emit textEdited(this);
+}
+
 QVariant DiagramTextItem::itemChange(GraphicsItemChange change,
                      const QVariant &value)
 {

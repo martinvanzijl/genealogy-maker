@@ -174,6 +174,7 @@ void DiagramItem::setName(QString value)
     if (m_textItem) {
         m_textItem->setPlainText(value);
         fitToText();
+        m_textItem->emitChangedSignal();
     }
 }
 

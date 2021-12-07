@@ -75,6 +75,7 @@ public:
     int type() const override { return Type; }
     QString text() const;
     void startEditing();
+    void emitChangedSignal();
 
 signals:
     void lostFocus(DiagramTextItem *item);

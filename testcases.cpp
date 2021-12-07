@@ -232,13 +232,16 @@ private slots:
     void importGedcomTest();
     void saveFillColorTest();
 //    void doubleClickToViewDetailsTest();
+    void deletePersonTest();
 
 private slots:
-    void deletePersonTest();
+    void treeViewTest();
 
 private:
     TestCaseHelper *m_helper;
     MainForm *m_mainWindow;
+
+    DiagramItem *clickToAddPerson();
 };
 
 TestCases::~TestCases()
@@ -686,6 +689,81 @@ void TestCases::deletePersonTest()
 
     // Check the relationship was restored, too.
     QVERIFY(!pa->getArrows().empty());
+}
+
+void TestCases::treeViewTest()
+{
+    // Add person.
+    DiagramItem *person = clickToAddPerson();
+
+    // Get the tree-view.
+    QTreeWidget *treeView = m_mainWindow->findChild<QTreeWidget*>("treeViewPersons");
+    QVERIFY(treeView);
+
+    // Check that tree-view is updated.
+    QCOMPARE(treeView->model()->rowCount(), 1);
+
+    // Check that entry is named correctly.
+    auto treeViewItem = treeView->topLevelItem(0);
+    QCOMPARE(treeViewItem->text(0), QString("New Person"));
+
+    // Select the person.
+    m_mainWindow->getScene()->selectAll();
+
+    // Set up helper to close the window.
+    auto helper = new DetailsWindowHelper();
+    QTimer::singleShot(1000, helper, SLOT(setDisplayNameTest()));
+
+    // Show the person details window.
+    QAction *action = m_mainWindow->findChild<QAction*>("viewDetailsAction");
+    QVERIFY(action);
+    action->trigger();
+
+    // Wait till helper is done.
+    while (!helper->isFinished())
+    {
+        QTest::qWait(1000);
+    }
+
+    // Check display name was set.
+    QCOMPARE(person->textItem()->text(), QString("New Display Name"));
+
+    // Check that the entry is renamed.
+    QCOMPARE(treeViewItem->text(0), QString("New Display Name"));
+}
+
+DiagramItem *TestCases::clickToAddPerson()
+{
+    // Get the diagram widget.
+    auto views = m_mainWindow->getScene()->views();
+//    QCOMPARE(views.size(), 1);
+    auto widget = views.first();
+
+    // Press the hotkey for adding a person.
+    QTest::keyClicks(m_mainWindow, "P");
+
+    // Allow hotkey to take effect.
+    QTest::qWait(500);
+
+    // Click on the diagram to create the person.
+    QTest::mouseClick(widget, Qt::LeftButton);
+
+    // Get the person.
+    QList<QGraphicsItem *> items = m_mainWindow->getScene()->items();
+//    QVERIFY(items.size() >= 1);
+
+    QGraphicsItem *graphicsItem = items.last();
+    DiagramItem *person = qgraphicsitem_cast<DiagramItem *>(graphicsItem);
+//    QVERIFY(person);
+
+    // Press Enter key to finish editing name.
+    QTest::keyClick(widget, Qt::Key_Return);
+
+    // Wait for this to take effect.
+    QTest::qWait(500);
+
+    // Return.
+    return person;
 }
 
 QTEST_MAIN(TestCases)
