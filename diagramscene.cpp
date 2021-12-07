@@ -826,7 +826,15 @@ void DiagramScene::parseItemElement(const QDomElement &element)
     auto firstName = element.attribute("first_name");
     auto lastName = element.attribute("last_name");
     auto name = element.attribute("name");
-    auto id = QUuid(element.attribute("id"));
+
+    QUuid id;
+    if (element.hasAttribute("id")) {
+        id = QUuid(element.attribute("id"));
+    }
+    else {
+        id = QUuid::createUuid();
+    }
+
     auto bio = element.attribute("bio");
     auto placeOfBirth = element.attribute("place_of_birth");
     auto countryOfBirth = element.attribute("country_of_birth");

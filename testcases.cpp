@@ -234,15 +234,17 @@ private slots:
 //    void doubleClickToViewDetailsTest();
     void deletePersonTest();
     void treeViewTest();
+    void importGedcomThenSaveTest();
 
 private slots:
-    void importGedcomThenSaveTest();
+//    void importGedcomTreeViewTest();
 
 private:
     TestCaseHelper *m_helper;
     MainForm *m_mainWindow;
 
     DiagramItem *clickToAddPerson();
+    void importGedcomFile(const QString &fileName);
 };
 
 TestCases::~TestCases()
@@ -761,6 +763,42 @@ void TestCases::importGedcomThenSaveTest()
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - saved-diagram.xml"));
 }
 
+// Does not work yet, since I cannot seem to make a double-click event work.
+//void TestCases::importGedcomTreeViewTest()
+//{
+//    // Import GEDCOM file.
+//    importGedcomFile("tree-view-test.ged");
+
+//    // Get the tree-view.
+//    QTreeWidget *treeView = m_mainWindow->findChild<QTreeWidget*>("treeViewPersons");
+//    QVERIFY(treeView);
+
+//    // Double-click the first person.
+//    auto item = treeView->topLevelItem(0);
+//    auto pos = treeView->visualItemRect(item).center();
+//    QTest::mouseDClick(treeView, Qt::LeftButton, Qt::KeyboardModifiers(), pos);
+
+//    // Get the diagram view.
+//    auto views = m_mainWindow->getScene()->views();
+//    auto diagramWidget = views.first();
+
+//    // Check that the first person is in view.
+//    auto transformFirstPerson = diagramWidget->viewportTransform();
+//    qDebug() << transformFirstPerson.dx() << transformFirstPerson.dy();
+
+//    // Double-click the second person.
+//    item = treeView->topLevelItem(1);
+//    pos = treeView->visualItemRect(item).center();
+//    QTest::mouseDClick(treeView, Qt::LeftButton, Qt::KeyboardModifiers(), pos);
+
+//    // Check that the second person is in view.
+//    auto transformSecondPerson= diagramWidget->viewportTransform();
+//    qDebug() << transformSecondPerson.dx() << transformSecondPerson.dy();
+
+//    // Check that the viewport moved.
+//    QVERIFY(transformFirstPerson != transformSecondPerson);
+//}
+
 DiagramItem *TestCases::clickToAddPerson()
 {
     // Get the diagram widget.
@@ -793,6 +831,23 @@ DiagramItem *TestCases::clickToAddPerson()
 
     // Return.
     return person;
+}
+
+void TestCases::importGedcomFile(const QString &fileName)
+{
+    // Get the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionImportGedcomFile");
+//    QVERIFY(action);
+
+    // Create the helper.
+    m_helper = new TestCaseHelper();
+    m_helper->setOpenFileName(fileName);
+
+    // Import the GEDCOM file.
+    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
+    action->trigger();
+
+//    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
 }
 
 QTEST_MAIN(TestCases)
