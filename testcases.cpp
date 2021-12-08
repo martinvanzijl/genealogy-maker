@@ -236,9 +236,10 @@ private slots:
     void treeViewTest();
     void importGedcomThenSaveTest();
 //    void importGedcomTreeViewTest();
+//    void dragAndDropNewPersonTest();
 
 private slots:
-//    void dragAndDropNewPersonTest();
+    void windowTitleTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -246,6 +247,7 @@ private:
 
     DiagramItem *clickToAddPerson();
     void importGedcomFile(const QString &fileName);
+    void openTestFile(const QString &fileName);
 };
 
 TestCases::~TestCases()
@@ -825,6 +827,38 @@ void TestCases::importGedcomThenSaveTest()
 ////    QTest::mouseClick(diagramWidget, Qt::LeftButton); // Does not work.
 //}
 
+void TestCases::windowTitleTest()
+{
+    // Check initial title.
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram"));
+
+    // Import GEDCOM.
+    importGedcomFile("import-gedcom-test.ged");
+
+    // Check title.
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
+
+    // Create new diagram.
+    QAction *action = m_mainWindow->findChild<QAction*>("newAction");
+    QVERIFY(action);
+    action->trigger();
+
+    // Check title.
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram"));
+
+    // Import GEDCOM.
+    importGedcomFile("import-gedcom-test.ged");
+
+    // Check title.
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
+
+    // Open another diagram.
+    openTestFile("van-zijl-new.xml");
+
+    // Check title.
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - van-zijl-new.xml"));
+}
+
 DiagramItem *TestCases::clickToAddPerson()
 {
     // Get the diagram widget.
@@ -874,6 +908,21 @@ void TestCases::importGedcomFile(const QString &fileName)
     action->trigger();
 
 //    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
+}
+
+void TestCases::openTestFile(const QString &fileName)
+{
+    // Get the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("openAction");
+//    QVERIFY(action);
+
+    // Create the helper.
+    m_helper = new TestCaseHelper();
+    m_helper->setOpenFileName(fileName);
+
+    // Open the file.
+    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
+    action->trigger();
 }
 
 QTEST_MAIN(TestCases)

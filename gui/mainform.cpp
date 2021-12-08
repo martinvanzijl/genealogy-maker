@@ -446,6 +446,9 @@ void MainForm::newDiagram()
     // Clear save file name.
     m_saveFileName.clear();
 
+    // Reset flag.
+    m_gedcomWasImported = false;
+
     // Update window title.
     updateWindowTitle();
 
