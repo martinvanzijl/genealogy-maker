@@ -3,6 +3,7 @@
 
 #include "diagramitem.h"
 #include "diagramscene.h"
+#include "marriageitem.h"
 #include "gui/dialogpersondetails.h"
 #include "gui/mainform.h"
 
@@ -237,9 +238,12 @@ private slots:
     void importGedcomThenSaveTest();
 //    void importGedcomTreeViewTest();
 //    void dragAndDropNewPersonTest();
+    void windowTitleTest();
 
 private slots:
-    void windowTitleTest();
+    void testLongName();
+    void testLongNameMarriage();
+    void testRenameWhileMarried();
 
 private:
     TestCaseHelper *m_helper;
@@ -859,6 +863,70 @@ void TestCases::windowTitleTest()
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - van-zijl-new.xml"));
 }
 
+void TestCases::testLongName()
+{
+    // Create person.
+    DiagramItem *person = clickToAddPerson();
+
+    // Get original size.
+    QString originalName = person->name();
+    auto originalRect = person->boundingRect();
+
+    // Set name.
+    person->setName("This Should Cause the Box to Expand");
+
+    // Check that name fits in box.
+    int boxWidth = person->boundingRect().width();
+    int textWidth = person->textItem()->boundingRect().width();
+
+    QVERIFY(boxWidth >= textWidth);
+
+    // Undo. Check original box is restored.
+    person->setName(originalName);
+
+    QCOMPARE(person->boundingRect(), originalRect);
+}
+
+void TestCases::testLongNameMarriage()
+{
+    // Create people.
+    DiagramItem *husband = clickToAddPerson();
+    DiagramItem *wife = clickToAddPerson();
+
+    // Set the names.
+    husband->setName("HUSBAND: This Should Cause the Box to Expand");
+    wife->setName("WIFE: This is Another Very Long Name");
+
+    // Marry the people.
+    husband->marryTo(wife);
+
+    // Check the positions.
+    MarriageItem *marriageItem = husband->getMarriageItem();
+    QVERIFY(marriageItem);
+    QCOMPARE(marriageItem->x(), husband->boundingRect().width() / 2 - marriageItem->boundingRect().width() / 2);
+    QCOMPARE(wife->x() - wife->boundingRect().width() / 2, husband->x() + husband->boundingRect().width() / 2);
+}
+
+void TestCases::testRenameWhileMarried()
+{
+    // Create people.
+    DiagramItem *husband = clickToAddPerson();
+    DiagramItem *wife = clickToAddPerson();
+
+    // Marry the people.
+    husband->marryTo(wife);
+
+    // Set the names.
+    husband->setName("HUSBAND: This Should Cause the Box to Expand");
+    wife->setName("WIFE: This is Another Very Long Name");
+
+    // Check the positions.
+    MarriageItem *marriageItem = husband->getMarriageItem();
+    QVERIFY(marriageItem);
+    QCOMPARE(marriageItem->x(), husband->boundingRect().width() / 2 - marriageItem->boundingRect().width() / 2);
+    QCOMPARE(wife->x() - wife->boundingRect().width() / 2, husband->x() + husband->boundingRect().width() / 2);
+}
+
 DiagramItem *TestCases::clickToAddPerson()
 {
     // Get the diagram widget.
@@ -879,8 +947,12 @@ DiagramItem *TestCases::clickToAddPerson()
     QList<QGraphicsItem *> items = m_mainWindow->getScene()->items();
 //    QVERIFY(items.size() >= 1);
 
-    QGraphicsItem *graphicsItem = items.last();
+//    QGraphicsItem *graphicsItem = items.last();
+    QGraphicsItem *textItem = items.first();
+    Q_ASSERT(textItem);
+    QGraphicsItem *graphicsItem = textItem->parentItem();
     DiagramItem *person = qgraphicsitem_cast<DiagramItem *>(graphicsItem);
+    Q_ASSERT(person);
 //    QVERIFY(person);
 
     // Press Enter key to finish editing name.

@@ -151,6 +151,9 @@ public:
     void setGender(const QString &gender);
     bool isGenderKnown() const;
 
+    void onShapeChanged();
+    void setMarriageItemPosition();
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;

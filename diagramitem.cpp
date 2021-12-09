@@ -66,9 +66,14 @@
 DiagramItem *DiagramItem::m_doubleClickedItem = nullptr;
 static bool m_showThumbnailByDefault = false;
 
+static int DEFAULT_WIDTH = 200;
+
 DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
              QGraphicsItem *parent)
     : QGraphicsPolygonItem(parent),
+      m_spouse(nullptr),
+      m_movedBySpouse(false),
+      m_marriageItem(nullptr),
       m_thumbnail(nullptr)
 {
     myDiagramType = diagramType;
@@ -80,7 +85,7 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     case Person:
     {
         int height = 25;
-        int width = 100;
+        int width = DEFAULT_WIDTH / 2;
         myPolygon << QPointF(-width, -height) << QPointF(width, -height)
                   << QPointF(width, height) << QPointF(-width, height)
                   << QPointF(-width, -height);
@@ -110,11 +115,6 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
     else {
         m_textItem = nullptr;
     }
-
-    // Set marriage fields.
-    m_spouse = nullptr;
-    m_movedBySpouse = false;
-    m_marriageItem = nullptr;
 
     // Set default dates.
     m_dateOfBirth = defaultDateOfBirth();
@@ -205,11 +205,10 @@ void DiagramItem::marryTo(DiagramItem *spouse)
 
     // Add "wedding ring".
     auto ring = new MarriageItem(this);
-    ring->setX(boundingRect().width() / 2.0 - ring->boundingRect().width() / 2.0);
-    ring->setY(-ring->boundingRect().height() / 2.0);
+    m_marriageItem = ring;
+    setMarriageItemPosition();
     ring->setPersonLeft(this);
     ring->setPersonRight(spouse);
-    m_marriageItem = ring;
     m_spouse->m_marriageItem = ring;
 
     // Move above spouse so that ring is always visible.
@@ -347,17 +346,19 @@ void DiagramItem::updateSpousePosition()
     {
         m_spouse->m_movedBySpouse = true; // Avoid infinite loop.
 
+        int offset = (boundingRect().width() + m_spouse->boundingRect().width()) / 2;
+
         if (m_spousePosition == SpouseToLeft)
         {
             // Spouse is to left.
-            auto spouseX = x() - boundingRect().width();
+            auto spouseX = x() - offset;
             auto spouseY = y();
             m_spouse->setPos(spouseX, spouseY);
         }
         else
         {
             // Spouse is to right.
-            auto spouseX = x() + boundingRect().width();
+            auto spouseX = x() + offset;
             auto spouseY = y();
             m_spouse->setPos(spouseX, spouseY);
         }
@@ -425,6 +426,32 @@ void DiagramItem::setGender(const QString &gender)
 bool DiagramItem::isGenderKnown() const
 {
     return !m_gender.isEmpty();
+}
+
+void DiagramItem::onShapeChanged()
+{
+    // Move "wedding ring".
+    if (m_marriageItem && m_marriageItem->parentItem() == this) {
+        setMarriageItemPosition();
+    }
+
+    // Move spouse.
+    m_movedBySpouse = false;
+    updateSpousePosition();
+
+    // Update arrow positions.
+    updateArrowPositions();
+}
+
+void DiagramItem::setMarriageItemPosition()
+{
+    if (!m_marriageItem) {
+        qDebug() << "Marriage item is null. Cannot set position.";
+        return;
+    }
+
+    m_marriageItem->setX(boundingRect().width() / 2.0 - m_marriageItem->boundingRect().width() / 2.0);
+    m_marriageItem->setY(-m_marriageItem->boundingRect().height() / 2.0);
 }
 
 QString DiagramItem::getLastName() const
@@ -516,10 +543,27 @@ QList<DiagramItem *> DiagramItem::getChildren() const
 
 void DiagramItem::fitToText()
 {
-    // TODO: Expand box if required.
-//    if (boundingRect().width() < m_textItem->boundingRect().width()) {
+    // Calculate minimum size.
+    int margin = 16;
+    int minWidth = m_textItem->boundingRect().width() + (margin * 2);
 
-//    }
+    // Calculate best size.
+    int bestWidth = qMax(DEFAULT_WIDTH, minWidth);
+
+    // Expand box if required.
+    if (boundingRect().width() != bestWidth) {
+        int height = 25;
+        int width = bestWidth / 2;
+
+        myPolygon.clear();
+        myPolygon << QPointF(-width, -height) << QPointF(width, -height)
+                  << QPointF(width, height) << QPointF(-width, height)
+                  << QPointF(-width, -height);
+
+        setPolygon(myPolygon);
+
+        onShapeChanged();
+    }
 
     // Center the text.
     m_textItem->setX(boundingRect().center().x() - m_textItem->boundingRect().width() / 2);
