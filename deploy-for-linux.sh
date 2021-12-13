@@ -8,7 +8,7 @@
 cp ~/Documents/build-genealogymaker-Desktop-Release/genealogymaker ~/AppDirs/genealogy-maker.AppDir/genealogy-maker/bin/genealogy-maker
 
 # Make the deployment directory.
-DEST_DIR="genealogy-maker-v9"
+DEST_DIR="genealogy-maker-v10"
 mkdir $DEST_DIR
 
 # Go to the deployment directory.
