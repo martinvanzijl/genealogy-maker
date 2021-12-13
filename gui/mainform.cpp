@@ -995,8 +995,10 @@ void MainForm::createActions()
 
     undoAction = undoStack->createUndoAction(this);
     undoAction->setShortcut(QKeySequence::Undo);
+    undoAction->setObjectName("undoAction");
     redoAction = undoStack->createRedoAction(this);
     redoAction->setShortcut(QKeySequence::Redo);
+    redoAction->setObjectName("redoAction");
 
 //    boldAction = new QAction(tr("Bold"), this);
 //    boldAction->setCheckable(true);

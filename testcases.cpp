@@ -10,6 +10,30 @@
 #include <QDebug>
 #include <QObject>
 
+//
+// Class declarations.
+//
+class TestCaseHelper : public QObject
+{
+    Q_OBJECT
+
+public:
+    TestCaseHelper();
+    virtual ~TestCaseHelper();
+    void setOpenFileName(const QString &fileName);
+    void setSaveFileName(const QString &saveFileName);
+    bool isFinished() const;
+
+private slots:
+    void handleOpenDialog();
+    void handleSaveDialog();
+
+private:
+    QString m_openFileName;
+    QString m_saveFileName;
+    bool m_finished;
+};
+
 // =============================================================================
 // DetailsWindowHelper
 // =============================================================================
@@ -28,6 +52,7 @@ public slots:
     void closeWindow();
     void setDisplayNameTest();
     void setGenderTest();
+    void undoEditPersonDetailsTest();
 
 private:
     bool m_finished;
@@ -123,30 +148,88 @@ void DetailsWindowHelper::setGenderTest()
     m_finished = true;
 }
 
+void DetailsWindowHelper::undoEditPersonDetailsTest()
+{
+    // Get the window.
+    QWidget *widget = QApplication::activeWindow();
+    DialogPersonDetails *dialog = dynamic_cast<DialogPersonDetails *>(widget);
+    QVERIFY(dialog);
+
+    // Update display name.
+    QLineEdit *lineEdit = dialog->findChild<QLineEdit*>("lineEditName");
+    QVERIFY(lineEdit);
+    lineEdit->setText("New Display Name");
+
+    // Update first name.
+    lineEdit = dialog->findChild<QLineEdit*>("lineEditFirstName");
+    QVERIFY(lineEdit);
+    lineEdit->setText("New First Name");
+
+    // Update last name.
+    lineEdit = dialog->findChild<QLineEdit*>("lineEditLastName");
+    QVERIFY(lineEdit);
+    lineEdit->setText("New Last Name");
+
+    // Update date of birth.
+    QDateEdit *dateEdit = dialog->findChild<QDateEdit*>("dateEditBirth");
+    QVERIFY(dateEdit);
+    dateEdit->setDate(QDateTime::currentDateTime().date());
+
+    // Update place of birth.
+    lineEdit = dialog->findChild<QLineEdit*>("lineEditPlaceOfBirth");
+    QVERIFY(lineEdit);
+    lineEdit->setText("New Place of Birth");
+
+    // Update country of birth.
+    lineEdit = dialog->findChild<QLineEdit*>("lineEditCountryOfBirth");
+    QVERIFY(lineEdit);
+    lineEdit->setText("New Country of Birth");
+
+    // Update date of death.
+    dateEdit = dialog->findChild<QDateEdit*>("dateEditDeath");
+    QVERIFY(dateEdit);
+    dateEdit->setDate(QDateTime::currentDateTime().date().addDays(1));
+
+    // Update place of death.
+    lineEdit = dialog->findChild<QLineEdit*>("lineEditPlaceOfDeath");
+    QVERIFY(lineEdit);
+    lineEdit->setText("New Place of Death");
+
+    // Update place of death.
+    QComboBox *comboBox = dialog->findChild<QComboBox*>("comboBoxGender");
+    QVERIFY(comboBox);
+    comboBox->setCurrentIndex(0);
+
+    // Update bio.
+    QPlainTextEdit *plainTextEdit = dialog->findChild<QPlainTextEdit*>("plainTextEditBio");
+    QVERIFY(plainTextEdit);
+    plainTextEdit->setPlainText("New Bio");
+
+    // Update photos.
+    QString photoFileName = "/home/martin/Documents/build-unittest-Desktop-Debug/save-files/test-pictures/Photo.png";
+
+    TestCaseHelper *helper = new TestCaseHelper();
+    helper->setOpenFileName(photoFileName);
+    QTimer::singleShot(1000, helper, SLOT(handleOpenDialog()));
+
+    QPushButton *pushButton = dialog->findChild<QPushButton*>("pushButtonAddPhoto");
+    QVERIFY(pushButton);
+    pushButton->click();
+
+    // TODO: Edit the rest of the fields.
+
+    // Save changes.
+    QPushButton *pushButtonSave = dialog->findChild<QPushButton*>("pushButtonSave");
+    QVERIFY(pushButtonSave);
+    pushButtonSave->click();
+
+    // Set flag.
+    m_finished = true;
+}
+
 // =============================================================================
 // TestCaseHelper
 // =============================================================================
-
-class TestCaseHelper : public QObject
-{
-    Q_OBJECT
-
-public:
-    TestCaseHelper();
-    virtual ~TestCaseHelper();
-    void setOpenFileName(const QString &fileName);
-    void setSaveFileName(const QString &saveFileName);
-    bool isFinished() const;
-
-private slots:
-    void handleOpenDialog();
-    void handleSaveDialog();
-
-private:
-    QString m_openFileName;
-    QString m_saveFileName;
-    bool m_finished;
-};
 
 TestCaseHelper::TestCaseHelper() :
     m_finished(false)
@@ -172,6 +255,10 @@ void TestCaseHelper::handleOpenDialog()
     if (dialog)
     {
         dialog->selectFile(m_openFileName);
+
+        // Add delay in case the file is in a different directory.
+        QTest::qWait(100);
+
         QTimer::singleShot(0, dialog, SLOT(accept()));
     }
 
@@ -218,7 +305,7 @@ private slots:
     void cleanup();
     void init();
 
-//private:
+private:
     void testNew();
     void testOpen();
     void testSave();
@@ -239,11 +326,12 @@ private slots:
 //    void importGedcomTreeViewTest();
 //    void dragAndDropNewPersonTest();
     void windowTitleTest();
-
-private slots:
     void testLongName();
     void testLongNameMarriage();
     void testRenameWhileMarried();
+
+private slots:
+    void testUndoEditPersonDetails();
 
 private:
     TestCaseHelper *m_helper;
@@ -925,6 +1013,92 @@ void TestCases::testRenameWhileMarried()
     QVERIFY(marriageItem);
     QCOMPARE(marriageItem->x(), husband->boundingRect().width() / 2 - marriageItem->boundingRect().width() / 2);
     QCOMPARE(wife->x() - wife->boundingRect().width() / 2, husband->x() + husband->boundingRect().width() / 2);
+}
+
+void TestCases::testUndoEditPersonDetails()
+{
+    // Add person.
+    auto person = clickToAddPerson();
+    QString originalDisplayName = person->name();
+    QString originalFirstName = person->getFirstName();
+    QString originalLastName = person->getLastName();
+    QDate originalDateOfBirth = person->getDateOfBirth();
+    QString originalPlaceOfBirth = person->getPlaceOfBirth();
+    QString originalCountryOfBirth = person->getCountryOfBirth();
+    QDate originalDateOfDeath = person->getDateOfDeath();
+    QString originalPlaceOfDeath = person->getPlaceOfDeath();
+    QString originalGender = person->getGender();
+    QString originalBio = person->bio();
+    QStringList originalPhotos = person->photos();
+
+    // Select the person.
+    m_mainWindow->getScene()->selectAll();
+
+    // Set up helper to close the window.
+    auto helper = new DetailsWindowHelper();
+    QTimer::singleShot(1000, helper, SLOT(undoEditPersonDetailsTest()));
+
+    // Edit person details.
+    QAction *action = m_mainWindow->findChild<QAction*>("viewDetailsAction");
+    QVERIFY(action);
+    action->trigger();
+
+    // Wait till helper is done.
+    while (!helper->isFinished())
+    {
+        QTest::qWait(1000);
+    }
+
+    // Get new details.
+    QString newDisplayName = person->name();
+    QString newFirstName = person->getFirstName();
+    QString newLastName = person->getLastName();
+    QDate newDateOfBirth = person->getDateOfBirth();
+    QString newPlaceOfBirth = person->getPlaceOfBirth();
+    QString newCountryOfBirth = person->getCountryOfBirth();
+    QDate newDateOfDeath = person->getDateOfDeath();
+    QString newPlaceOfDeath = person->getPlaceOfDeath();
+    QString newGender = person->getGender();
+    QString newBio = person->bio();
+    QStringList newPhotos = person->photos();
+
+    // Undo.
+    action = m_mainWindow->findChild<QAction*>("undoAction");
+    QVERIFY(action);
+    QVERIFY(action->isEnabled());
+    action->trigger();
+
+    // Check details were reverted.
+    QCOMPARE(person->name(), originalDisplayName);
+    QCOMPARE(person->getFirstName(), originalFirstName);
+    QCOMPARE(person->getLastName(), originalLastName);
+    QCOMPARE(person->getDateOfBirth(), originalDateOfBirth);
+    QCOMPARE(person->getPlaceOfBirth(), originalPlaceOfBirth);
+    QCOMPARE(person->getCountryOfBirth(), originalCountryOfBirth);
+    QCOMPARE(person->getDateOfDeath(), originalDateOfDeath);
+    QCOMPARE(person->getPlaceOfDeath(), originalPlaceOfDeath);
+    QCOMPARE(person->getGender(), originalGender);
+    QCOMPARE(person->bio(), originalBio);
+    QCOMPARE(person->photos(), originalPhotos);
+
+    // Redo.
+    action = m_mainWindow->findChild<QAction*>("redoAction");
+    QVERIFY(action);
+    QVERIFY(action->isEnabled());
+    action->trigger();
+
+    // Check details were updated.
+    QCOMPARE(person->name(), newDisplayName);
+    QCOMPARE(person->getFirstName(), newFirstName);
+    QCOMPARE(person->getLastName(), newLastName);
+    QCOMPARE(person->getDateOfBirth(), newDateOfBirth);
+    QCOMPARE(person->getPlaceOfBirth(), newPlaceOfBirth);
+    QCOMPARE(person->getCountryOfBirth(), newCountryOfBirth);
+    QCOMPARE(person->getDateOfDeath(), newDateOfDeath);
+    QCOMPARE(person->getPlaceOfDeath(), newPlaceOfDeath);
+    QCOMPARE(person->getGender(), newGender);
+    QCOMPARE(person->bio(), newBio);
+    QCOMPARE(person->photos(), newPhotos);
 }
 
 DiagramItem *TestCases::clickToAddPerson()

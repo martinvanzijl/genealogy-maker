@@ -3,6 +3,8 @@
 
 #include "diagramitem.h"
 #include "dialogviewphoto.h"
+#include "undo/editpersondetailsundo.h"
+#include "undo/undomanager.h"
 
 #include <QFileDialog>
 #include <QStandardPaths>
@@ -89,6 +91,8 @@ void DialogPersonDetails::save()
 {
     if (m_item)
     {
+        EditPersonDetailsUndo *undo = new EditPersonDetailsUndo(m_item);
+
         m_item->setFirstName(ui->lineEditFirstName->text());
         m_item->setLastName(ui->lineEditLastName->text());
         m_item->setName(ui->lineEditName->text());
@@ -137,6 +141,9 @@ void DialogPersonDetails::save()
             photos << fullFileName;
         }
         m_item->setPhotos(photos);
+
+        undo->setAfterState(m_item);
+        UndoManager::add(undo);
     }
 
 }

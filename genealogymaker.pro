@@ -24,7 +24,8 @@ HEADERS	    =   \
     gui/dialogviewphoto.h \
     undo/changefillcolorundo.h \
     draggablebutton.h \
-    gui/preferenceswindow.h
+    gui/preferenceswindow.h \
+    undo/editpersondetailsundo.h
 SOURCES	    =   \
 		diagramitem.cpp \
 		main.cpp \
@@ -50,7 +51,8 @@ SOURCES	    =   \
     gui/dialogviewphoto.cpp \
     undo/changefillcolorundo.cpp \
     draggablebutton.cpp \
-    gui/preferenceswindow.cpp
+    gui/preferenceswindow.cpp \
+    undo/editpersondetailsundo.cpp
 RESOURCES   =	genealogymaker.qrc
 
 FORMS += \
