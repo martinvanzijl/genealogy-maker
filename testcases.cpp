@@ -305,7 +305,7 @@ private slots:
     void cleanup();
     void init();
 
-private:
+//private:
     void testNew();
     void testOpen();
     void testSave();
