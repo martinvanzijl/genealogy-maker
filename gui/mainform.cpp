@@ -149,6 +149,7 @@ MainForm::MainForm(QWidget *parent) :
 
     // Create "Recent Files" menu.
     QMenu *recentMenu = new QMenu(tr("Recent Files"), this);
+    recentMenu->setObjectName("recentFilesMenu");
     ui->menuFile->insertMenu(ui->saveAction, recentMenu);
     connect(recentMenu, SIGNAL(aboutToShow()), this, SLOT(updateRecentFileActions()));
     recentFileSubMenuAct = recentMenu->menuAction();
@@ -511,6 +512,9 @@ void MainForm::save()
 
      // Mark undo stack.
      undoStack->setClean();
+
+     // Update "Recent Files" menu.
+     prependToRecentFiles(m_saveFileName);
 }
 
 void MainForm::saveAs()
@@ -553,6 +557,9 @@ void MainForm::saveAs()
 
      // Mark undo stack.
      undoStack->setClean();
+
+     // Update "Recent Files" menu.
+     prependToRecentFiles(fileName);
 }
 
 void MainForm::onTreeItemDoubleClicked(QTreeWidgetItem *item, int column)

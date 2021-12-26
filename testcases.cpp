@@ -404,9 +404,10 @@ private slots:
     void saveInOtherFolderTest();
     void testUndoEditPersonDetails();
     void saveTwoPhotosWithSameNameTest();
+    void saveMoveThenOpenAgainTest();
 
 private slots:
-    void saveMoveThenOpenAgainTest();
+    void recentFilesMenuTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -1525,6 +1526,38 @@ void TestCases::saveMoveThenOpenAgainTest()
         QVERIFY(!photo.isEmpty());
         QVERIFY(QFile(photo).exists());
     }
+}
+
+void TestCases::recentFilesMenuTest()
+{
+    // Add person.
+    clickToAddPerson();
+
+    // Save.
+    saveTestFileAs("recent-files-menu-test.xml");
+
+    // Check that saved file is in "Recent Files" menu.
+
+    // Get the "File" menu.
+    QMenu *fileMenu = m_mainWindow->findChild<QMenu*>("menuFile");
+    QVERIFY(fileMenu);
+
+    // Get the "Recent Files" menu.
+    QMenu *recentFilesMenu = m_mainWindow->findChild<QMenu*>("recentFilesMenu");
+    QVERIFY(recentFilesMenu);
+
+    // Show the menu. This is required to load the file list.
+//    QTest::mouseClick(fileMenu, Qt::LeftButton); // Does not work!
+//    QTest::keyClicks(m_mainWindow, "F", Qt::AltModifier); // Does not work!
+
+    // TODO: Find a way to trigger the "show" event.
+
+    // Get the first action.
+    auto actions = recentFilesMenu->actions();
+    QVERIFY(actions.size() >= 1);
+
+    QAction *firstAction = actions.first();
+    qDebug() << "Action: " << firstAction->data().toString();
 }
 
 void TestCases::addPhotoToSelectedPerson()
