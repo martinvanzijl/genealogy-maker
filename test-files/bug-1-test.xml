@@ -1,0 +1,5 @@
+<genealogy width="5000" height="5000">
+    <item name="Oupa" y="2559" bio="" place_of_death="" place_of_birth="" x="2595" id="{57fbe030-09ad-4b38-8b26-c4838c5b9362}"/>
+    <item name="Ouma" y="2401" bio="" place_of_death="" place_of_birth="" x="2380" id="{0fe3186c-8a22-4fd2-8c1c-3cb02fc80de6}"/>
+    <relationship from="{0fe3186c-8a22-4fd2-8c1c-3cb02fc80de6}" to="{57fbe030-09ad-4b38-8b26-c4838c5b9362}"/>
+</genealogy>

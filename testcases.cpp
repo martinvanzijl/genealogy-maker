@@ -25,6 +25,8 @@ public:
     void setSaveFileName(const QString &saveFileName);
     bool isFinished() const;
 
+    static QString getTestInputFileDir();
+
 private slots:
     void handleOpenDialog();
     void handleSaveDialog();
@@ -344,6 +346,11 @@ void TestCaseHelper::handleSaveDialog()
     m_finished = true;
 }
 
+QString TestCaseHelper::getTestInputFileDir()
+{
+    return "../../genealogymaker/test-files/";
+}
+
 void TestCaseHelper::setSaveFileName(const QString &saveFileName)
 {
     m_saveFileName = saveFileName;
@@ -416,6 +423,7 @@ private:
     void addPhotoToSelectedPerson();
     DiagramItem *clickToAddPerson();
     void importGedcomFile(const QString &fileName);
+    QString getTestInputFilePathFor(const QString &fileName);
 };
 
 TestCases::TestCases()
@@ -530,7 +538,7 @@ void TestCases::testNew()
 void TestCases::testOpen()
 {
     m_helper = new TestCaseHelper();
-    m_helper->setOpenFileName("van-zijl-new.xml");
+    m_helper->setOpenFileName(getTestInputFilePathFor("van-zijl-new.xml"));
 
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
     QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
@@ -560,7 +568,7 @@ void TestCases::testBug1()
 {
     // Open the test file.
     m_helper = new TestCaseHelper();
-    m_helper->setOpenFileName("bug-1-test.xml");
+    m_helper->setOpenFileName(getTestInputFilePathFor("bug-1-test.xml"));
 
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
     QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
@@ -632,7 +640,7 @@ void TestCases::thumbnailTest()
 {
     // Open the test file.
     m_helper = new TestCaseHelper();
-    m_helper->setOpenFileName("thumbnail-test.xml");
+    m_helper->setOpenFileName(getTestInputFilePathFor("thumbnail-test.xml"));
 
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
     QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
@@ -695,7 +703,7 @@ void TestCases::exportGedcomTest()
 {
     // Open the test file.
     m_helper = new TestCaseHelper();
-    m_helper->setOpenFileName("export-gedcom-test.xml");
+    m_helper->setOpenFileName(getTestInputFilePathFor("export-gedcom-test.xml"));
 
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
     QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
@@ -874,7 +882,7 @@ void TestCases::deletePersonTest()
 {
     // Open the test file.
     m_helper = new TestCaseHelper();
-    m_helper->setOpenFileName("delete-person-test.xml");
+    m_helper->setOpenFileName(getTestInputFilePathFor("delete-person-test.xml"));
 
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
     QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
@@ -1094,7 +1102,7 @@ void TestCases::windowTitleTest()
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
 
     // Open another diagram.
-    openTestFile("van-zijl-new.xml");
+    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
 
     // Check title.
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - van-zijl-new.xml"));
@@ -1302,7 +1310,12 @@ void TestCases::importGedcomFile(const QString &fileName)
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
     action->trigger();
 
-//    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
+    //    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
+}
+
+QString TestCases::getTestInputFilePathFor(const QString &fileName)
+{
+    return TestCaseHelper::getTestInputFileDir() + fileName;
 }
 
 void TestCases::openTestFile(const QString &fileName)
@@ -1323,7 +1336,7 @@ void TestCases::openTestFile(const QString &fileName)
 void TestCases::savePhotosTest()
 {
     // Open the test file.
-    openTestFile("save-photos-test.xml");
+    openTestFile(getTestInputFilePathFor("save-photos-test.xml"));
 
     // Get the first person.
     DiagramItem *person = getFirstPerson();

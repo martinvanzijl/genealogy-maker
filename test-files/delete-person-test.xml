@@ -1,0 +1,5 @@
+<genealogy width="5000" height="5000">
+    <item last_name="" fill_color="#ffffff" x="2499.5" place_of_death="" bio="" y="2485" id="{12f23b85-c245-41fa-90d7-711d36b513b7}" date_of_birth="Mon Jan 1 1900" country_of_birth="" first_name="Pa" name="Pa" place_of_birth="" date_of_death="Fri Dec 31 7999"/>
+    <item last_name="" fill_color="#ffffff" x="2499.5" place_of_death="" bio="" y="2380" id="{a1203a94-55f4-4c6d-9404-3bb932b81911}" date_of_birth="Mon Jan 1 1900" country_of_birth="" first_name="Oupa" name="Oupa" place_of_birth="" date_of_death="Fri Dec 31 7999"/>
+    <relationship from="{a1203a94-55f4-4c6d-9404-3bb932b81911}" to="{12f23b85-c245-41fa-90d7-711d36b513b7}"/>
+</genealogy>

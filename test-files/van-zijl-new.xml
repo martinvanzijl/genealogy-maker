@@ -1,0 +1,15 @@
+<genealogy>
+    <item name="Oupa" place_of_death="" x="2363" bio="" place_of_birth="" y="2382" id="{75626bd1-a010-492e-b3a2-e198319b03fb}"/>
+    <item name="Wouter van Zijl" place_of_death="" x="2309" bio="" place_of_birth="" y="2607" id="{eab48c1c-5fb2-45ee-9a87-5c1010874953}"/>
+    <item name="Arnold van Zijl" place_of_death="" x="2748" bio="" place_of_birth="" y="2614" id="{621b3082-be0c-4fd4-a179-29a5e6883786}"/>
+    <item name="Moolman 1" place_of_death="" x="3033" bio="" place_of_birth="" y="2393" id="{fe1da1e5-2316-4c1e-8b7b-d24016cc6b1f}"/>
+    <item name="Ouma" place_of_death="" x="2564" bio="Ouma was gebore ..." place_of_birth="" y="2382" id="{f39a175d-cca7-4145-9a50-87dc5a2e1095}">
+        <photo path="/home/martin/Pictures/Argief/skype/skype-foto.png"/>
+    </item>
+    <item name="Sanette van Zijl" place_of_death="" x="2547" bio="" place_of_birth="" y="2614" id="{d847e07a-dcb6-4d9b-b4b0-1a973d914306}"/>
+    <item name="Moolman 2" place_of_death="" x="2832" bio="" place_of_birth="" y="2393" id="{6e42ebe4-16d2-404d-bece-3f86ddd4944f}"/>
+    <relationship to="{621b3082-be0c-4fd4-a179-29a5e6883786}" from="{f39a175d-cca7-4145-9a50-87dc5a2e1095}"/>
+    <relationship to="{d847e07a-dcb6-4d9b-b4b0-1a973d914306}" from="{6e42ebe4-16d2-404d-bece-3f86ddd4944f}"/>
+    <relationship to="{eab48c1c-5fb2-45ee-9a87-5c1010874953}" from="{f39a175d-cca7-4145-9a50-87dc5a2e1095}"/>
+    <marriage person_right="{f39a175d-cca7-4145-9a50-87dc5a2e1095}" x="84" place="Windhoek" y="-16.5" person_left="{75626bd1-a010-492e-b3a2-e198319b03fb}"/>
+</genealogy>
