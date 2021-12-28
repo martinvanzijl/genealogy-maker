@@ -348,7 +348,7 @@ void TestCaseHelper::handleSaveDialog()
 
 QString TestCaseHelper::getTestInputFileDir()
 {
-    return "../../genealogymaker/test-files/";
+    return "../genealogy-maker/test-files/";
 }
 
 void TestCaseHelper::setSaveFileName(const QString &saveFileName)
@@ -1315,7 +1315,8 @@ void TestCases::importGedcomFile(const QString &fileName)
 
 QString TestCases::getTestInputFilePathFor(const QString &fileName)
 {
-    return TestCaseHelper::getTestInputFileDir() + fileName;
+    QDir dir(TestCaseHelper::getTestInputFileDir());
+    return dir.absoluteFilePath(fileName);
 }
 
 void TestCases::openTestFile(const QString &fileName)
