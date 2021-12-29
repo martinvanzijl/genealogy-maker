@@ -759,7 +759,7 @@ void TestCases::importGedcomTest()
 
     // Create the helper.
     m_helper = new TestCaseHelper();
-    m_helper->setOpenFileName("import-gedcom-test.ged");
+    m_helper->setOpenFileName(getTestInputFilePathFor("import-gedcom-test.ged"));
 
     // Import the GEDCOM file.
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
@@ -995,7 +995,7 @@ void TestCases::importGedcomThenSaveTest()
 
     // Create the helper.
     m_helper = new TestCaseHelper();
-    m_helper->setOpenFileName("import-gedcom-test.ged");
+    m_helper->setOpenFileName(getTestInputFilePathFor("import-gedcom-test.ged"));
 
     // Import the GEDCOM file.
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
@@ -1082,7 +1082,7 @@ void TestCases::windowTitleTest()
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram"));
 
     // Import GEDCOM.
-    importGedcomFile("import-gedcom-test.ged");
+    importGedcomFile(getTestInputFilePathFor("import-gedcom-test.ged"));
 
     // Check title.
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
@@ -1096,7 +1096,7 @@ void TestCases::windowTitleTest()
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram"));
 
     // Import GEDCOM.
-    importGedcomFile("import-gedcom-test.ged");
+    importGedcomFile(getTestInputFilePathFor("import-gedcom-test.ged"));
 
     // Check title.
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
