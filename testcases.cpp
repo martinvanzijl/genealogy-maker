@@ -12,6 +12,15 @@
 #include <QObject>
 
 //
+// Functions.
+//
+static QString getTestInputFilePathFor(const QString &fileName)
+{
+    QDir dir("../genealogy-maker/test-files/");
+    return dir.absoluteFilePath(fileName);
+}
+
+//
 // Class declarations.
 //
 class TestCaseHelper : public QObject
@@ -24,8 +33,6 @@ public:
     void setOpenFileName(const QString &fileName);
     void setSaveFileName(const QString &saveFileName);
     bool isFinished() const;
-
-    static QString getTestInputFileDir();
 
 private slots:
     void handleOpenDialog();
@@ -92,7 +99,7 @@ void DetailsWindowHelper::addPhotoTest()
 
     // Create the helper.
     auto helper = new TestCaseHelper();
-    helper->setOpenFileName("/home/martin/Documents/build-unittest-Desktop-Debug/save-files/test-pictures/Photo.png");
+    helper->setOpenFileName(getTestInputFilePathFor("Oupa/Photo.png"));
 
     // Add the photo.
     QTimer::singleShot(1000, helper, SLOT(handleOpenDialog()));
@@ -122,11 +129,11 @@ void DetailsWindowHelper::addTwoPhotosWithSameNameTest()
     auto helper = new TestCaseHelper();
 
     // Add the photos.
-    helper->setOpenFileName("/home/martin/Pictures/Test/Ouma/Photo.png");
+    helper->setOpenFileName(getTestInputFilePathFor("Ouma/Photo.png"));
     QTimer::singleShot(1000, helper, SLOT(handleOpenDialog()));
     pushButtonAddPhoto->click();
 
-    helper->setOpenFileName("/home/martin/Pictures/Test/Oupa/Photo.png");
+    helper->setOpenFileName(getTestInputFilePathFor("Oupa/Photo.png"));
     QTimer::singleShot(1000, helper, SLOT(handleOpenDialog()));
     pushButtonAddPhoto->click();
 
@@ -271,7 +278,7 @@ void DetailsWindowHelper::undoEditPersonDetailsTest()
     plainTextEdit->setPlainText("New Bio");
 
     // Update photos.
-    QString photoFileName = "/home/martin/Documents/build-unittest-Desktop-Debug/save-files/test-pictures/Photo.png";
+    QString photoFileName = getTestInputFilePathFor("Oupa/Photo.png");
 
     TestCaseHelper *helper = new TestCaseHelper();
     helper->setOpenFileName(photoFileName);
@@ -346,11 +353,6 @@ void TestCaseHelper::handleSaveDialog()
     m_finished = true;
 }
 
-QString TestCaseHelper::getTestInputFileDir()
-{
-    return "../genealogy-maker/test-files/";
-}
-
 void TestCaseHelper::setSaveFileName(const QString &saveFileName)
 {
     m_saveFileName = saveFileName;
@@ -423,7 +425,6 @@ private:
     void addPhotoToSelectedPerson();
     DiagramItem *clickToAddPerson();
     void importGedcomFile(const QString &fileName);
-    QString getTestInputFilePathFor(const QString &fileName);
 };
 
 TestCases::TestCases()
@@ -1313,12 +1314,6 @@ void TestCases::importGedcomFile(const QString &fileName)
     //    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
 }
 
-QString TestCases::getTestInputFilePathFor(const QString &fileName)
-{
-    QDir dir(TestCaseHelper::getTestInputFileDir());
-    return dir.absoluteFilePath(fileName);
-}
-
 void TestCases::openTestFile(const QString &fileName)
 {
     // Get the action.
@@ -1347,7 +1342,7 @@ void TestCases::savePhotosTest()
     saveTestFileAs("save-photos-test-updated.xml");
 
     // Check that directory exists.
-    QDir photosDir("save-files/save-photos-test-updated-photos");
+    QDir photosDir(getTestInputFilePathFor("save-photos-test-updated-photos"));
     QVERIFY(photosDir.exists());
 
     // Check that directory for person exists.
@@ -1426,6 +1421,10 @@ void TestCases::saveInOtherFolderTest()
     // Check that photo was added.
     QCOMPARE(person->photos().size(), 1);
     QVERIFY(person->photos().first().endsWith("Photo.png"));
+
+    // Create folder if required.
+    QDir dir("save-files/other-folder");
+    dir.mkpath(".");
 
     // Save the diagram.
     saveTestFileAs("other-folder/save-in-other-folder-test.xml");
