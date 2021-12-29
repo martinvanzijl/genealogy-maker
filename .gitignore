@@ -1,2 +1,7 @@
+# Test output files.
 test-files/save-photos-test-updated-photos/
 test-files/save-photos-test-updated.xml
+
+# Python files.
+*.pyc
+__pycache__
