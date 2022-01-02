@@ -5,3 +5,7 @@ test-files/save-photos-test-updated.xml
 # Python files.
 *.pyc
 __pycache__
+
+# User settings files.
+genealogymaker.pro.user
+unittest.pro.user
