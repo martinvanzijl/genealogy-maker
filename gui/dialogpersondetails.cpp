@@ -170,8 +170,8 @@ void DialogPersonDetails::viewPhoto(const QString &fileName)
     if (!m_viewPhotoDialog) {
         m_viewPhotoDialog = new DialogViewPhoto(this);
     }
-    m_viewPhotoDialog->setPhoto(fileName);
     m_viewPhotoDialog->show();
+    m_viewPhotoDialog->setPhoto(fileName);
 }
 
 QString DialogPersonDetails::getPhotosFolder() const

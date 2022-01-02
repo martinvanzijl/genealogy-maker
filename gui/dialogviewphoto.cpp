@@ -7,7 +7,8 @@
 
 DialogViewPhoto::DialogViewPhoto(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::DialogViewPhoto)
+    ui(new Ui::DialogViewPhoto) //,
+//    m_photoLoadedOK(false)
 {
     ui->setupUi(this);
 }
@@ -17,8 +18,16 @@ DialogViewPhoto::~DialogViewPhoto()
     delete ui;
 }
 
+//bool DialogViewPhoto::photoLoadedOK() const
+//{
+//    return m_photoLoadedOK;
+//}
+
 void DialogViewPhoto::setPhoto(const QString &fileName)
 {
+    // Set flag.
+//    m_photoLoadedOK = false;
+
     // Create reader.
     QImageReader reader(fileName);
     reader.setAutoTransform(true);
@@ -39,4 +48,7 @@ void DialogViewPhoto::setPhoto(const QString &fileName)
 //        imageLabel->adjustSize();
 
     adjustSize();
+
+    // Set flag.
+//    m_photoLoadedOK = true;
 }
