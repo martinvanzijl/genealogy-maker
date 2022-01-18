@@ -1,0 +1,9 @@
+<genealogy width="5000" height="5000">
+    <item name="Oupa" fill_color="#ffffff" date_of_death="Fri Dec 31 7999" date_of_birth="Mon Jan 1 1900" y="2385" last_name="" x="2381" place_of_birth="" place_of_death="" first_name="Oupa" bio="" id="{dc724083-6b45-47c9-a5de-2b1a3fc82e3e}" country_of_birth="">
+        <photo project_dir_path="{dc724083-6b45-47c9-a5de-2b1a3fc82e3e}/Photo.png" path="/home/martin/Documents/genealogy-maker/test-files/married-thumbnails-test-photos/{dc724083-6b45-47c9-a5de-2b1a3fc82e3e}/Photo.png"/>
+    </item>
+    <item name="Ouma met lang naam" fill_color="#ffffff" date_of_death="Fri Dec 31 7999" date_of_birth="Mon Jan 1 1900" y="2385" last_name="Person" x="2582" place_of_birth="" place_of_death="" first_name="Ouma" bio="" id="{7ef9466f-ed34-49a6-953c-00dd7e077d67}" country_of_birth="">
+        <photo project_dir_path="{7ef9466f-ed34-49a6-953c-00dd7e077d67}/Photo.png" path="/home/martin/Documents/genealogy-maker/test-files/married-thumbnails-test-photos/{7ef9466f-ed34-49a6-953c-00dd7e077d67}/Photo.png"/>
+    </item>
+    <marriage place="" y="-16.5" x="84" person_left="{dc724083-6b45-47c9-a5de-2b1a3fc82e3e}" person_right="{7ef9466f-ed34-49a6-953c-00dd7e077d67}" date="Mon Jan 1 1900"/>
+</genealogy>

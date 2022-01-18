@@ -406,11 +406,16 @@ void DiagramItem::updateThumbnail()
     m_thumbnail->setPixmap(pixmap);
 
     // Set the position.
-    m_thumbnail->setX(boundingRect().left() + 8);
+    m_thumbnail->setX(boundingRect().left() + 20);
     m_thumbnail->setY(boundingRect().center().y() - m_thumbnail->boundingRect().height() / 2);
 
     // Set visibility.
     m_thumbnail->setVisible(m_showThumbnail);
+}
+
+QGraphicsPixmapItem *DiagramItem::getThumbnail() const
+{
+    return m_thumbnail;
 }
 
 DiagramItem::SpousePosition DiagramItem::getSpousePosition() const
@@ -582,7 +587,7 @@ QList<DiagramItem *> DiagramItem::getChildren() const
 void DiagramItem::fitToText()
 {
     // Calculate minimum size.
-    int margin = 16;
+    int margin = 56;
     int minWidth = m_textItem->boundingRect().width() + (margin * 2);
 
     // Calculate best size.

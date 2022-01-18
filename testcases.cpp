@@ -379,12 +379,13 @@ private:
     void openTestFile(const QString &fileName);
     void saveTestFileAs(const QString &fileName);
     DiagramItem *getFirstPerson() const;
+    DiagramItem *getPersonWithName(const QString &name);
 
 private slots:
     void cleanup();
     void init();
 
-//private:
+private:
     void testNew();
     void testOpen();
     void testSave();
@@ -416,9 +417,10 @@ private slots:
     void saveMoveThenOpenAgainTest();
     void recentFilesMenuTest();
     void importLatestMarriagesTest();
+    void exportThenImportGedcomTest();
 
 private slots:
-    void exportThenImportGedcomTest();
+    void thumbnailOverlapMarriageTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -496,6 +498,35 @@ DiagramItem *TestCases::getFirstPerson() const
 
     // Return.
     return person;
+}
+
+DiagramItem *TestCases::getPersonWithName(const QString &name)
+{
+    // Get the list.
+    QList<QGraphicsItem *> items = m_mainWindow->getScene()->items();
+
+    // Get the person.
+    for (QGraphicsItem *item: items)
+    {
+        // Skip if not a person.
+        if (item->type() != DiagramItem::Type)
+        {
+            continue;
+        }
+
+        // Check name.
+        DiagramItem *person = qgraphicsitem_cast<DiagramItem *>(item);
+        if (person->name() == name)
+        {
+            return person;
+        }
+    }
+
+    // Warn.
+    qDebug() << "Could not find person with name:" << name;
+
+    // Return.
+    return nullptr;
 }
 
 void TestCases::cleanup()
@@ -1648,6 +1679,24 @@ void TestCases::exportThenImportGedcomTest()
 
     // Import the exported GEDCOM file.
     importGedcomFile(saveFileName);
+}
+
+void TestCases::thumbnailOverlapMarriageTest()
+{
+    // Load diagram.
+    openTestFile(getTestInputFilePathFor("married-thumbnails-test.xml"));
+
+    // Get person to check.
+    DiagramItem *person = getPersonWithName("Ouma met lang naam");
+    QVERIFY(person);
+
+    // Check positions.
+    auto thumbnail = person->getThumbnail();
+    double personWidth = person->boundingRect().width();
+    double thumbnailLeft = (personWidth / 2.0) + thumbnail->x();
+    double marriageItemRight = person->getMarriageItem()->boundingRect().width() / 2.0;
+
+    QVERIFY(thumbnailLeft > marriageItemRight);
 }
 
 void TestCases::addPhotoToSelectedPerson()

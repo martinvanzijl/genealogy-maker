@@ -164,6 +164,8 @@ public:
     QColor getTextColor() const;
     void setTextColor(const QColor &color);
 
+    QGraphicsPixmapItem *getThumbnail() const;
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
