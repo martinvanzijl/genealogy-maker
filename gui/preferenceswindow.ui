@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>297</width>
-    <height>139</height>
+    <width>317</width>
+    <height>157</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,6 +50,13 @@
         <widget class="QCheckBox" name="checkBoxShowTumbnail">
          <property name="text">
           <string>Show thumbnail photos in diagram</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkBoxShowCollapseButton">
+         <property name="text">
+          <string>Show sidebar collapse/expand button</string>
          </property>
         </widget>
        </item>

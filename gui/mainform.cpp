@@ -114,6 +114,22 @@ MainForm::MainForm(QWidget *parent) :
 
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(toolBox);
+
+    // Add "collapse/expand" button.
+    QString buttonText = "<<";
+    collapseButton = new QPushButton(buttonText, this);
+
+    int textWidth = collapseButton->fontMetrics().boundingRect(buttonText).width();
+    int margin = 6;
+    int buttonWidth = textWidth + (2 * margin);
+    collapseButton->setMaximumWidth(buttonWidth);
+    collapseButton->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
+
+    connect(collapseButton, SIGNAL(clicked(bool)), this, SLOT(onCollapseButtonClicked(bool)));
+
+    layout->addWidget(collapseButton);
+
+    // Add diagram.
     view = new MyGraphicsView(scene);
     connect(scene, SIGNAL(mouseReleased()), view, SLOT(onMouseReleased()));
     connect(scene, SIGNAL(arrowAdded(Arrow*)), this, SLOT(onArrowAdded(Arrow*)));
@@ -141,11 +157,13 @@ MainForm::MainForm(QWidget *parent) :
     dialogHelp = nullptr;
     preferencesWindow = nullptr;
 
-    // Load preferences.
+    // Set preference fields.
     QCoreApplication::setOrganizationName("Martin van Zijl");
     QCoreApplication::setOrganizationDomain("martinvz.com");
     QCoreApplication::setApplicationName("Genealogy Maker");
-    scene->loadPreferences();
+
+    // Load preferences.
+    onPreferencesChanged();
 
     // Create "Recent Files" menu.
     QMenu *recentMenu = new QMenu(tr("Recent Files"), this);
@@ -824,9 +842,23 @@ void MainForm::onItemDragDropFinished()
     buttonGroup->button(int(DiagramItem::Person))->setChecked(false);
 }
 
+void MainForm::updateGuiFromPreferences()
+{
+    // Load settings.
+    QSettings settings;
+
+    // Update sidebar collapse/expand button.
+    bool value = settings.value("interface/showSidebarCollapseButton", false).toBool();
+    collapseButton->setVisible(value);
+}
+
 void MainForm::onPreferencesChanged()
 {
+    // Update diagram.
     scene->loadPreferences();
+
+    // Update interface.
+    updateGuiFromPreferences();
 }
 
 void MainForm::closeEvent(QCloseEvent *event)
@@ -1803,4 +1835,20 @@ void MainForm::on_actionExportGedcomFile_triggered()
     progress.setValue(100);
     progress.setLabelText("Done.");
     qApp->processEvents();
+}
+
+void MainForm::onCollapseButtonClicked(bool checked)
+{
+    Q_UNUSED(checked);
+
+    // Toggle show/hide the toolbox.
+    toolBox->setVisible(!toolBox->isVisible());
+
+    // Update button text.
+    if (toolBox->isVisible()) {
+        collapseButton->setText("<<");
+    }
+    else {
+        collapseButton->setText(">>");
+    }
 }

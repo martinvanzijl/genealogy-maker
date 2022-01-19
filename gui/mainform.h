@@ -85,6 +85,7 @@ class DialogMarriageDetails;
 class DialogHelp;
 class PreferencesWindow;
 class QProcess;
+class QPushButton;
 QT_END_NAMESPACE
 
 //! [0]
@@ -98,6 +99,8 @@ public:
    void moveToCenter();
 
    DiagramScene *getScene() const;
+
+   void updateGuiFromPreferences();
 
 public slots:
    void onItemTextEdited(QGraphicsItem *item);
@@ -163,6 +166,8 @@ private slots:
     void on_actionImportGedcomFile_triggered();
 
     void on_actionExportGedcomFile_triggered();
+
+    void onCollapseButtonClicked(bool checked);
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -288,6 +293,9 @@ private:
 
     // Hack to flag that a GEDCOM file was just imported.
     bool m_gedcomWasImported;
+
+    // Button to expand/collapse sidebar.
+    QPushButton *collapseButton;
 };
 
 #endif // MAINFORM_H

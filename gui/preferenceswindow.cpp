@@ -36,6 +36,10 @@ void PreferencesWindow::loadPreferences()
     // Load thumbnail setting.
     bool showThumbnails = settings.value("diagram/showThumbnails", false).toBool();
     ui->checkBoxShowTumbnail->setChecked(showThumbnails);
+
+    // Load sidebar button setting.
+    bool showSidebarCollapseButton = settings.value("interface/showSidebarCollapseButton", false).toBool();
+    ui->checkBoxShowTumbnail->setChecked(showSidebarCollapseButton);
 }
 
 void PreferencesWindow::on_pushButtonApply_clicked()
@@ -54,6 +58,10 @@ void PreferencesWindow::apply()
     // Store the thumbnail setting.
     bool showThumbnails =  ui->checkBoxShowTumbnail->isChecked();
     settings.setValue("diagram/showThumbnails", showThumbnails);
+
+    // Store the sidebar button setting.
+    bool showSidebarCollapseButton =  ui->checkBoxShowCollapseButton->isChecked();
+    settings.setValue("interface/showSidebarCollapseButton", showSidebarCollapseButton);
 
     // Send signal.
     emit preferencesChanged();
