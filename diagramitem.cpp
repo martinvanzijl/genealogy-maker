@@ -406,7 +406,8 @@ void DiagramItem::updateThumbnail()
     m_thumbnail->setPixmap(pixmap);
 
     // Set the position.
-    m_thumbnail->setX(boundingRect().left() + 20);
+    int leftMargin = 16 + 4; // Leave enough space for marriage item on left.
+    m_thumbnail->setX(boundingRect().left() + leftMargin);
     m_thumbnail->setY(boundingRect().center().y() - m_thumbnail->boundingRect().height() / 2);
 
     // Set visibility.
@@ -587,7 +588,7 @@ QList<DiagramItem *> DiagramItem::getChildren() const
 void DiagramItem::fitToText()
 {
     // Calculate minimum size.
-    int margin = 56;
+    int margin = 16 + 32 + 4; // Leave space for marriage item + thumbnail + gap.
     int minWidth = m_textItem->boundingRect().width() + (margin * 2);
 
     // Calculate best size.
