@@ -70,6 +70,9 @@ void DialogPersonDetails::setItem(DiagramItem *item)
         addPhoto(photo);
     }
 
+    // Update window title.
+    setWindowTitle(QString("Person Details - ") + item->name());
+
     m_item = item;
 }
 
