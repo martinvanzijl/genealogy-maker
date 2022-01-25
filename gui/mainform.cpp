@@ -967,6 +967,7 @@ void MainForm::createToolBox()
     QGridLayout *treeViewLayout = new QGridLayout;
     tree = new QTreeWidget(this);
     tree->setHeaderLabel("Person");
+    tree->setSortingEnabled(true);
     connect(tree, &QTreeWidget::itemDoubleClicked, this, &MainForm::onTreeItemDoubleClicked);
     treeViewLayout->addWidget(tree);
     QWidget *treeViewWidget = new QWidget;
