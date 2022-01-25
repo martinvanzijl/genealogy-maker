@@ -342,6 +342,9 @@
         <property name="text">
          <string>Save</string>
         </property>
+        <property name="shortcut">
+         <string>Ctrl+S</string>
+        </property>
        </widget>
       </item>
       <item>
