@@ -55,6 +55,7 @@ private:
     DiagramItem *m_item;
     DialogViewPhoto *m_viewPhotoDialog;
     QString m_xmlFile;
+    QString m_lastPhotoFolder;
 };
 
 #endif // DIALOGPERSONDETAILS_H

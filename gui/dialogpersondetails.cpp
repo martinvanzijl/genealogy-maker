@@ -201,10 +201,18 @@ void DialogPersonDetails::on_pushButtonAddPhoto_clicked()
     // Default to home.
     QString folderPath = QDir::home().path();
 
-    // Try to use standard pictures folder.
-    auto list = QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
-    if (list.isEmpty()) {
-        folderPath = list.first();
+    // Use last folder if possible.
+    if (!m_lastPhotoFolder.isEmpty())
+    {
+        folderPath = m_lastPhotoFolder;
+    }
+    else
+    {
+        // Try to use standard pictures folder.
+        auto list = QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
+        if (!list.isEmpty()) {
+            folderPath = list.first();
+        }
     }
 
     // Ask for picture file.
@@ -246,6 +254,10 @@ void DialogPersonDetails::on_pushButtonAddPhoto_clicked()
 
         // Add the photo.
         addPhoto(fileName);
+
+        // Save the folder path.
+        QFileInfo info(fileName);
+        m_lastPhotoFolder = info.dir().path();
     }
 }
 
