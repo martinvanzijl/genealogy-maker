@@ -87,7 +87,8 @@ MainForm::MainForm(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainForm),
     m_beingDestroyed(false),
-    m_gedcomWasImported(false)
+    m_gedcomWasImported(false),
+    treeFocusedItem(nullptr)
 {
     ui->setupUi(this);
 
@@ -968,6 +969,8 @@ void MainForm::createToolBox()
     tree = new QTreeWidget(this);
     tree->setHeaderLabel("Person");
     tree->setSortingEnabled(true);
+    tree->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(tree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(onTreeViewContextMenuRequested(QPoint)));
     connect(tree, &QTreeWidget::itemDoubleClicked, this, &MainForm::onTreeItemDoubleClicked);
     treeViewLayout->addWidget(tree);
     QWidget *treeViewWidget = new QWidget;
@@ -1138,6 +1141,14 @@ void MainForm::createMenus()
     marriageMenu->addAction(removeMarriageAction);
     marriageMenu->addAction(marriageDetailsAction);
     MarriageItem::setContextMenu(marriageMenu);
+
+    // Create context menu for tree-view.
+    QAction *viewDetailsAction = new QAction(tr("&Details..."), this);
+    viewDetailsAction->setStatusTip(tr("View person details"));
+    connect(viewDetailsAction, SIGNAL(triggered()), this, SLOT(onTreeViewDetailsAction()));
+
+    treeViewContextMenu = new QMenu(this);
+    treeViewContextMenu->addAction(viewDetailsAction);
 }
 
 void MainForm::createToolbars()
@@ -1851,5 +1862,36 @@ void MainForm::onCollapseButtonClicked(bool checked)
     }
     else {
         collapseButton->setText(">>");
+    }
+}
+
+void MainForm::onTreeViewContextMenuRequested(const QPoint &pos)
+{
+    // Get item under mouse.
+    QTreeWidgetItem *item = tree->itemAt(pos);
+
+    // Do not show menu if no item under mouse.
+    if (!item)
+    {
+        return;
+    }
+
+    // Store item.
+    treeFocusedItem = item;
+
+    // Show menu.
+    treeViewContextMenu->exec( tree->mapToGlobal(pos) );
+}
+
+void MainForm::onTreeViewDetailsAction()
+{
+    // Show person details.
+    QUuid id = treeFocusedItem->data(0, Qt::UserRole).toUuid();
+    auto diagramItem = scene->itemWithId(id);
+    if (diagramItem) {
+        viewPersonDetails(diagramItem);
+    }
+    else {
+        qDebug() << "Could not find person with id:" << id;
     }
 }

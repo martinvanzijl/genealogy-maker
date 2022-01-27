@@ -169,6 +169,9 @@ private slots:
 
     void onCollapseButtonClicked(bool checked);
 
+    void onTreeViewContextMenuRequested(const QPoint &pos);
+    void onTreeViewDetailsAction();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -296,6 +299,10 @@ private:
 
     // Button to expand/collapse sidebar.
     QPushButton *collapseButton;
+
+    // Item focused in tree-view.
+    QTreeWidgetItem *treeFocusedItem;
+    QMenu *treeViewContextMenu;
 };
 
 #endif // MAINFORM_H
