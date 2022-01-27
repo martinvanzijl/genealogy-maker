@@ -10,7 +10,7 @@ import xml.dom.minidom as xml
 
 class Person():
     
-    def __init__(self, pointer, name, firstName, lastName, dateOfBirth, placeOfBirth, gender):
+    def __init__(self, pointer, name, firstName, lastName, dateOfBirth, placeOfBirth, gender, dateOfDeath, placeOfDeath):
         self.pointer = pointer
         self.name = name
         self.firstName = firstName
@@ -18,6 +18,8 @@ class Person():
         self.dateOfBirth = dateOfBirth
         self.placeOfBirth = placeOfBirth
         self.gender = gender
+        self.dateOfDeath = dateOfDeath
+        self.placeOfDeath = placeOfDeath
         self.familiesAsSpouse = []
         self.familiesAsChild = []
 
@@ -200,8 +202,10 @@ def test_parse_file():
         lastName = element.getAttribute("last_name")
         dateOfBirth = element.getAttribute("date_of_birth")
         placeOfBirth = element.getAttribute("place_of_birth")
+        dateOfDeath = element.getAttribute("date_of_death")
+        placeOfDeath = element.getAttribute("place_of_death")
         gender = element.getAttribute("gender")
-        person = Person(pointer, name, firstName, lastName, dateOfBirth, placeOfBirth, gender)
+        person = Person(pointer, name, firstName, lastName, dateOfBirth, placeOfBirth, gender, dateOfDeath, placeOfDeath)
         persons.append(person)
 
         personsDict[pointer] = person
@@ -312,6 +316,14 @@ def test_parse_file():
         root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_DATE, value=person.dateOfBirth))
         if person.placeOfBirth:
             root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_PLACE, value=person.placeOfBirth))
+
+        # Add death details.
+        if person.dateOfDeath or person.placeOfDeath:
+            root.add_child_element(Element(level=1, pointer="", tag=gedcom.tags.GEDCOM_TAG_DEATH, value=""))
+            if person.dateOfDeath:
+                root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_DATE, value=person.dateOfDeath))
+            if person.placeOfDeath:
+                root.add_child_element(Element(level=2, pointer="", tag=gedcom.tags.GEDCOM_TAG_PLACE, value=person.placeOfDeath))
 
         # Add families.
         for family in person.familiesAsSpouse:

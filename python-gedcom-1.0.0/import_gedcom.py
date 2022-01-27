@@ -22,7 +22,7 @@ def stringToDate(string):
 
 class Person():
     
-    def __init__(self, pointer, name, firstName, lastName, dateOfBirth, placeOfBirth, gender):
+    def __init__(self, pointer, name, firstName, lastName, dateOfBirth, placeOfBirth, gender, dateOfDeath, placeOfDeath):
         self.pointer = pointer
         self.name = name
         self.firstName = firstName
@@ -30,6 +30,8 @@ class Person():
         self.dateOfBirth = dateOfBirth
         self.placeOfBirth = placeOfBirth
         self.gender = gender
+        self.dateOfDeath = dateOfDeath
+        self.placeOfDeath = placeOfDeath
 
 class Family():
 
@@ -116,8 +118,13 @@ def test_parse_file():
             # Store the gender.
             gender = element.get_gender()
 
+            # Store the details of death.
+            deathData = element.get_death_data()
+            dateOfDeath = deathData[0]
+            placeOfDeath = deathData[1]
+
             # Add to the list.
-            persons.append(Person(pointer, fullName, firstName, lastName, dateOfBirth, placeOfBirth, gender))
+            persons.append(Person(pointer, fullName, firstName, lastName, dateOfBirth, placeOfBirth, gender, dateOfDeath, placeOfDeath))
 
             # List parents.
             parents = parser.get_parents(element)
@@ -175,6 +182,10 @@ def test_parse_file():
         element.setAttribute("date_of_birth", person.dateOfBirth)
         element.setAttribute("place_of_birth", person.placeOfBirth)
         element.setAttribute("gender", person.gender)
+        if (person.dateOfDeath):
+            element.setAttribute("date_of_death", person.dateOfDeath)
+        if (person.placeOfDeath):
+            element.setAttribute("place_of_death", person.placeOfDeath)
         root.appendChild(element)
 
     # Add the relationships from the list.

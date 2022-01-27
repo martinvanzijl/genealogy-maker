@@ -82,9 +82,15 @@ static QDate parseXmlDate(const QString &string)
         date = QDate::fromString(string, "d MMM yyyy");
     }
 
+//    if (!date.isValid())
+//    {
+//        // Try parsing as a year only.
+//        date = QDate::fromString(string, "yyyy");
+//    }
+
     if (!date.isValid())
     {
-        qDebug() << "Invalid date of birth:" << string;
+        qDebug() << "Invalid date in XML:" << string;
     }
 
     return date;
@@ -974,7 +980,7 @@ void DiagramScene::parseItemElement(const QDomElement &element, const QString &p
         item->setDateOfBirth(parseXmlDate(element.attribute("date_of_birth")));
     }
     if (element.hasAttribute("date_of_death")) {
-        item->setDateOfDeath(QDate::fromString(element.attribute("date_of_death")));
+        item->setDateOfDeath(parseXmlDate(element.attribute("date_of_death")));
     }
 
     if (element.hasAttribute("fill_color")) {
