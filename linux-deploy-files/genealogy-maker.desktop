@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Genealogy Maker
+Comment=Create Genealogy Graphs
+Exec=genealogy-maker
+Icon=genealogy-maker
+Categories=Graphics;2DGraphics;
+X-AppImage-Version=2.0
