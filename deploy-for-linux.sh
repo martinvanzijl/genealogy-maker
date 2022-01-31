@@ -8,7 +8,7 @@
 cp ~/Documents/build-genealogymaker-Desktop-Release/genealogymaker ~/AppDirs/genealogy-maker.AppDir/genealogy-maker/bin/genealogy-maker
 
 # Make the deployment directory.
-DEST_DIR="genealogy-maker-v12"
+DEST_DIR="genealogy-maker-v13"
 mkdir $DEST_DIR
 
 # Go to the deployment directory.
@@ -19,6 +19,9 @@ cd $DEST_DIR
 
 # Copy the GEDCOM Python files.
 cp -R ../python-gedcom-1.0.0/ .
+
+# Copy the help files.
+cp -R ../doc/ .
 
 # Go back.
 cd ..
