@@ -39,7 +39,7 @@ void PreferencesWindow::loadPreferences()
 
     // Load sidebar button setting.
     bool showSidebarCollapseButton = settings.value("interface/showSidebarCollapseButton", false).toBool();
-    ui->checkBoxShowTumbnail->setChecked(showSidebarCollapseButton);
+    ui->checkBoxShowCollapseButton->setChecked(showSidebarCollapseButton);
 }
 
 void PreferencesWindow::on_pushButtonApply_clicked()
