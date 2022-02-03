@@ -65,6 +65,7 @@
 #include <QGraphicsSceneDragDropEvent>
 #include <QMimeData>
 #include <QSettings>
+#include <QTimer>
 
 ///
 /// \brief parseXmlDate Parse the string from an XML file into a date.
@@ -110,6 +111,9 @@ DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
     myLineColor = Qt::black;
     m_highlightedItem = nullptr;
     m_nextId = 1;
+
+    m_searchHighlightTimer = new QTimer(this);
+    connect(m_searchHighlightTimer, SIGNAL(timeout()), this, SLOT(removeSearchHighlight()));
 }
 //! [0]
 
@@ -444,6 +448,16 @@ int DiagramScene::autoLayoutRow(const QList<DiagramItem *> &items, int startY) {
     return y;
 }
 
+/**
+ * @brief DiagramScene::highlightForSearch Highlight the item as a search result.
+ * @param item The item.
+ */
+void DiagramScene::highlightForSearch(DiagramItem *item)
+{
+    highlight(item);
+    m_searchHighlightTimer->start(1000);
+}
+
 // A temporary map to store the depth of each person.
 static QMap<DiagramItem *, int> m_depthMap;
 
@@ -682,6 +696,9 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     if (mouseEvent->button() != Qt::LeftButton)
         return;
+
+    // Unhighlight search item.
+    removeSearchHighlight();
 
     DiagramItem *item = nullptr;
     switch (myMode) {
@@ -1101,6 +1118,15 @@ void DiagramScene::unHighlightAll()
     }
 
     m_highlightedItem = nullptr;
+}
+
+void DiagramScene::removeSearchHighlight()
+{
+    // Unhighlight item.
+    unHighlightAll();
+
+    // Ensure timer is stopped.
+    m_searchHighlightTimer->stop();
 }
 
 void DiagramScene::marry(DiagramItem *item1, DiagramItem *item2, bool fromUndo)

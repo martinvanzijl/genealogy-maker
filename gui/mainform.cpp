@@ -778,6 +778,9 @@ bool MainForm::searchCheckPerson(QList<QGraphicsItem *> &items, int index, const
             // Go to person in diagram.
             view->centerOn(diagramItem);
 
+            // Highlight the person.
+            scene->highlightForSearch(diagramItem);
+
             // Update dialog.
             dialogFind->setStatus("Person found.");
 

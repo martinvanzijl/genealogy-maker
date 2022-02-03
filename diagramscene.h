@@ -66,6 +66,7 @@ class QFont;
 class QGraphicsTextItem;
 class QColor;
 class QDomElement;
+class QTimer;
 QT_END_NAMESPACE
 
 //! [0]
@@ -100,6 +101,7 @@ public:
     void loadPreferences();
     void autoLayout();
     int autoLayoutRow(const QList<DiagramItem *> &items, int startY);
+    void highlightForSearch(DiagramItem *item);
 
 public slots:
     void setMode(Mode mode);
@@ -140,6 +142,10 @@ private:
     void highlight(DiagramItem *item);
     void unHighlightAll();
 
+private slots:
+    void removeSearchHighlight();
+
+private:
     DiagramItem::DiagramType myItemType;
     QMenu *myItemMenu;
     Mode myMode;
@@ -157,6 +163,7 @@ private:
     DiagramItem *m_highlightedItem;
     long m_nextId;
     bool m_busyMoving;
+    QTimer *m_searchHighlightTimer;
     DiagramItem *createPerson(const QPointF &pos);
 
     /**
