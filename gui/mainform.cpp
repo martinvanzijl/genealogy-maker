@@ -722,6 +722,10 @@ void MainForm::onItemsFinishedMoving()
 
 void MainForm::onFind()
 {
+    // Reset search index.
+    m_searchFoundIndex = -1;
+
+    // Show dialog.
     if (!dialogFind) {
         dialogFind = new DialogFind(this);
         connect(dialogFind, SIGNAL(search(QString)), this, SLOT(onSearch(QString)));
@@ -731,22 +735,62 @@ void MainForm::onFind()
 
 void MainForm::onSearch(const QString &text)
 {
-    for (auto item: scene->items()) {
-        if (item->type() == DiagramItem::Type) {
-            auto diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
-            if (diagramItem->name().contains(text, Qt::CaseInsensitive)) {
-                view->centerOn(diagramItem);
-                dialogFind->setStatus("Person found.");
-                return;
-            }
-        }
+    // Get items and count.
+    auto items = scene->items();
+    auto count = items.size();
+
+    // Search.
+    for (int i = m_searchFoundIndex + 1; i < count; ++i) {
+        if (searchCheckPerson(items, i, text)) return;
     }
 
+    // Wrap search.
+    for (int i = 0; (i <= m_searchFoundIndex) && (i < count); ++i) {
+        if (searchCheckPerson(items, i, text)) return;
+    }
+
+    // Show message if not found.
     if (dialogFind) {
         dialogFind->setStatus("Person not found.");
     }
+}
 
-    qDebug() << "Item not found.";
+/**
+ * @brief MainForm::searchCheckPerson Check if the item matches the search text. If so,
+ * go to the item and update the "Find" dialog.
+ * @param items The list of items.
+ * @param index The index of the item to check.
+ * @param text The search text.
+ * @return True if the item matches the text.
+ */
+bool MainForm::searchCheckPerson(QList<QGraphicsItem *> &items, int index, const QString &text)
+{
+    // Get item.
+    auto item = items[index];
+
+    // Check if person.
+    if (item->type() == DiagramItem::Type) {
+        auto diagramItem = qgraphicsitem_cast<DiagramItem *> (item);
+
+        // Check if name matches.
+        if (diagramItem->name().contains(text, Qt::CaseInsensitive)) {
+
+            // Go to person in diagram.
+            view->centerOn(diagramItem);
+
+            // Update dialog.
+            dialogFind->setStatus("Person found.");
+
+            // Save index for next search.
+            m_searchFoundIndex = index;
+
+            // Return.
+            return true;
+        }
+    }
+
+    // Return.
+    return false;
 }
 
 void MainForm::viewSelectedItemDetails()

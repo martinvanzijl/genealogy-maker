@@ -204,6 +204,9 @@ private:
     void prependToRecentFiles(const QString &fileName);
     void setRecentFilesVisible(bool visible);
 
+    // Search.
+    bool searchCheckPerson(QList<QGraphicsItem *> &items, int index, const QString &text);
+
     enum { MaxRecentFiles = 5 };
 
     QAction *recentFileActs[MaxRecentFiles];
@@ -303,6 +306,9 @@ private:
     // Item focused in tree-view.
     QTreeWidgetItem *treeFocusedItem;
     QMenu *treeViewContextMenu;
+
+    // Search index.
+    int m_searchFoundIndex;
 };
 
 #endif // MAINFORM_H
