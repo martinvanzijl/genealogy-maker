@@ -27,6 +27,8 @@ private slots:
 
 private:
     Ui::DialogFind *ui;
+
+    QString m_hint;
 };
 
 #endif // DIALOGFIND_H

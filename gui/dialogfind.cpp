@@ -6,6 +6,9 @@ DialogFind::DialogFind(QWidget *parent) :
     ui(new Ui::DialogFind)
 {
     ui->setupUi(this);
+
+    // Store hint.
+    m_hint = ui->labelStatus->text();
 }
 
 DialogFind::~DialogFind()
@@ -15,8 +18,8 @@ DialogFind::~DialogFind()
 
 void DialogFind::beforeShow()
 {
-    // Clear status.
-    setStatus("");
+    // Show hint.
+    setStatus(m_hint);
 
     // Set focus.
     ui->lineEditText->clear();
