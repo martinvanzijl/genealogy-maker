@@ -15,6 +15,7 @@ public:
     explicit DialogFind(QWidget *parent = 0);
     ~DialogFind();
 
+    void beforeShow();
     void setStatus(const QString &text);
 
 signals:

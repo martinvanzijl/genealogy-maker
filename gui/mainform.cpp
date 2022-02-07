@@ -730,6 +730,8 @@ void MainForm::onFind()
         dialogFind = new DialogFind(this);
         connect(dialogFind, SIGNAL(search(QString)), this, SLOT(onSearch(QString)));
     }
+
+    dialogFind->beforeShow();
     dialogFind->show();
 }
 

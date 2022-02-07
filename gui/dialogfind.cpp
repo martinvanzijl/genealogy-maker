@@ -13,6 +13,16 @@ DialogFind::~DialogFind()
     delete ui;
 }
 
+void DialogFind::beforeShow()
+{
+    // Clear status.
+    setStatus("");
+
+    // Set focus.
+    ui->lineEditText->clear();
+    ui->lineEditText->setFocus();
+}
+
 void DialogFind::setStatus(const QString &text)
 {
     ui->labelStatus->setText(text);
