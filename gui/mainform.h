@@ -172,6 +172,8 @@ private slots:
     void onTreeViewContextMenuRequested(const QPoint &pos);
     void onTreeViewDetailsAction();
 
+    void on_actionExportImage_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -206,6 +208,8 @@ private:
 
     // Search.
     bool searchCheckPerson(QList<QGraphicsItem *> &items, int index, const QString &text);
+
+    void exportImage();
 
     enum { MaxRecentFiles = 5 };
 

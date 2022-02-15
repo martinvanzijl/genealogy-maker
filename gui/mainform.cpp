@@ -798,6 +798,86 @@ bool MainForm::searchCheckPerson(QList<QGraphicsItem *> &items, int index, const
     return false;
 }
 
+/// Export the diagram as an image.
+void MainForm::exportImage()
+{
+    // Previously used path.
+//    static QString m_lastUsedExportPath;
+
+    // Check that diagram is not empty.
+    if (scene->isEmpty()) {
+        QMessageBox::warning(this, "Problem Exporting Image", "The diagram is empty, so nothing was exported.");
+        return;
+    }
+
+    // Get the filename.
+
+    // Set default folder.
+    QString defaultDir;
+
+//    if (!m_lastUsedExportPath.isEmpty()) {
+//        // Use previous export folder.
+//        QFileInfo info(m_lastUsedExportPath);
+//        defaultDir = info.dir().path();
+//    }
+//    else {
+        // Use the save files directory.
+//        defaultDir = saveFileDir();
+//    }
+
+    // Add default file-name.
+//    if (!defaultDir.isEmpty()) {
+//        defaultDir += "/export.png";
+//    }
+
+    // Just specify the filename.
+    defaultDir = "export.png";
+
+    // Show file chooser dialog.
+    QString title = tr("Export Image");
+    QString filter = tr("PNG Image Files (*.png)");
+    QString fileName = QFileDialog::getSaveFileName(this, title, defaultDir, filter);
+
+    // Check if user cancelled.
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    // Ensure file has correct suffix.
+    if (!fileName.toLower().endsWith(".png")) {
+        fileName += ".png";
+    }
+
+    // Get the render area.
+    QRectF targetRect;
+    QRectF sourceRect = scene->itemsBoundingRect();
+
+    // Create the image.
+    QSize imageSize = sourceRect.size().toSize();
+    QImage image(imageSize, QImage::Format_ARGB32_Premultiplied);
+
+    // Paint to the image.
+    QPainter painter(&image);
+    scene->render(&painter, targetRect, sourceRect);
+
+    // Save the image.
+    QImageWriter writer(fileName);
+    bool exportOK = writer.write(image);
+
+    // Show a message.
+    if (exportOK) {
+        QMessageBox::information(this, "Image Exported", "Image exported successfully.");
+    }
+    else {
+        QMessageBox::warning(this, "Problem Exporting Image",
+                                 tr("Cannot write %1: %2")
+                             .arg(QDir::toNativeSeparators(fileName), writer.errorString()));
+    }
+
+    // Store path.
+//    m_lastUsedExportPath = fileName;
+}
+
 void MainForm::viewSelectedItemDetails()
 {
     auto selectedItems = scene->selectedItems();
@@ -1943,4 +2023,9 @@ void MainForm::onTreeViewDetailsAction()
     else {
         qDebug() << "Could not find person with id:" << id;
     }
+}
+
+void MainForm::on_actionExportImage_triggered()
+{
+    exportImage();
 }

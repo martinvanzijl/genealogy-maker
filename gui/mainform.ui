@@ -94,6 +94,8 @@
      <string>&amp;Diagram</string>
     </property>
     <addaction name="actionChangeSize"/>
+    <addaction name="separator"/>
+    <addaction name="actionExportImage"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -358,6 +360,14 @@
   <action name="actionExportGedcomFile">
    <property name="text">
     <string>&amp;Export GEDCOM File...</string>
+   </property>
+  </action>
+  <action name="actionExportImage">
+   <property name="text">
+    <string>&amp;Export Image...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>
