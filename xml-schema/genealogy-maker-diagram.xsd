@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="genealogy">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="item"/>
+        <xs:element maxOccurs="unbounded" ref="relationship"/>
+        <xs:element ref="marriage"/>
+      </xs:sequence>
+      <xs:attribute name="height" use="required" type="xs:integer"/>
+      <xs:attribute name="width" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="item">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="photo"/>
+      </xs:sequence>
+      <xs:attribute name="bio" use="required"/>
+      <xs:attribute name="country_of_birth" use="required"/>
+      <xs:attribute name="date_of_birth" use="required"/>
+      <xs:attribute name="date_of_death" use="required"/>
+      <xs:attribute name="fill_color" use="required"/>
+      <xs:attribute name="first_name" use="required"/>
+      <xs:attribute name="id" use="required"/>
+      <xs:attribute name="last_name" use="required"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="place_of_birth" use="required"/>
+      <xs:attribute name="place_of_death" use="required"/>
+      <xs:attribute name="x" use="required" type="xs:integer"/>
+      <xs:attribute name="y" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="photo">
+    <xs:complexType>
+      <xs:attribute name="path" use="required"/>
+      <xs:attribute name="project_dir_path" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="relationship">
+    <xs:complexType>
+      <xs:attribute name="from" use="required"/>
+      <xs:attribute name="to" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="marriage">
+    <xs:complexType>
+      <xs:attribute name="date" use="required"/>
+      <xs:attribute name="person_left" use="required"/>
+      <xs:attribute name="person_right" use="required"/>
+      <xs:attribute name="place" use="required" type="xs:NCName"/>
+      <xs:attribute name="x" use="required" type="xs:integer"/>
+      <xs:attribute name="y" use="required" type="xs:decimal"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
