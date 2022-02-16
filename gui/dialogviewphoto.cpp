@@ -70,6 +70,9 @@ void DialogViewPhoto::setPhotoIndex(int index)
 void DialogViewPhoto::setPhotoList(const QStringList &list)
 {
     m_photoList = list;
+
+    // Hide navigation buttons if there are less than two photos.
+   ui->frameNavigation->setVisible( m_photoList.size() > 1 );
 }
 
 void DialogViewPhoto::on_pushButtonPrevious_clicked()
