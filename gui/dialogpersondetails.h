@@ -44,11 +44,14 @@ private slots:
 
 //    void on_checkBoxDateOfDeathUnknown_stateChanged(int state);
 
+    void on_listWidgetPhotos_activated(const QModelIndex &index);
+
 private:
     void save();
     void addPhoto(const QString &fileName);
 //    void setTextGrayedOut(QWidget *widget, bool grayedOut);
-    void viewPhoto(const QString &fileName);
+    void viewPhoto(int index);
+//    void viewPhoto(const QString &fileName);
     QString getPhotosFolder() const;
 
     Ui::DialogPersonDetails *ui;
@@ -56,6 +59,7 @@ private:
     DialogViewPhoto *m_viewPhotoDialog;
     QString m_xmlFile;
     QString m_lastPhotoFolder;
+    QStringList getPhotoListFromGui();
 };
 
 #endif // DIALOGPERSONDETAILS_H

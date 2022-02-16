@@ -97,6 +97,18 @@ void DialogPersonDetails::on_pushButtonSave_clicked()
     close();
 }
 
+QStringList DialogPersonDetails::getPhotoListFromGui()
+{
+    QStringList photos;
+    for (int i = 0; i < ui->listWidgetPhotos->count(); ++i)
+    {
+        auto fullFileName = ui->listWidgetPhotos->item(i)->data(Qt::UserRole).toString();
+        photos << fullFileName;
+    }
+
+    return photos;
+}
+
 void DialogPersonDetails::save()
 {
     if (m_item)
@@ -144,18 +156,12 @@ void DialogPersonDetails::save()
             break;
         }
 
-        QStringList photos;
-        for (int i = 0; i < ui->listWidgetPhotos->count(); ++i)
-        {
-            auto fullFileName = ui->listWidgetPhotos->item(i)->data(Qt::UserRole).toString();
-            photos << fullFileName;
-        }
+        QStringList photos = getPhotoListFromGui();
         m_item->setPhotos(photos);
 
         undo->setAfterState(m_item);
         UndoManager::add(undo);
     }
-
 }
 
 void DialogPersonDetails::addPhoto(const QString &fileName)
@@ -168,14 +174,25 @@ void DialogPersonDetails::addPhoto(const QString &fileName)
     ui->listWidgetPhotos->addItem(item);
 }
 
-void DialogPersonDetails::viewPhoto(const QString &fileName)
+void DialogPersonDetails::viewPhoto(int index)
 {
     if (!m_viewPhotoDialog) {
         m_viewPhotoDialog = new DialogViewPhoto(this);
     }
+    m_viewPhotoDialog->setPhotoList(getPhotoListFromGui());
     m_viewPhotoDialog->show();
-    m_viewPhotoDialog->setPhoto(fileName);
+    m_viewPhotoDialog->setPhotoIndex(index);
 }
+
+//void DialogPersonDetails::viewPhoto(const QString &fileName)
+//{
+//    if (!m_viewPhotoDialog) {
+//        m_viewPhotoDialog = new DialogViewPhoto(this);
+//    }
+//    m_viewPhotoDialog->setPhotoList(getPhotoListFromGui());
+//    m_viewPhotoDialog->show();
+//    m_viewPhotoDialog->setPhoto(fileName);
+//}
 
 QString DialogPersonDetails::getPhotosFolder() const
 {
@@ -273,12 +290,17 @@ void DialogPersonDetails::on_pushButtonRemovePhoto_clicked()
 
 void DialogPersonDetails::on_listWidgetPhotos_itemDoubleClicked(QListWidgetItem *item)
 {
-    auto fullFileName = item->data(Qt::UserRole).toString();
+    // Prevent warning.
+    Q_UNUSED(item);
+
+    // View in internal viewer.
+//    auto fullFileName = item->data(Qt::UserRole).toString();
+//    viewPhoto(fullFileName);
+
+    // View in external application. Does not seem to work on Windows.
 //    QString url = QString("file://") + fullFileName;
 //    QDesktopServices::openUrl(url);
-    viewPhoto(fullFileName);
 }
-
 
 //void DialogPersonDetails::on_dateEditBirth_dateChanged(const QDate &date)
 //{
@@ -303,3 +325,8 @@ void DialogPersonDetails::on_listWidgetPhotos_itemDoubleClicked(QListWidgetItem 
 //    Q_UNUSED(state);
 //    setTextGrayedOut (ui->dateEditDeath, ui->checkBoxDateOfDeathUnknown->isChecked());
 //}
+
+void DialogPersonDetails::on_listWidgetPhotos_activated(const QModelIndex &index)
+{
+    viewPhoto(index.row());
+}

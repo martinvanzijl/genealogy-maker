@@ -1,0 +1,7 @@
+<genealogy width="5000" height="5000">
+    <item last_name="Person" first_name="New" date_of_birth="Mon Jan 1 1900" x="2274" id="{d8ef8394-8e2a-400c-87ff-e17d6a23210c}" place_of_birth="" fill_color="#ffffff" bio="" y="2340" name="New Person" country_of_birth="" date_of_death="Fri Dec 31 7999" place_of_death="">
+        <photo path="/home/martin/Documents/build-genealogymaker-Desktop-Debug/save-files/test-files/multiple-photos-test-photos/{d8ef8394-8e2a-400c-87ff-e17d6a23210c}/export.png" project_dir_path="{d8ef8394-8e2a-400c-87ff-e17d6a23210c}/export.png"/>
+        <photo path="/home/martin/Documents/build-genealogymaker-Desktop-Debug/save-files/test-files/multiple-photos-test-photos/{d8ef8394-8e2a-400c-87ff-e17d6a23210c}/Failed to Start Application_001.png" project_dir_path="{d8ef8394-8e2a-400c-87ff-e17d6a23210c}/Failed to Start Application_001.png"/>
+        <photo path="/home/martin/Documents/build-genealogymaker-Desktop-Debug/save-files/test-files/multiple-photos-test-photos/{d8ef8394-8e2a-400c-87ff-e17d6a23210c}/Ping History Viewer_002.png" project_dir_path="{d8ef8394-8e2a-400c-87ff-e17d6a23210c}/Ping History Viewer_002.png"/>
+    </item>
+</genealogy>
