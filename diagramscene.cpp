@@ -322,6 +322,7 @@ void DiagramScene::save(QIODevice *device, const QString &photosFolderPath)
         QDomElement element = domDocument.createElement("relationship");
         element.setAttribute("from", arrow->startItem()->id().toString());
         element.setAttribute("to", arrow->endItem()->id().toString());
+        element.setAttribute("color", arrow->getColor().name());
         rootElement.appendChild(element);
     }
 
@@ -1074,7 +1075,16 @@ void DiagramScene::parseArrowElement(const QDomElement &element)
 
     if (startItem && endItem) {
         Arrow *arrow = new Arrow(startItem, endItem);
-        arrow->setColor(myLineColor);
+
+        if (element.hasAttribute("color")) {
+            QColor color;
+            color.setNamedColor(element.attribute("color"));
+            arrow->setColor(color);
+        }
+        else {
+            arrow->setColor(myLineColor);
+        }
+
         startItem->addArrow(arrow);
         endItem->addArrow(arrow);
         arrow->setZValue(-1000.0);

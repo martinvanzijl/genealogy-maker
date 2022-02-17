@@ -119,6 +119,11 @@ QPainterPath Arrow::shape() const
 //    return path;
 }
 
+QColor Arrow::getColor() const
+{
+    return myColor;
+}
+
 static QPainterPath pathScaled(QPainterPath path, double scale) {
     // Get translation coordinates.
     auto translateX = path.boundingRect().center().x();

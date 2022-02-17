@@ -76,6 +76,7 @@ public:
     int type() const override { return Type; }
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
+    QColor getColor() const;
     void setColor(const QColor &color) { myColor = color; }
     DiagramItem *startItem() const { return myStartItem; }
     DiagramItem *endItem() const { return myEndItem; }

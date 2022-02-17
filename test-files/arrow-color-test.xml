@@ -1,0 +1,7 @@
+<genealogy height="5000" width="5000">
+    <item name="New Person" place_of_death="" last_name="Person" text_color="#000000" date_of_death="Fri Dec 31 7999" fill_color="#ffffff" place_of_birth="" y="2591" bio="" first_name="New" date_of_birth="Mon Jan 1 1900" country_of_birth="" x="2542" id="{55d380cb-5cf8-40dd-92a1-b6c954cfa9f4}"/>
+    <item name="New Person" place_of_death="" last_name="Person" text_color="#000000" date_of_death="Fri Dec 31 7999" fill_color="#ffffff" place_of_birth="" y="2472" bio="" first_name="New" date_of_birth="Mon Jan 1 1900" country_of_birth="" x="2469" id="{4980b8da-f9dc-4c23-9918-15269ae383b9}"/>
+    <item name="New Person" place_of_death="" last_name="Person" text_color="#000000" date_of_death="Fri Dec 31 7999" fill_color="#ffffff" place_of_birth="" y="2361" bio="" first_name="New" date_of_birth="Mon Jan 1 1900" country_of_birth="" x="2406" id="{41226ba7-377c-47f6-8bc3-62d4d3c09b8b}"/>
+    <relationship from="{4980b8da-f9dc-4c23-9918-15269ae383b9}" color="#0000ff" to="{55d380cb-5cf8-40dd-92a1-b6c954cfa9f4}"/>
+    <relationship from="{41226ba7-377c-47f6-8bc3-62d4d3c09b8b}" color="#ff0000" to="{4980b8da-f9dc-4c23-9918-15269ae383b9}"/>
+</genealogy>
