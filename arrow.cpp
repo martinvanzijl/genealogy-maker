@@ -58,6 +58,8 @@
 #include <QPainter>
 #include <QDebug>
 
+#include <QtMath>
+
 const qreal Pi = 3.14;
 
 static int mDefaultLineWidth = 2;
@@ -227,9 +229,22 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
         {
             // Draw two dotted lines beside the arrow if the line width is small.
             painter->setPen(QPen(myColor, 1, Qt::DashLine));
-            myLine.translate(0, 4.0);
-            painter->drawLine(myLine);
-            myLine.translate(0,-8.0);
+
+            // Calculate line angle.
+            auto angle = qDegreesToRadians(myLine.angle());
+
+            // Distance between main line and highlighting lines.
+            double delta = 4.0;
+
+            // Draw the lines.
+            QLineF highlightLine = myLine;
+
+            highlightLine.translate(delta * sin(angle), delta * cos(angle));
+            painter->drawLine(highlightLine);
+
+            highlightLine = myLine;
+            myLine.translate(-delta * sin(angle), -delta * cos(angle));
+
             painter->drawLine(myLine);
         }
 
