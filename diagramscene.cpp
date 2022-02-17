@@ -53,6 +53,7 @@
 #include "fileutils.h"
 #include "marriageitem.h"
 #include "undo/changefillcolorundo.h"
+#include "undo/changetextcolorundo.h"
 #include "undo/undomanager.h"
 
 #include <QDebug>
@@ -133,9 +134,14 @@ void DiagramScene::setLineColor(const QColor &color)
 void DiagramScene::setTextColor(const QColor &color)
 {
     myTextColor = color;
-    if (isItemChange(DiagramTextItem::Type)) {
-        DiagramTextItem *item = qgraphicsitem_cast<DiagramTextItem *>(selectedItems().first());
-        item->setDefaultTextColor(myTextColor);
+//    if (isItemChange(DiagramTextItem::Type)) {
+//        DiagramTextItem *item = qgraphicsitem_cast<DiagramTextItem *>(selectedItems().first());
+//        item->setDefaultTextColor(myTextColor);
+//    }
+    if (isItemChange(DiagramItem::Type)) {
+        DiagramItem *item = qgraphicsitem_cast<DiagramItem *>(selectedItems().first());
+        UndoManager::add(new ChangeTextColorUndo(item, color));
+        item->setTextColor(myTextColor);
     }
 }
 //! [2]
@@ -271,6 +277,7 @@ void DiagramScene::save(QIODevice *device, const QString &photosFolderPath)
 //            }
             itemElement.setAttribute("place_of_death", diagramItem->getPlaceOfDeath());
             itemElement.setAttribute("fill_color", diagramItem->brush().color().name());
+            itemElement.setAttribute("text_color", diagramItem->getTextColor().name());
 
             // Copy photos to project directory if required.
             if (copyPhotos) {
@@ -1004,6 +1011,12 @@ void DiagramScene::parseItemElement(const QDomElement &element, const QString &p
         QColor color;
         color.setNamedColor(element.attribute("fill_color"));
         item->setBrush(color);
+    }
+
+    if (element.hasAttribute("text_color")) {
+        QColor color;
+        color.setNamedColor(element.attribute("text_color"));
+        item->setTextColor(color);
     }
 
     QStringList photos;

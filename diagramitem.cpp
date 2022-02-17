@@ -436,6 +436,16 @@ int DiagramItem::getWidthIncludingSpouse() const
     return width;
 }
 
+QColor DiagramItem::getTextColor() const
+{
+    return m_textItem->defaultTextColor();
+}
+
+void DiagramItem::setTextColor(const QColor &color)
+{
+    m_textItem->setDefaultTextColor(color);
+}
+
 DiagramItem *DiagramItem::getSpouse() const
 {
     return m_spouse;

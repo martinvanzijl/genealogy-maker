@@ -1,0 +1,4 @@
+<genealogy height="5000" width="5000">
+    <item id="{a1505c78-c70f-4120-a7a7-051f1b31029f}" country_of_birth="" place_of_death="" last_name="Person" name="New Person" text_color="#ff0000" x="2386" date_of_birth="Mon Jan 1 1900" first_name="New" bio="" date_of_death="Fri Dec 31 7999" y="2424" place_of_birth="" fill_color="#ffffff"/>
+    <item id="{71112a34-3f64-48c3-ad2b-624ff1770b13}" country_of_birth="" place_of_death="" last_name="Person" name="New Person" text_color="#0000ff" x="2477" date_of_birth="Mon Jan 1 1900" first_name="New" bio="" date_of_death="Fri Dec 31 7999" y="2529" place_of_birth="" fill_color="#ffffff"/>
+</genealogy>

@@ -26,7 +26,8 @@ HEADERS	    =   \
     draggablebutton.h \
     gui/preferenceswindow.h \
     undo/editpersondetailsundo.h \
-    fileutils.h
+    fileutils.h \
+    undo/changetextcolorundo.h
 SOURCES	    =   \
 		diagramitem.cpp \
 		main.cpp \
@@ -54,7 +55,8 @@ SOURCES	    =   \
     draggablebutton.cpp \
     gui/preferenceswindow.cpp \
     undo/editpersondetailsundo.cpp \
-    fileutils.cpp
+    fileutils.cpp \
+    undo/changetextcolorundo.cpp
 RESOURCES   =	genealogymaker.qrc
 
 FORMS += \
