@@ -47,6 +47,8 @@ private slots:
 
     void on_listWidgetPhotos_activated(const QModelIndex &index);
 
+    void on_pushButtonFamilyColor_clicked();
+
 private:
     void save();
     void addPhoto(const QString &fileName);
@@ -54,6 +56,7 @@ private:
     void viewPhoto(int index);
 //    void viewPhoto(const QString &fileName);
     QString getPhotosFolder() const;
+    void updateFamilyColorButtonIcon();
 
     Ui::DialogPersonDetails *ui;
     DiagramItem *m_item;
@@ -62,6 +65,8 @@ private:
     QString m_xmlFile;
     QString m_lastPhotoFolder;
     QStringList getPhotoListFromGui();
+
+    QColor m_familyColor;
 };
 
 #endif // DIALOGPERSONDETAILS_H

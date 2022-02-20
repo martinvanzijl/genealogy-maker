@@ -8,6 +8,7 @@
 #include "undo/editpersondetailsundo.h"
 #include "undo/undomanager.h"
 
+#include <QColorDialog>
 #include <QDebug>
 #include <QFileDialog>
 #include <QStandardPaths>
@@ -71,6 +72,10 @@ void DialogPersonDetails::setItem(DiagramItem *item)
     {
         addPhoto(photo);
     }
+
+    // Family color.
+    m_familyColor = item->getFamilyColor();
+    updateFamilyColorButtonIcon();
 
     // Update window title.
     setWindowTitle(QString("Person Details - ") + item->name());
@@ -161,6 +166,9 @@ void DialogPersonDetails::save()
         QStringList photos = getPhotoListFromGui();
         m_item->setPhotos(photos);
 
+        // Family color.
+        m_item->setFamilyColor(m_familyColor);
+
         undo->setAfterState(m_item);
         UndoManager::add(undo);
     }
@@ -202,6 +210,15 @@ void DialogPersonDetails::viewPhoto(int index)
 QString DialogPersonDetails::getPhotosFolder() const
 {
     return FileUtils::getPhotosFolderFor(m_xmlFile);
+}
+
+void DialogPersonDetails::updateFamilyColorButtonIcon()
+{
+    QPixmap iconPixmap(12, 12);
+    iconPixmap.fill(m_familyColor);
+    QIcon icon(iconPixmap);
+    ui->pushButtonFamilyColor->setIcon(icon);
+    ui->pushButtonFamilyColor->setText("");
 }
 
 //void DialogPersonDetails::setTextGrayedOut(QWidget *widget, bool grayedOut)
@@ -334,4 +351,14 @@ void DialogPersonDetails::on_listWidgetPhotos_itemDoubleClicked(QListWidgetItem 
 void DialogPersonDetails::on_listWidgetPhotos_activated(const QModelIndex &index)
 {
     viewPhoto(index.row());
+}
+
+void DialogPersonDetails::on_pushButtonFamilyColor_clicked()
+{
+    QColor newColor = QColorDialog::getColor(m_familyColor, this, "Select Family Color");
+    if (newColor.isValid())
+    {
+        m_familyColor = newColor;
+        updateFamilyColorButtonIcon();
+    }
 }

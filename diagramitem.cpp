@@ -74,7 +74,8 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
       m_spouse(nullptr),
       m_movedBySpouse(false),
       m_marriageItem(nullptr),
-      m_thumbnail(nullptr)
+      m_thumbnail(nullptr),
+      m_familyColor(Qt::black)
 {
     myDiagramType = diagramType;
     myContextMenu = contextMenu;
@@ -411,6 +412,25 @@ void DiagramItem::updateThumbnail()
 
     // Set visibility.
     m_thumbnail->setVisible(m_showThumbnail);
+}
+
+QColor DiagramItem::getFamilyColor() const
+{
+    return m_familyColor;
+}
+
+void DiagramItem::setFamilyColor(const QColor &familyColor)
+{
+    // Set field.
+    m_familyColor = familyColor;
+
+    // Set border color.
+    setPen(QPen(familyColor, 1));
+
+    // Update children colors.
+    for (auto child: getChildren()) {
+        child->setFamilyColor(familyColor);
+    }
 }
 
 DiagramItem::SpousePosition DiagramItem::getSpousePosition() const

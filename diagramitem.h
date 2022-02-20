@@ -164,6 +164,9 @@ public:
     QColor getTextColor() const;
     void setTextColor(const QColor &color);
 
+    QColor getFamilyColor() const;
+    void setFamilyColor(const QColor &familyColor);
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -202,6 +205,8 @@ private:
     QString m_firstName;
     QString m_lastName;
     QString m_gender;
+
+    QColor m_familyColor;
 };
 
 #endif // DIAGRAMITEM_H
