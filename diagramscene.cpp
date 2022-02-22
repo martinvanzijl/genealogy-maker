@@ -144,7 +144,9 @@ void DiagramScene::setTextColor(const QColor &color)
 //    }
     if (isItemChange(DiagramItem::Type)) {
         DiagramItem *item = qgraphicsitem_cast<DiagramItem *>(selectedItems().first());
-        UndoManager::add(new ChangeTextColorUndo(item, color));
+        if (item->getTextColor() != color) {
+            UndoManager::add(new ChangeTextColorUndo(item, color));
+        }
         item->setTextColor(myTextColor);
     }
 }
