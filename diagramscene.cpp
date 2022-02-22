@@ -158,7 +158,9 @@ void DiagramScene::setItemColor(const QColor &color)
     myItemColor = color;
     if (isItemChange(DiagramItem::Type)) {
         DiagramItem *item = qgraphicsitem_cast<DiagramItem *>(selectedItems().first());
-        UndoManager::add(new ChangeFillColorUndo(item, color));
+        if (item->brush().color() != color) {
+            UndoManager::add(new ChangeFillColorUndo(item, color));
+        }
         item->setBrush(myItemColor);
     }
 }
