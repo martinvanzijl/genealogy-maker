@@ -190,6 +190,8 @@ private slots:
 
     void on_actionOpenExample_triggered();
 
+    void on_actionSelectDescendants_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -240,6 +242,8 @@ private:
     bool shouldRemoveInvalidFiles() const;
 
     void setSceneScale(double scale);
+
+    void selectCurrentItemDescendants();
 
     enum { MaxRecentFiles = 5 };
 

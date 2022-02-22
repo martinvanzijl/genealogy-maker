@@ -52,9 +52,11 @@
 #include "arrow.h"
 #include "fileutils.h"
 #include "marriageitem.h"
+#include "undo/changebordercolorundo.h"
 #include "undo/changefillcolorundo.h"
 #include "undo/changelinecolorundo.h"
 #include "undo/changetextcolorundo.h"
+#include "undo/undoblock.h"
 #include "undo/undomanager.h"
 
 #include <QDebug>
@@ -125,14 +127,27 @@ DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
 void DiagramScene::setLineColor(const QColor &color)
 {
     myLineColor = color;
-    if (isItemChange(Arrow::Type)) {
-        Arrow *item = qgraphicsitem_cast<Arrow *>(selectedItems().first());
-        if (item->getColor() != color) {
-            UndoManager::add(new ChangeLineColorUndo(item, myLineColor));
+
+    UndoBlock *block = new UndoBlock();
+    for (auto item: selectedItems()) {
+
+        if (item->type() == Arrow::Type) {
+            Arrow *arrow = qgraphicsitem_cast<Arrow *>(item);
+            if (arrow->getColor() != myLineColor) {
+                new ChangeLineColorUndo(arrow, myLineColor, block);
+            }
+            arrow->setColor(myLineColor);
         }
-        item->setColor(myLineColor);
-        update();
+        else if (item->type() == DiagramItem::Type) {
+            DiagramItem *diagramItem = dynamic_cast<DiagramItem*> (item);
+            if (diagramItem->brush().color() != myLineColor) {
+                new ChangeBorderColorUndo(diagramItem, myLineColor, block);
+            }
+            diagramItem->setBorderColor(myLineColor);
+        }
+
     }
+    UndoManager::addBlock(block);
 }
 //! [1]
 
@@ -158,13 +173,18 @@ void DiagramScene::setTextColor(const QColor &color)
 void DiagramScene::setItemColor(const QColor &color)
 {
     myItemColor = color;
-    if (isItemChange(DiagramItem::Type)) {
-        DiagramItem *item = qgraphicsitem_cast<DiagramItem *>(selectedItems().first());
-        if (item->brush().color() != color) {
-            UndoManager::add(new ChangeFillColorUndo(item, color));
+
+    UndoBlock *block = new UndoBlock();
+    for (auto item: selectedItems()) {
+        if (item->type() == DiagramItem::Type) {
+            DiagramItem *diagramItem = dynamic_cast<DiagramItem*> (item);
+            if (diagramItem->brush().color() != color) {
+                new ChangeFillColorUndo(diagramItem, color, block);
+            }
+            diagramItem->setBrush(color);
         }
-        item->setBrush(myItemColor);
     }
+    UndoManager::addBlock(block);
 }
 //! [3]
 
@@ -297,6 +317,7 @@ void DiagramScene::save(QIODevice *device, const QString &photosFolderPath)
             itemElement.setAttribute("place_of_death", diagramItem->getPlaceOfDeath());
             itemElement.setAttribute("fill_color", diagramItem->brush().color().name());
             itemElement.setAttribute("text_color", diagramItem->getTextColor().name());
+            itemElement.setAttribute("border_color", diagramItem->getBorderColor().name());
 
             // Copy photos to project directory if required.
             if (copyPhotos) {
@@ -1037,6 +1058,12 @@ void DiagramScene::parseItemElement(const QDomElement &element, const QString &p
         QColor color;
         color.setNamedColor(element.attribute("text_color"));
         item->setTextColor(color);
+    }
+
+    if (element.hasAttribute("border_color")) {
+        QColor color;
+        color.setNamedColor(element.attribute("border_color"));
+        item->setBorderColor(color);
     }
 
     QStringList photos;

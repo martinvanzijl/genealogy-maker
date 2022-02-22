@@ -4,12 +4,15 @@
 class QUndoCommand;
 class QUndoStack;
 
+class UndoBlock;
+
 class UndoManager
 {
 public:
     UndoManager();
 
     static void add(QUndoCommand *command);
+    static void addBlock(UndoBlock *block);
     static void setStack(QUndoStack *stack);
 
 private:

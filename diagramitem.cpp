@@ -74,7 +74,8 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
       m_spouse(nullptr),
       m_movedBySpouse(false),
       m_marriageItem(nullptr),
-      m_thumbnail(nullptr)
+      m_thumbnail(nullptr),
+      m_borderColor(Qt::black)
 {
     myDiagramType = diagramType;
     myContextMenu = contextMenu;
@@ -188,7 +189,7 @@ void DiagramItem::setHighlighted(bool value)
         setPen(QPen(Qt::red, 2));
     }
     else {
-        setPen(QPen(Qt::black, 1));
+        setPen(QPen(m_borderColor, 1));
     }
 }
 
@@ -444,6 +445,45 @@ QColor DiagramItem::getTextColor() const
 void DiagramItem::setTextColor(const QColor &color)
 {
     m_textItem->setDefaultTextColor(color);
+}
+
+void DiagramItem::selectDescendants()
+{
+    // Select self.
+    setSelected(true);
+
+    // Make set of children.
+    QList<DiagramItem *> children;
+
+    // Add own children.
+    children << getChildren();
+
+    // Select spouse's descendants.
+    if (isMarried()) {
+        children << m_spouse->getChildren();
+    }
+
+    // Filter out duplicates.
+    auto childrenSet = children.toSet();
+
+    // Select descendants.
+    for (auto child: childrenSet) {
+        child->selectDescendants();
+    }
+}
+
+QColor DiagramItem::getBorderColor() const
+{
+    return pen().color();
+}
+
+void DiagramItem::setBorderColor(const QColor &color)
+{
+    // Set field.
+    m_borderColor = color;
+
+    // Set pen.
+    setPen(QPen(color, pen().width()));
 }
 
 DiagramItem *DiagramItem::getSpouse() const

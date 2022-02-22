@@ -69,6 +69,8 @@
     <addaction name="sendBackAction"/>
     <addaction name="separator"/>
     <addaction name="viewDetailsAction"/>
+    <addaction name="separator"/>
+    <addaction name="actionSelectDescendants"/>
    </widget>
    <widget class="QMenu" name="menuSelect">
     <property name="title">
@@ -415,6 +417,11 @@
    </property>
    <property name="text">
     <string>&amp;Open Example...</string>
+   </property>
+  </action>
+  <action name="actionSelectDescendants">
+   <property name="text">
+    <string>&amp;Select Descendants</string>
    </property>
   </action>
  </widget>

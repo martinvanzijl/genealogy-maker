@@ -32,7 +32,9 @@ HEADERS	    =   \
     viewphotowindow.h \
     gui/reportwindow.h \
     gui/timelinereportwindow.h \
-    gui/dialogfileproperties.h
+    gui/dialogfileproperties.h \
+    undo/undoblock.h \
+    undo/changebordercolorundo.h
 SOURCES	    =   \
 		diagramitem.cpp \
 		main.cpp \
@@ -66,7 +68,9 @@ SOURCES	    =   \
     viewphotowindow.cpp \
     gui/reportwindow.cpp \
     gui/timelinereportwindow.cpp \
-    gui/dialogfileproperties.cpp
+    gui/dialogfileproperties.cpp \
+    undo/undoblock.cpp \
+    undo/changebordercolorundo.cpp
 RESOURCES   =	genealogymaker.qrc
 
 FORMS += \
