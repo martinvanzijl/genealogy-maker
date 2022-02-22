@@ -53,6 +53,7 @@
 #include "fileutils.h"
 #include "marriageitem.h"
 #include "undo/changefillcolorundo.h"
+#include "undo/changelinecolorundo.h"
 #include "undo/changetextcolorundo.h"
 #include "undo/undomanager.h"
 
@@ -124,6 +125,9 @@ void DiagramScene::setLineColor(const QColor &color)
     myLineColor = color;
     if (isItemChange(Arrow::Type)) {
         Arrow *item = qgraphicsitem_cast<Arrow *>(selectedItems().first());
+        if (item->getColor() != color) {
+            UndoManager::add(new ChangeLineColorUndo(item, myLineColor));
+        }
         item->setColor(myLineColor);
         update();
     }
