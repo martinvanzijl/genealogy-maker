@@ -28,7 +28,8 @@ HEADERS	    =   \
     gui/preferenceswindow.h \
     undo/editpersondetailsundo.h \
     fileutils.h \
-    undo/changetextcolorundo.h
+    undo/changetextcolorundo.h \
+    undo/changelinecolorundo.h
 SOURCES	    =   \
 		diagramitem.cpp \
 		testcases.cpp \
@@ -57,7 +58,8 @@ SOURCES	    =   \
     gui/preferenceswindow.cpp \
     undo/editpersondetailsundo.cpp \
     fileutils.cpp \
-    undo/changetextcolorundo.cpp
+    undo/changetextcolorundo.cpp \
+    undo/changelinecolorundo.cpp
 RESOURCES   =	genealogymaker.qrc
 
 FORMS += \
