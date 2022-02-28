@@ -11,7 +11,8 @@ namespace Ui {
 class DialogPersonDetails;
 }
 
-class DialogViewPhoto;
+//class DialogViewPhoto;
+class ViewPhotoWindow;
 
 class DialogPersonDetails : public QDialog
 {
@@ -56,7 +57,8 @@ private:
 
     Ui::DialogPersonDetails *ui;
     DiagramItem *m_item;
-    DialogViewPhoto *m_viewPhotoDialog;
+//    DialogViewPhoto *m_viewPhotoDialog;
+    ViewPhotoWindow *m_viewPhotoWindow;
     QString m_xmlFile;
     QString m_lastPhotoFolder;
     QStringList getPhotoListFromGui();

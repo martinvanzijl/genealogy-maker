@@ -2,7 +2,8 @@
 #include "ui_dialogpersondetails.h"
 
 #include "diagramitem.h"
-#include "dialogviewphoto.h"
+//#include "dialogviewphoto.h"
+#include "viewphotowindow.h"
 #include "fileutils.h"
 #include "undo/editpersondetailsundo.h"
 #include "undo/undomanager.h"
@@ -25,7 +26,8 @@ DialogPersonDetails::DialogPersonDetails(QWidget *parent) :
 //    setTextGrayedOut(ui->dateEditBirth, true);
 //    setTextGrayedOut(ui->dateEditDeath, true);
 
-    m_viewPhotoDialog = nullptr;
+//    m_viewPhotoDialog = nullptr;
+    m_viewPhotoWindow = nullptr;
 }
 
 DialogPersonDetails::~DialogPersonDetails()
@@ -176,12 +178,15 @@ void DialogPersonDetails::addPhoto(const QString &fileName)
 
 void DialogPersonDetails::viewPhoto(int index)
 {
-    if (!m_viewPhotoDialog) {
-        m_viewPhotoDialog = new DialogViewPhoto(this);
+//    if (!m_viewPhotoDialog) {
+//        m_viewPhotoDialog = new DialogViewPhoto(this);
+//    }
+    if (!m_viewPhotoWindow) {
+        m_viewPhotoWindow = new ViewPhotoWindow(this);
     }
-    m_viewPhotoDialog->setPhotoList(getPhotoListFromGui());
-    m_viewPhotoDialog->show();
-    m_viewPhotoDialog->setPhotoIndex(index);
+    m_viewPhotoWindow->setPhotoList(getPhotoListFromGui());
+    m_viewPhotoWindow->show();
+    m_viewPhotoWindow->setPhotoIndex(index);
 }
 
 //void DialogPersonDetails::viewPhoto(const QString &fileName)

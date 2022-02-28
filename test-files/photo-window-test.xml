@@ -1,0 +1,7 @@
+<genealogy width="5000" height="5000">
+    <item last_name="Person" country_of_birth="" bio="" place_of_birth="" fill_color="#ffffff" y="181" date_of_birth="Mon Jan 1 1900" id="{00000000-0000-0000-0000-000000000000}" x="292" first_name="New" name="New Person" date_of_death="Fri Dec 31 7999" place_of_death="" text_color="#000000">
+        <photo path="/home/martin/Documents/genealogy-maker/test-files/photo-window-test-photos/{00000000-0000-0000-0000-000000000000}/Photo.png" project_dir_path="{00000000-0000-0000-0000-000000000000}/Photo.png"/>
+        <photo path="/home/martin/Documents/genealogy-maker/test-files/photo-window-test-photos/{00000000-0000-0000-0000-000000000000}/Photo_2.png" project_dir_path="{00000000-0000-0000-0000-000000000000}/Photo_2.png"/>
+        <photo path="/home/martin/Documents/genealogy-maker/test-files/photo-window-test-photos/{00000000-0000-0000-0000-000000000000}/align-horizontal.png" project_dir_path="{00000000-0000-0000-0000-000000000000}/align-horizontal.png"/>
+    </item>
+</genealogy>

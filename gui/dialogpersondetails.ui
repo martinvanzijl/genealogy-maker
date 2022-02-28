@@ -303,6 +303,9 @@
                <property name="text">
                 <string>Add...</string>
                </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
              <item>
@@ -315,6 +318,9 @@
                </property>
                <property name="text">
                 <string>Remove</string>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -345,12 +351,18 @@
         <property name="shortcut">
          <string>Ctrl+S</string>
         </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButtonClose">
         <property name="text">
          <string>Close</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
         </property>
        </widget>
       </item>

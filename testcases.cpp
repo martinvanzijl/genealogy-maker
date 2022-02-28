@@ -7,6 +7,7 @@
 #include "marriageitem.h"
 #include "gui/dialogpersondetails.h"
 #include "gui/mainform.h"
+#include "viewphotowindow.h"
 
 #include <QDebug>
 #include <QObject>
@@ -65,6 +66,7 @@ public slots:
     void setDisplayNameTest();
     void setGenderTest();
     void undoEditPersonDetailsTest();
+    void viewPhotosTest();
 
 private:
     bool m_finished;
@@ -299,6 +301,39 @@ void DetailsWindowHelper::undoEditPersonDetailsTest()
     m_finished = true;
 }
 
+void DetailsWindowHelper::viewPhotosTest()
+{
+    // Get the window.
+    QWidget *widget = QApplication::activeWindow();
+    DialogPersonDetails *dialog = dynamic_cast<DialogPersonDetails *>(widget);
+    QVERIFY(dialog);
+
+    // Get the list.
+    QListWidget *listWidgetPhotos = dialog->findChild<QListWidget*>("listWidgetPhotos");
+    QVERIFY(listWidgetPhotos);
+
+    // Check the entry count.
+    int photoCount = listWidgetPhotos->count();
+    QVERIFY(photoCount > 0);
+
+    // Select the first item.
+    listWidgetPhotos->setCurrentRow(0);
+
+    // Press Enter.
+    QTest::keyClick(listWidgetPhotos, Qt::Key_Return);
+
+    // Wait for window to show.
+    QTest::qWait(1000);
+
+    // Check that window is shown.
+    QWidget *newWidget = QApplication::activeWindow();
+    ViewPhotoWindow *window = dynamic_cast<ViewPhotoWindow *>(newWidget);
+    QVERIFY(window);
+
+    // Set flag.
+    m_finished = true;
+}
+
 // =============================================================================
 // TestCaseHelper
 // =============================================================================
@@ -384,7 +419,7 @@ private slots:
     void cleanup();
     void init();
 
-//private:
+private:
     void testNew();
     void testOpen();
     void testSave();
@@ -416,9 +451,10 @@ private slots:
     void saveMoveThenOpenAgainTest();
     void recentFilesMenuTest();
     void importLatestMarriagesTest();
+    void exportThenImportGedcomTest();
 
 private slots:
-    void exportThenImportGedcomTest();
+    void photoWindowTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -1648,6 +1684,34 @@ void TestCases::exportThenImportGedcomTest()
 
     // Import the exported GEDCOM file.
     importGedcomFile(saveFileName);
+}
+
+void TestCases::photoWindowTest()
+{
+    // Open test file.
+    openTestFile(getTestInputFilePathFor("photo-window-test.xml"));
+
+    // Get the first person.
+    DiagramItem *person = getFirstPerson();
+    QVERIFY(person);
+
+    // Select the person.
+    person->setSelected(true);
+
+    // Create helper.
+    auto helper = new DetailsWindowHelper();
+    QTimer::singleShot(1000, helper, SLOT(viewPhotosTest()));
+
+    // Show the details window.
+    QAction *action = m_mainWindow->findChild<QAction*>("viewDetailsAction");
+    QVERIFY(action);
+    action->trigger();
+
+    // Wait till helper is done.
+    while (!helper->isFinished())
+    {
+        QTest::qWait(1000);
+    }
 }
 
 void TestCases::addPhotoToSelectedPerson()
