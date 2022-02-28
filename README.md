@@ -30,4 +30,4 @@ You are also welcome to create a new fork entirely of this project. Please just 
 ## Donate
 If you enjoy this program, please consider donating. You can donate using Paypal:
 
-[Donate with Paypal](http://example.com/donate/) 
+[Donate with PayPal](https://www.paypal.com/donate/?business=HVBTFCQUHSEY6&no_recurring=0&item_name=Your+donation+helps+me+to+keep+writing+free+and+open+source+software.&currency_code=NZD)
