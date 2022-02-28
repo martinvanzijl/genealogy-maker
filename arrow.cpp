@@ -124,25 +124,25 @@ QColor Arrow::getColor() const
     return myColor;
 }
 
-static QPainterPath pathScaled(QPainterPath path, double scale) {
-    // Get translation coordinates.
-    auto translateX = path.boundingRect().center().x();
-    auto translateY = path.boundingRect().center().y();
+//static QPainterPath pathScaled(QPainterPath path, double scale) {
+//    // Get translation coordinates.
+//    auto translateX = path.boundingRect().center().x();
+//    auto translateY = path.boundingRect().center().y();
 
-    // Translate the path to the origin.
-    path.translate(-translateX, -translateY);
+//    // Translate the path to the origin.
+//    path.translate(-translateX, -translateY);
 
-    // Scale the path.
-    QTransform transform;
-    transform.scale(scale, scale);
-    path = transform.map(path);
+//    // Scale the path.
+//    QTransform transform;
+//    transform.scale(scale, scale);
+//    path = transform.map(path);
 
-    // Translate the path back to its original position.
-    path.translate(translateX, translateY);
+//    // Translate the path back to its original position.
+//    path.translate(translateX, translateY);
 
-    // Return the path.
-    return path;
-}
+//    // Return the path.
+//    return path;
+//}
 
 void Arrow::updatePosition()
 {
