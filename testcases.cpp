@@ -1596,7 +1596,7 @@ void TestCases::importLatestMarriagesTest()
     QVERIFY(items.size() >= 1);
 
     // Debug.
-    QTest::qWait(10000);
+//    QTest::qWait(10000);
 
     // Check the marriage.
     for (auto item: items)
