@@ -419,7 +419,7 @@ private slots:
     void cleanup();
     void init();
 
-private:
+//private:
     void testNew();
     void testOpen();
     void testSave();
@@ -1506,6 +1506,8 @@ void TestCases::saveTwoPhotosWithSameNameTest()
     QCOMPARE(person->photos().size(), 2);
     QVERIFY(person->photos().first().endsWith("Photo.png"));
     QVERIFY(person->photos().last().endsWith("Photo.png"));
+
+    // TODO: Clear the existing photos directory, if it exists.
 
     // Save the diagram.
     saveTestFileAs("add-two-photos-with-same-name-test.xml");
