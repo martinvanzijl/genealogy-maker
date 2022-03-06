@@ -73,6 +73,8 @@
 #include "undo/undomanager.h"
 #include "draggablebutton.h"
 #include "preferenceswindow.h"
+#include "gui/reportwindow.h"
+#include "gui/timelinereportwindow.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -876,6 +878,20 @@ void MainForm::exportImage()
 
     // Store path.
 //    m_lastUsedExportPath = fileName;
+}
+
+void MainForm::createPersonListReport()
+{
+    ReportWindow *window = new ReportWindow(this);
+    window->createReportFor(scene);
+    window->show();
+}
+
+void MainForm::createTimelineReport()
+{
+    TimelineReportWindow *window = new TimelineReportWindow(this);
+    window->createReportFor(scene);
+    window->show();
 }
 
 void MainForm::viewSelectedItemDetails()
@@ -2033,4 +2049,14 @@ void MainForm::onTreeViewDetailsAction()
 void MainForm::on_actionExportImage_triggered()
 {
     exportImage();
+}
+
+void MainForm::on_actionPersonListReport_triggered()
+{
+    createPersonListReport();
+}
+
+void MainForm::on_actionTimelineReport_triggered()
+{
+    createTimelineReport();
 }

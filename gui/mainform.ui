@@ -97,12 +97,20 @@
     <addaction name="separator"/>
     <addaction name="actionExportImage"/>
    </widget>
+   <widget class="QMenu" name="menu_Reports">
+    <property name="title">
+     <string>&amp;Reports</string>
+    </property>
+    <addaction name="actionPersonListReport"/>
+    <addaction name="actionTimelineReport"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="itemMenu"/>
    <addaction name="menuSelect"/>
    <addaction name="menuAlign"/>
    <addaction name="menuDiagram"/>
+   <addaction name="menu_Reports"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -368,6 +376,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionPersonListReport">
+   <property name="text">
+    <string>&amp;Person List</string>
+   </property>
+  </action>
+  <action name="actionTimelineReport">
+   <property name="text">
+    <string>&amp;Timeline</string>
    </property>
   </action>
  </widget>

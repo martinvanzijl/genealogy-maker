@@ -459,9 +459,11 @@ private slots:
     void recentFilesMenuTest();
     void importLatestMarriagesTest();
     void exportThenImportGedcomTest();
+    void photoWindowTest();
 
 private slots:
-    void photoWindowTest();
+    void personListReportTest();
+    void timelineReportTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -1724,6 +1726,34 @@ void TestCases::photoWindowTest()
     {
         QTest::qWait(1000);
     }
+}
+
+void TestCases::personListReportTest()
+{
+    // Open test file.
+    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+
+    // Create the report.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionPersonListReport");
+    QVERIFY(action);
+    action->trigger();
+
+    // Debug.
+    QTest::qWait(1000);
+}
+
+void TestCases::timelineReportTest()
+{
+    // Open test file.
+    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+
+    // Create the report.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionTimelineReport");
+    QVERIFY(action);
+    action->trigger();
+
+    // Debug.
+    QTest::qWait(1000);
 }
 
 void TestCases::addPhotoToSelectedPerson()

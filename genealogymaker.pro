@@ -29,7 +29,9 @@ HEADERS	    =   \
     fileutils.h \
     undo/changetextcolorundo.h \
     undo/changelinecolorundo.h \
-    viewphotowindow.h
+    viewphotowindow.h \
+    gui/reportwindow.h \
+    gui/timelinereportwindow.h
 SOURCES	    =   \
 		diagramitem.cpp \
 		main.cpp \
@@ -60,7 +62,9 @@ SOURCES	    =   \
     fileutils.cpp \
     undo/changetextcolorundo.cpp \
     undo/changelinecolorundo.cpp \
-    viewphotowindow.cpp
+    viewphotowindow.cpp \
+    gui/reportwindow.cpp \
+    gui/timelinereportwindow.cpp
 RESOURCES   =	genealogymaker.qrc
 
 FORMS += \
@@ -71,4 +75,6 @@ FORMS += \
     gui/dialoghelp.ui \
     gui/dialogchangesize.ui \
     gui/dialogviewphoto.ui \
-    gui/preferenceswindow.ui
+    gui/preferenceswindow.ui \
+    gui/reportwindow.ui \
+    gui/timelinereportwindow.ui

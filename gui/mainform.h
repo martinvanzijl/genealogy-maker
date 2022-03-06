@@ -174,6 +174,10 @@ private slots:
 
     void on_actionExportImage_triggered();
 
+    void on_actionPersonListReport_triggered();
+
+    void on_actionTimelineReport_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -210,6 +214,9 @@ private:
     bool searchCheckPerson(QList<QGraphicsItem *> &items, int index, const QString &text);
 
     void exportImage();
+
+    void createPersonListReport();
+    void createTimelineReport();
 
     enum { MaxRecentFiles = 5 };
 
