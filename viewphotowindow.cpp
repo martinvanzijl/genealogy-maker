@@ -74,14 +74,14 @@ ViewPhotoWindow::ViewPhotoWindow(QWidget *parent)
     QPushButton *buttonPrevious = new QPushButton("< Previous", this);
     QPushButton *buttonNext = new QPushButton("Next >", this);
 
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    QHBoxLayout *layout = new QHBoxLayout();
     layout->addWidget(buttonPrevious);
     layout->addWidget(buttonNext);
     layout->setMargin(4);
     navigationPanel->setLayout(layout);
 
     // Create overall layout.
-    QVBoxLayout *overallLayout = new QVBoxLayout(this);
+    QVBoxLayout *overallLayout = new QVBoxLayout();
     overallLayout->addWidget(scrollArea);
     overallLayout->addWidget(navigationPanel);
     overallLayout->setMargin(0);
