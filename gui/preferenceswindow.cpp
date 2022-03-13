@@ -40,6 +40,10 @@ void PreferencesWindow::loadPreferences()
     // Load sidebar button setting.
     bool showSidebarCollapseButton = settings.value("interface/showSidebarCollapseButton", false).toBool();
     ui->checkBoxShowCollapseButton->setChecked(showSidebarCollapseButton);
+
+    // Load "Find" window transparency setting.
+    bool findWindowTransparent = settings.value("interface/findWindowTransparent", false).toBool();
+    ui->checkBoxFindWindowTransparent->setChecked(findWindowTransparent);
 }
 
 void PreferencesWindow::on_pushButtonApply_clicked()
@@ -62,6 +66,10 @@ void PreferencesWindow::apply()
     // Store the sidebar button setting.
     bool showSidebarCollapseButton =  ui->checkBoxShowCollapseButton->isChecked();
     settings.setValue("interface/showSidebarCollapseButton", showSidebarCollapseButton);
+
+    // Store the "Find" window transparency setting.
+    bool findWindowTransparent =  ui->checkBoxFindWindowTransparent->isChecked();
+    settings.setValue("interface/findWindowTransparent", findWindowTransparent);
 
     // Send signal.
     emit preferencesChanged();

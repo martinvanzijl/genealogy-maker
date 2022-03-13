@@ -980,6 +980,11 @@ void MainForm::updateGuiFromPreferences()
     // Update sidebar collapse/expand button.
     bool value = settings.value("interface/showSidebarCollapseButton", false).toBool();
     collapseButton->setVisible(value);
+
+    // Update "Find" window.
+    if (dialogFind) {
+        dialogFind->updateGuiFromPreferences();
+    }
 }
 
 void MainForm::onPreferencesChanged()

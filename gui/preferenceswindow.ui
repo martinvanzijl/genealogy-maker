@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>317</width>
-    <height>157</height>
+    <width>327</width>
+    <height>192</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,20 +43,27 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QSpinBox" name="spinBoxArrowLineThickness"/>
-       </item>
-       <item row="1" column="0" colspan="2">
+       <item row="2" column="0" colspan="2">
         <widget class="QCheckBox" name="checkBoxShowTumbnail">
          <property name="text">
           <string>Show thumbnail photos in diagram</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2">
+       <item row="3" column="0" colspan="2">
         <widget class="QCheckBox" name="checkBoxShowCollapseButton">
          <property name="text">
           <string>Show sidebar collapse/expand button</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QSpinBox" name="spinBoxArrowLineThickness"/>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkBoxFindWindowTransparent">
+         <property name="text">
+          <string>Make &quot;Find&quot; window partly transparent</string>
          </property>
         </widget>
        </item>

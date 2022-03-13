@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+class QTimer;
+
 namespace Ui {
 class DialogFind;
 }
@@ -17,6 +19,7 @@ public:
 
     void beforeShow();
     void setStatus(const QString &text);
+    void updateGuiFromPreferences();
 
 signals:
     void search(const QString &text);
@@ -24,11 +27,14 @@ signals:
 private slots:
     void on_pushButtonClose_clicked();
     void on_pushButtonFind_clicked();
+    void setFullOpacity();
 
 private:
     Ui::DialogFind *ui;
 
     QString m_hint;
+    bool m_transparentDuringHighlight;
+    QTimer *m_transparencyTimer;
 };
 
 #endif // DIALOGFIND_H
