@@ -75,6 +75,7 @@
 #include "preferenceswindow.h"
 #include "gui/reportwindow.h"
 #include "gui/timelinereportwindow.h"
+#include "gui/dialogfileproperties.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -159,6 +160,7 @@ MainForm::MainForm(QWidget *parent) :
     dialogMarriageDetails = nullptr;
     dialogHelp = nullptr;
     preferencesWindow = nullptr;
+    dialogFileProperties = nullptr;
 
     // Set preference fields.
     QCoreApplication::setOrganizationName("Martin van Zijl");
@@ -892,6 +894,15 @@ void MainForm::createTimelineReport()
     TimelineReportWindow *window = new TimelineReportWindow(this);
     window->createReportFor(scene);
     window->show();
+}
+
+void MainForm::showFileProperties()
+{
+    if (!dialogFileProperties) {
+        dialogFileProperties = new DialogFileProperties(this);
+    }
+    dialogFileProperties->setFile(m_saveFileName);
+    dialogFileProperties->show();
 }
 
 void MainForm::viewSelectedItemDetails()
@@ -2059,4 +2070,9 @@ void MainForm::on_actionPersonListReport_triggered()
 void MainForm::on_actionTimelineReport_triggered()
 {
     createTimelineReport();
+}
+
+void MainForm::on_actionFileProperties_triggered()
+{
+    showFileProperties();
 }

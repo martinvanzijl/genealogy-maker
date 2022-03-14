@@ -86,6 +86,7 @@ class DialogHelp;
 class PreferencesWindow;
 class QProcess;
 class QPushButton;
+class DialogFileProperties;
 QT_END_NAMESPACE
 
 //! [0]
@@ -178,6 +179,8 @@ private slots:
 
     void on_actionTimelineReport_triggered();
 
+    void on_actionFileProperties_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -217,6 +220,8 @@ private:
 
     void createPersonListReport();
     void createTimelineReport();
+
+    void showFileProperties();
 
     enum { MaxRecentFiles = 5 };
 
@@ -299,6 +304,7 @@ private:
     DialogPersonDetails *dialogPersonDetails;
     DialogMarriageDetails *dialogMarriageDetails;
     DialogHelp *dialogHelp;
+    DialogFileProperties *dialogFileProperties;
 
     QString m_saveFileName;
     QString m_appName;

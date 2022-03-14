@@ -44,6 +44,8 @@
     <addaction name="separator"/>
     <addaction name="printAction"/>
     <addaction name="separator"/>
+    <addaction name="actionFileProperties"/>
+    <addaction name="separator"/>
     <addaction name="exitAction"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -386,6 +388,11 @@
   <action name="actionTimelineReport">
    <property name="text">
     <string>&amp;Timeline</string>
+   </property>
+  </action>
+  <action name="actionFileProperties">
+   <property name="text">
+    <string>&amp;File Properties...</string>
    </property>
   </action>
  </widget>
