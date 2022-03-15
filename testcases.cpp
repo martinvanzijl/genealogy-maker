@@ -460,10 +460,11 @@ private slots:
     void importLatestMarriagesTest();
     void exportThenImportGedcomTest();
     void photoWindowTest();
-
-private slots:
     void personListReportTest();
     void timelineReportTest();
+
+private slots:
+    void filePropertiesWindowTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -1749,6 +1750,20 @@ void TestCases::timelineReportTest()
 
     // Create the report.
     QAction *action = m_mainWindow->findChild<QAction*>("actionTimelineReport");
+    QVERIFY(action);
+    action->trigger();
+
+    // Debug.
+    QTest::qWait(1000);
+}
+
+void TestCases::filePropertiesWindowTest()
+{
+    // Open test file.
+    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+
+    // Show the window.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionFileProperties");
     QVERIFY(action);
     action->trigger();
 
