@@ -86,7 +86,7 @@ public:
     void setTextColor(const QColor &color);
     void setItemColor(const QColor &color);
     void setFont(const QFont &font);
-    void open(QIODevice *device, const QString &photosFolderPath);
+    bool open(QIODevice *device, const QString &photosFolderPath);
     void print();
     void save(QIODevice *device, const QString &photosFolderPath);
     DiagramItem *itemWithId(const QUuid &id);
@@ -102,6 +102,9 @@ public:
     void autoLayout();
     int autoLayoutRow(const QList<DiagramItem *> &items, int startY);
     void highlightForSearch(DiagramItem *item);
+
+    QWidget *window() const;
+    void setWindow(QWidget *window);
 
 public slots:
     void setMode(Mode mode);
@@ -164,6 +167,7 @@ private:
     long m_nextId;
     bool m_busyMoving;
     QTimer *m_searchHighlightTimer;
+    QWidget *m_window;
     DiagramItem *createPerson(const QPointF &pos);
 
     /**

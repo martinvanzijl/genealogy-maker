@@ -116,6 +116,8 @@ DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
 
     m_searchHighlightTimer = new QTimer(this);
     connect(m_searchHighlightTimer, SIGNAL(timeout()), this, SLOT(removeSearchHighlight()));
+
+    m_window = nullptr;
 }
 //! [0]
 
@@ -179,7 +181,13 @@ void DiagramScene::setFont(const QFont &font)
     }
 }
 
-void DiagramScene::open(QIODevice *device, const QString &photosFolderPath)
+///
+/// \brief DiagramScene::open Open the given file.
+/// \param device The file to open.
+/// \param photosFolderPath The path to photos for the project.
+/// \return True if opened OK, false otherwise.
+///
+bool DiagramScene::open(QIODevice *device, const QString &photosFolderPath)
 {
     QString errorStr;
     int errorLine;
@@ -188,19 +196,19 @@ void DiagramScene::open(QIODevice *device, const QString &photosFolderPath)
     QDomDocument domDocument;
     if (!domDocument.setContent(device, true, &errorStr, &errorLine,
                                 &errorColumn)) {
-//        QMessageBox::information(window(), tr("DOM Bookmarks"),
-//                                 tr("Parse error at line %1, column %2:\n%3")
-//                                 .arg(errorLine)
-//                                 .arg(errorColumn)
-//                                 .arg(errorStr));
-//        return false;
+        QMessageBox::information(window(), tr("Genealogy Maker"),
+                                 tr("Parse error at line %1, column %2:\n%3")
+                                 .arg(errorLine)
+                                 .arg(errorColumn)
+                                 .arg(errorStr));
+        return false;
     }
 
     QDomElement root = domDocument.documentElement();
     if (root.tagName() != "genealogy") {
-//        QMessageBox::information(window(), tr("DOM Bookmarks"),
-//                                 tr("The file is not an genealogy file."));
-        return;
+        QMessageBox::information(window(), tr("Genealogy Maker"),
+                                 tr("The file is not an genealogy file."));
+        return false;
     }
 
     clear();
@@ -231,6 +239,9 @@ void DiagramScene::open(QIODevice *device, const QString &photosFolderPath)
         parseMarriageElement(child);
         child = child.nextSiblingElement("marriage");
     }
+
+    // Return.
+    return true;
 }
 
 void DiagramScene::print()
@@ -1158,6 +1169,16 @@ void DiagramScene::removeSearchHighlight()
 
     // Ensure timer is stopped.
     m_searchHighlightTimer->stop();
+}
+
+QWidget *DiagramScene::window() const
+{
+    return m_window;
+}
+
+void DiagramScene::setWindow(QWidget *window)
+{
+    m_window = window;
 }
 
 void DiagramScene::marry(DiagramItem *item1, DiagramItem *item2, bool fromUndo)

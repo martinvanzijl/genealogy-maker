@@ -106,6 +106,7 @@ MainForm::MainForm(QWidget *parent) :
 
     scene = new DiagramScene(ui->itemMenu, this);
     scene->setSceneRect(QRectF(0, 0, 5000, 5000));
+    scene->setWindow(this);
     connect(scene, SIGNAL(itemInserted(DiagramItem*, bool)),
             this, SLOT(itemInserted(DiagramItem*, bool)));
     connect(scene, SIGNAL(itemRemoved(DiagramItem*)),
@@ -1458,7 +1459,12 @@ void MainForm::open(const QString &fileName)
         return;
     }
 
-    scene->open(&file, getPhotosFolderFor(fileName));
+    bool openedOK = scene->open(&file, getPhotosFolderFor(fileName));
+
+    // Exit if not opened OK.
+    if (!openedOK) {
+        return;
+    }
 
     // Scroll to first item.
     if (!scene->isEmpty()) {

@@ -64,5 +64,13 @@ int main(int argv, char *args[])
     mainWindow.moveToCenter();
     mainWindow.show();
 
+    // Load diagram if passed as parameter.
+    auto argList = app.arguments();
+    if (argList.size() >= 2)
+    {
+        QString fileName = argList[1];
+        mainWindow.open(fileName);
+    }
+
     return app.exec();
 }

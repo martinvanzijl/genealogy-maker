@@ -102,6 +102,7 @@ public:
    DiagramScene *getScene() const;
 
    void updateGuiFromPreferences();
+   void open(const QString &fileName);
 
 public slots:
    void onItemTextEdited(QGraphicsItem *item);
@@ -206,7 +207,6 @@ private:
     QString getPythonPath() const;
     void styleToolButton(QToolButton *button) const;
     QString getPhotosFolderFor(const QString &fileName) const;
-    void open(const QString &fileName);
 
     // "Recent Files" menu.
     static bool hasRecentFiles();
