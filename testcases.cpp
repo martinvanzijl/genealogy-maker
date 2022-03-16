@@ -586,17 +586,17 @@ void TestCases::testNew()
 
 void TestCases::testOpen()
 {
-    m_helper = new TestCaseHelper();
-    m_helper->setOpenFileName(getTestInputFilePathFor("van-zijl-new.xml"));
-
-    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
-    QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
+    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
 
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - van-zijl-new.xml"));
 }
 
 void TestCases::testSave()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     m_helper = new TestCaseHelper();
     m_helper->setSaveFileName("saved-diagram.xml");
     QTimer::singleShot(1000, m_helper, SLOT(handleSaveDialog()));
@@ -616,11 +616,7 @@ void TestCases::testExit()
 void TestCases::testBug1()
 {
     // Open the test file.
-    m_helper = new TestCaseHelper();
-    m_helper->setOpenFileName(getTestInputFilePathFor("bug-1-test.xml"));
-
-    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
-    QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
+    openTestFile(getTestInputFilePathFor("bug-1-test.xml"));
 
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - bug-1-test.xml"));
 
@@ -637,6 +633,10 @@ void TestCases::testBug1()
 
 void TestCases::volumeTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Create parameters.
     const int personCount = 100;
     const int leftOffset = 200;
@@ -688,11 +688,7 @@ void TestCases::setGenderTest()
 void TestCases::thumbnailTest()
 {
     // Open the test file.
-    m_helper = new TestCaseHelper();
-    m_helper->setOpenFileName(getTestInputFilePathFor("thumbnail-test.xml"));
-
-    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
-    QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
+    openTestFile(getTestInputFilePathFor("thumbnail-test.xml"));
 
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - thumbnail-test.xml"));
 
@@ -750,6 +746,10 @@ void TestCases::defaultFillColorTest()
 
 void TestCases::exportGedcomTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Open the test file.
     m_helper = new TestCaseHelper();
     m_helper->setOpenFileName(getTestInputFilePathFor("export-gedcom-test.xml"));
@@ -802,6 +802,10 @@ void TestCases::setDisplayNameTest()
 
 void TestCases::importGedcomTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Get the action.
     QAction *action = m_mainWindow->findChild<QAction*>("actionImportGedcomFile");
     QVERIFY(action);
@@ -833,6 +837,10 @@ void TestCases::importGedcomTest()
 
 void TestCases::saveFillColorTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Create person.
     auto person = new DiagramItem(DiagramItem::Person, nullptr);
 
@@ -930,11 +938,7 @@ void TestCases::saveFillColorTest()
 void TestCases::deletePersonTest()
 {
     // Open the test file.
-    m_helper = new TestCaseHelper();
-    m_helper->setOpenFileName(getTestInputFilePathFor("delete-person-test.xml"));
-
-    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
-    QTest::keyClicks(m_mainWindow, "O", Qt::ControlModifier);
+    openTestFile(getTestInputFilePathFor("delete-person-test.xml"));
 
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - delete-person-test.xml"));
 
@@ -1041,6 +1045,10 @@ void TestCases::treeViewTest()
 
 void TestCases::importGedcomThenSaveTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Get the action.
     QAction *action = m_mainWindow->findChild<QAction*>("actionImportGedcomFile");
     QVERIFY(action);
@@ -1130,6 +1138,10 @@ void TestCases::importGedcomThenSaveTest()
 
 void TestCases::windowTitleTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Check initial title.
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram"));
 
@@ -1226,6 +1238,10 @@ void TestCases::testRenameWhileMarried()
 
 void TestCases::testUndoEditPersonDetails()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Add person.
     auto person = clickToAddPerson();
     QString originalDisplayName = person->name();
@@ -1367,6 +1383,10 @@ void TestCases::importGedcomFile(const QString &fileName)
 
 void TestCases::openTestFile(const QString &fileName)
 {
+#ifdef Q_OS_WIN
+    // Workaround for Windows. The file dialog will not populate the name correctly.
+    m_mainWindow->open(fileName);
+#else
     // Get the action.
     QAction *action = m_mainWindow->findChild<QAction*>("openAction");
 //    QVERIFY(action);
@@ -1378,10 +1398,15 @@ void TestCases::openTestFile(const QString &fileName)
     // Open the file.
     QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
     action->trigger();
+#endif
 }
 
 void TestCases::savePhotosTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Open the test file.
     openTestFile(getTestInputFilePathFor("save-photos-test.xml"));
 
@@ -1407,6 +1432,10 @@ void TestCases::savePhotosTest()
 
 void TestCases::addPhotoTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Add person.
     auto person = new DiagramItem(DiagramItem::Person, nullptr);
     m_mainWindow->getScene()->addItem(person);
@@ -1449,6 +1478,10 @@ void TestCases::addPhotoTest()
 
 void TestCases::saveInOtherFolderTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Add person.
     auto person = new DiagramItem(DiagramItem::Person, nullptr);
     m_mainWindow->getScene()->addItem(person);
@@ -1495,6 +1528,10 @@ void TestCases::saveInOtherFolderTest()
 
 void TestCases::saveTwoPhotosWithSameNameTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Add person.
     auto person = new DiagramItem(DiagramItem::Person, nullptr);
     m_mainWindow->getScene()->addItem(person);
@@ -1543,6 +1580,10 @@ void TestCases::saveTwoPhotosWithSameNameTest()
 
 void TestCases::saveMoveThenOpenAgainTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Add person.
     DiagramItem *person = clickToAddPerson();
 
@@ -1596,6 +1637,10 @@ void TestCases::saveMoveThenOpenAgainTest()
 
 void TestCases::recentFilesMenuTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Add person.
     clickToAddPerson();
 
@@ -1628,6 +1673,10 @@ void TestCases::recentFilesMenuTest()
 
 void TestCases::importLatestMarriagesTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Get the action.
     QAction *action = m_mainWindow->findChild<QAction*>("actionImportGedcomFile");
     QVERIFY(action);
@@ -1680,6 +1729,10 @@ void TestCases::importLatestMarriagesTest()
 
 void TestCases::exportThenImportGedcomTest()
 {
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
     // Import original GEDCOM file.
     importGedcomFile(getTestInputFilePathFor("Musterstammbaum.ged"));
 
