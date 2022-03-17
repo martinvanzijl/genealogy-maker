@@ -1900,6 +1900,11 @@ void MainForm::on_actionExportGedcomFile_triggered()
 
     QString title = tr("Choose Output File");
     QString dir = saveFileDir();
+    if (saveFileExists()) {
+        // Set default file name.
+        QFileInfo info(m_saveFileName);
+        dir = info.absoluteDir().filePath(info.baseName());
+    }
     QString filter = tr("GEDCOM Files (*.ged)");
     outputFileName = QFileDialog::getSaveFileName(this, title, dir, filter);
 
