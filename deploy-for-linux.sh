@@ -48,5 +48,8 @@ cp -R ../python-gedcom-1.0.0/ .
 # Copy the help files.
 cp -R ../doc/ .
 
+# Copy the example diagrams.
+cp -R ../examples/ .
+
 # Go back.
 cd ..
