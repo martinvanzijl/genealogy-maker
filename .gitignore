@@ -1,6 +1,7 @@
 # Test output files.
 test-files/save-photos-test-updated-photos/
 test-files/save-photos-test-updated.xml
+test-files/export-gedcom-test.ged
 
 # Python files.
 *.pyc
