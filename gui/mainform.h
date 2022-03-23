@@ -326,6 +326,8 @@ private:
 
     // Search index.
     int m_searchFoundIndex;
+
+    QString m_lastDiagramOpenFolder;
 };
 
 #endif // MAINFORM_H

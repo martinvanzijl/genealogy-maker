@@ -484,14 +484,29 @@ void MainForm::newDiagram()
 
 void MainForm::open()
 {
+    // Use last folder if possible.
+    QString folderPath;
+    if (!m_lastDiagramOpenFolder.isEmpty())
+    {
+        folderPath = m_lastDiagramOpenFolder;
+    }
+    else
+    {
+        folderPath = saveFileDir();
+    }
+
     // Choose file to open.
     QString fileName =
             QFileDialog::getOpenFileName(this, tr("Open Genealogy File"),
-                                         saveFileDir(),
+                                         folderPath,
                                          tr("Genealogy XML Files (*.xml)"));
 
     if (fileName.isEmpty())
         return;
+
+    // Save the folder path.
+    QFileInfo info(fileName);
+    m_lastDiagramOpenFolder = info.dir().path();
 
     // Try to open the file.
     open(fileName);
