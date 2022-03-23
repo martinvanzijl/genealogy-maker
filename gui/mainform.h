@@ -328,6 +328,7 @@ private:
     int m_searchFoundIndex;
 
     QString m_lastDiagramOpenFolder;
+    QString m_lastGedcomImportFolder;
 };
 
 #endif // MAINFORM_H

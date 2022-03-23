@@ -1792,15 +1792,30 @@ void MainForm::on_actionImportGedcomFile_triggered()
         return;
     }
 
+    // Use last folder if possible.
+    QString folderPath;
+    if (!m_lastGedcomImportFolder.isEmpty())
+    {
+        folderPath = m_lastGedcomImportFolder;
+    }
+    else
+    {
+        folderPath = saveFileDir();
+    }
+
     // Show the "open file" dialog.
     QString fileName =
             QFileDialog::getOpenFileName(this, tr("Import GEDCOM File"),
-                                         saveFileDir(),
+                                         folderPath,
                                          tr("GEDCOM Files (*.ged)"));
 
     // Exit if no file was chosen.
     if (fileName.isEmpty())
         return;
+
+    // Save the folder path.
+    QFileInfo info(fileName);
+    m_lastGedcomImportFolder = info.dir().path();
 
     // Open file.
     QFile file(fileName);

@@ -1747,11 +1747,11 @@ void TestCases::exportThenImportGedcomTest()
     action->trigger();
 
     // Check that the exported file exists.
-    QFile file(QString("save-files/") + saveFileName);
-    QVERIFY(file.exists());
+    QFileInfo fileInfo(QString("save-files/") + saveFileName);
+    QVERIFY(fileInfo.exists());
 
     // Import the exported GEDCOM file.
-    importGedcomFile(saveFileName);
+    importGedcomFile(fileInfo.absoluteFilePath());
 }
 
 void TestCases::photoWindowTest()
