@@ -921,6 +921,26 @@ void MainForm::showFileProperties()
     dialogFileProperties->show();
 }
 
+void MainForm::autoLayoutDiagram()
+{
+    // Create undo object.
+    MoveItemsUndo *undo = new MoveItemsUndo(scene, scene->items());
+
+    // Layout the scene.
+    scene->autoLayout();
+
+    // Store undo item.
+    undo->storeAfterState();
+    undo->setText("auto layout");
+    undo->setMoveView(true);
+    undoStack->push(undo);
+
+    // Go to first item.
+    if (!scene->isEmpty()) {
+        view->centerOn(scene->firstItem());
+    }
+}
+
 void MainForm::viewSelectedItemDetails()
 {
     auto selectedItems = scene->selectedItems();
@@ -2116,4 +2136,9 @@ void MainForm::on_actionTimelineReport_triggered()
 void MainForm::on_actionFileProperties_triggered()
 {
     showFileProperties();
+}
+
+void MainForm::on_actionAutoLayout_triggered()
+{
+    autoLayoutDiagram();
 }

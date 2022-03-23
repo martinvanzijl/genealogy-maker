@@ -182,6 +182,8 @@ private slots:
 
     void on_actionFileProperties_triggered();
 
+    void on_actionAutoLayout_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -222,6 +224,8 @@ private:
     void createTimelineReport();
 
     void showFileProperties();
+
+    void autoLayoutDiagram();
 
     enum { MaxRecentFiles = 5 };
 

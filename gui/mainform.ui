@@ -98,6 +98,8 @@
     <addaction name="actionChangeSize"/>
     <addaction name="separator"/>
     <addaction name="actionExportImage"/>
+    <addaction name="separator"/>
+    <addaction name="actionAutoLayout"/>
    </widget>
    <widget class="QMenu" name="menu_Reports">
     <property name="title">
@@ -393,6 +395,14 @@
   <action name="actionFileProperties">
    <property name="text">
     <string>&amp;File Properties...</string>
+   </property>
+  </action>
+  <action name="actionAutoLayout">
+   <property name="text">
+    <string>&amp;Auto-layout</string>
+   </property>
+   <property name="toolTip">
+    <string>Auto-layout</string>
    </property>
   </action>
  </widget>

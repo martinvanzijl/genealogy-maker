@@ -18,12 +18,16 @@ public:
     void redo() override;
 
     void storeAfterState();
+    void setMoveView(bool moveView);
 
 private:
+    void moveViewsIfRequired();
+
     DiagramScene *m_scene;
     QList<QGraphicsItem *> m_items;
     QMap<QGraphicsItem *, QPointF> m_posOld;
     QMap<QGraphicsItem *, QPointF> m_posNew;
+    bool m_moveView;
     bool m_undone;
 };
 

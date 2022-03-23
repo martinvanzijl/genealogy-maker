@@ -462,9 +462,10 @@ private slots:
     void photoWindowTest();
     void personListReportTest();
     void timelineReportTest();
+    void filePropertiesWindowTest();
 
 private slots:
-    void filePropertiesWindowTest();
+    void autoLayoutTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -1822,6 +1823,29 @@ void TestCases::filePropertiesWindowTest()
 
     // Debug.
     QTest::qWait(1000);
+}
+
+void TestCases::autoLayoutTest()
+{
+    // Open test file.
+    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+
+    // Trigger the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionAutoLayout");
+    QVERIFY(action);
+    action->trigger();
+
+    // Undo.
+    action = m_mainWindow->findChild<QAction*>("undoAction");
+    QVERIFY(action);
+    QVERIFY(action->isEnabled());
+    action->trigger();
+
+    // Redo.
+    action = m_mainWindow->findChild<QAction*>("redoAction");
+    QVERIFY(action);
+    QVERIFY(action->isEnabled());
+    action->trigger();
 }
 
 void TestCases::addPhotoToSelectedPerson()
