@@ -609,6 +609,7 @@ void MainForm::onTreeItemDoubleClicked(QTreeWidgetItem *item, int column)
     auto diagramItem = scene->itemWithId(id);
     if (diagramItem) {
         view->centerOn(diagramItem);
+        scene->highlightForSearch(diagramItem);
     }
 }
 
