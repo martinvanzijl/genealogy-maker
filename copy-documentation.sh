@@ -15,5 +15,6 @@ do
     then
         echo "Copying documentation to $DIR..."
         cp -R doc $DIR
+        cp -R examples $DIR
     fi
 done

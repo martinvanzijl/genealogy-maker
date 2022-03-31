@@ -942,6 +942,27 @@ void MainForm::autoLayoutDiagram()
     }
 }
 
+void MainForm::openExampleDiagram()
+{
+    // Show examples folder.
+    QString fileName =
+            QFileDialog::getOpenFileName(this, tr("Open Example Genealogy"),
+                                         exampleFileDir(),
+                                         tr("Genealogy XML Files (*.xml)"));
+
+    // Open the file if once was chosen.
+    if (fileName.isEmpty())
+        return;
+
+    // Try to open the file.
+    open(fileName);
+}
+
+QString MainForm::exampleFileDir() const
+{
+    return QDir("examples").path();
+}
+
 void MainForm::viewSelectedItemDetails()
 {
     auto selectedItems = scene->selectedItems();
@@ -2142,4 +2163,9 @@ void MainForm::on_actionFileProperties_triggered()
 void MainForm::on_actionAutoLayout_triggered()
 {
     autoLayoutDiagram();
+}
+
+void MainForm::on_actionOpenExample_triggered()
+{
+    openExampleDiagram();
 }

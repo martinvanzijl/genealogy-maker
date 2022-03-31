@@ -463,9 +463,10 @@ private slots:
     void personListReportTest();
     void timelineReportTest();
     void filePropertiesWindowTest();
+    void autoLayoutTest();
 
 private slots:
-    void autoLayoutTest();
+    void openExampleTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -1846,6 +1847,28 @@ void TestCases::autoLayoutTest()
     QVERIFY(action);
     QVERIFY(action->isEnabled());
     action->trigger();
+}
+
+void TestCases::openExampleTest()
+{
+#ifdef Q_OS_WIN
+    QSKIP("This test does not work on Windows yet.");
+#endif
+
+    // Get the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionOpenExample");
+    QVERIFY(action);
+
+    // Create the helper.
+    m_helper = new TestCaseHelper();
+    m_helper->setOpenFileName("example-genealogy.xml");
+
+    // Open the file.
+    QTimer::singleShot(1000, m_helper, SLOT(handleOpenDialog()));
+    action->trigger();
+
+    // Check that the file opened OK.
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - example-genealogy.xml"));
 }
 
 void TestCases::addPhotoToSelectedPerson()

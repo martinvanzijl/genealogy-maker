@@ -89,6 +89,9 @@
      <string>&amp;Help</string>
     </property>
     <addaction name="helpContentsAction"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpenExample"/>
+    <addaction name="separator"/>
     <addaction name="aboutAction"/>
    </widget>
    <widget class="QMenu" name="menuDiagram">
@@ -403,6 +406,15 @@
    </property>
    <property name="toolTip">
     <string>Auto-layout</string>
+   </property>
+  </action>
+  <action name="actionOpenExample">
+   <property name="icon">
+    <iconset resource="../genealogymaker.qrc">
+     <normaloff>:/images/open-document.svg</normaloff>:/images/open-document.svg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Open Example...</string>
    </property>
   </action>
  </widget>

@@ -184,6 +184,8 @@ private slots:
 
     void on_actionAutoLayout_triggered();
 
+    void on_actionOpenExample_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -226,6 +228,9 @@ private:
     void showFileProperties();
 
     void autoLayoutDiagram();
+
+    void openExampleDiagram();
+    QString exampleFileDir() const;
 
     enum { MaxRecentFiles = 5 };
 
