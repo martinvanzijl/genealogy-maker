@@ -127,7 +127,7 @@
      <normaloff>:/images/new-document.svg</normaloff>:/images/new-document.svg</iconset>
    </property>
    <property name="text">
-    <string>New</string>
+    <string>&amp;New</string>
    </property>
    <property name="toolTip">
     <string>Start a new diagram</string>
@@ -142,7 +142,7 @@
      <normaloff>:/images/open-document.svg</normaloff>:/images/open-document.svg</iconset>
    </property>
    <property name="text">
-    <string>Open</string>
+    <string>&amp;Open</string>
    </property>
    <property name="toolTip">
     <string>Open diagram</string>
@@ -157,7 +157,7 @@
      <normaloff>:/images/save-document.svg</normaloff>:/images/save-document.svg</iconset>
    </property>
    <property name="text">
-    <string>Save</string>
+    <string>&amp;Save</string>
    </property>
    <property name="toolTip">
     <string>Save diagram</string>
@@ -172,7 +172,7 @@
      <normaloff>:/images/save-as.svg</normaloff>:/images/save-as.svg</iconset>
    </property>
    <property name="text">
-    <string>Save As...</string>
+    <string>Save &amp;As...</string>
    </property>
    <property name="toolTip">
     <string>Save diagram as a new file</string>
@@ -187,7 +187,7 @@
      <normaloff>:/images/print.svg</normaloff>:/images/print.svg</iconset>
    </property>
    <property name="text">
-    <string>Print...</string>
+    <string>&amp;Print...</string>
    </property>
    <property name="toolTip">
     <string>Print diagram</string>
@@ -213,7 +213,7 @@
      <normaloff>:/images/undo.svg</normaloff>:/images/undo.svg</iconset>
    </property>
    <property name="text">
-    <string>Undo</string>
+    <string>&amp;Undo</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Z</string>
@@ -225,7 +225,7 @@
      <normaloff>:/images/redo.svg</normaloff>:/images/redo.svg</iconset>
    </property>
    <property name="text">
-    <string>Redo</string>
+    <string>&amp;Redo</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+Z</string>
@@ -237,7 +237,7 @@
      <normaloff>:/images/search.svg</normaloff>:/images/search.svg</iconset>
    </property>
    <property name="text">
-    <string>Find...</string>
+    <string>&amp;Find...</string>
    </property>
    <property name="toolTip">
     <string>Find person with name</string>
@@ -282,7 +282,7 @@
      <normaloff>:/images/sendtoback.png</normaloff>:/images/sendtoback.png</iconset>
    </property>
    <property name="text">
-    <string>Send to &amp;Back</string>
+    <string>&amp;Send to Back</string>
    </property>
    <property name="toolTip">
     <string>Send item to back</string>
@@ -293,7 +293,7 @@
   </action>
   <action name="selectAllAction">
    <property name="text">
-    <string>Select All</string>
+    <string>Select &amp;All</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
@@ -301,7 +301,7 @@
   </action>
   <action name="selectNoneAction">
    <property name="text">
-    <string>Select None</string>
+    <string>Select &amp;None</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+A</string>
@@ -313,7 +313,7 @@
      <normaloff>:/images/align-horizontal.png</normaloff>:/images/align-horizontal.png</iconset>
    </property>
    <property name="text">
-    <string>Align Horizontally</string>
+    <string>Align &amp;Horizontally</string>
    </property>
   </action>
   <action name="alignVerticallyAction">
@@ -322,12 +322,12 @@
      <normaloff>:/images/align-vertical.png</normaloff>:/images/align-vertical.png</iconset>
    </property>
    <property name="text">
-    <string>Align Vertically</string>
+    <string>Align &amp;Vertically</string>
    </property>
   </action>
   <action name="viewDetailsAction">
    <property name="text">
-    <string>Details...</string>
+    <string>D&amp;etails...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
@@ -339,7 +339,7 @@
      <normaloff>:/images/help-about.svg</normaloff>:/images/help-about.svg</iconset>
    </property>
    <property name="text">
-    <string>A&amp;bout</string>
+    <string>&amp;About</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
@@ -351,7 +351,7 @@
      <normaloff>:/images/help-contents.svg</normaloff>:/images/help-contents.svg</iconset>
    </property>
    <property name="text">
-    <string>Contents</string>
+    <string>&amp;Contents</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+H</string>
