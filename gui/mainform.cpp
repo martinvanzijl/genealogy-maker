@@ -1372,6 +1372,11 @@ void MainForm::createMenus()
 
 void MainForm::createToolbars()
 {
+    fileToolBar = addToolBar(tr("File"));
+    fileToolBar->addAction(ui->newAction);
+    fileToolBar->addAction(ui->openAction);
+    fileToolBar->addAction(ui->saveAction);
+
     editToolBar = addToolBar(tr("Edit"));
     editToolBar->addAction(ui->deleteAction);
     editToolBar->addAction(ui->toFrontAction);

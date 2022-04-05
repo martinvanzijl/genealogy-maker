@@ -272,6 +272,7 @@ private:
     QMenu *marriageMenu;
 
     QToolBar *textToolBar;
+    QToolBar *fileToolBar;
     QToolBar *editToolBar;
     QToolBar *colorToolBar;
     QToolBar *pointerToolbar;
