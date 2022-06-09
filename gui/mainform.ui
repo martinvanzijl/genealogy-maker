@@ -267,7 +267,7 @@
      <normaloff>:/images/bringtofront.png</normaloff>:/images/bringtofront.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Bring to &amp;Front</string>
+    <string>&amp;Bring to Front</string>
    </property>
    <property name="toolTip">
     <string>Bring item to front</string>
