@@ -183,6 +183,9 @@ MainForm::MainForm(QWidget *parent) :
         recentFileActs[i]->setVisible(false);
     }
 
+    recentMenu->addSeparator();
+    recentMenu->addAction(tr("&Clear"), this, SLOT(clearRecentFilesMenu()));
+
     setRecentFilesVisible(hasRecentFiles());
 }
 
@@ -1594,6 +1597,12 @@ void MainForm::openRecentFile()
 {
     if (const QAction *action = qobject_cast<const QAction *>(sender()))
         open(action->data().toString());
+}
+
+void MainForm::clearRecentFilesMenu()
+{
+    // TODO: Implement...
+    qDebug() << "Clear recent files menu...";
 }
 
 bool MainForm::hasRecentFiles()
