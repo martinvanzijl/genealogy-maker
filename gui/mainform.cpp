@@ -1601,8 +1601,17 @@ void MainForm::openRecentFile()
 
 void MainForm::clearRecentFilesMenu()
 {
-    // TODO: Implement...
-    qDebug() << "Clear recent files menu...";
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Confirm");
+    msgBox.setText("Really clear the recent files menu?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+
+    if (ret == QMessageBox::Yes) {
+        // TODO: Implement...
+        qDebug() << "Clear recent files menu...";
+    }
 }
 
 bool MainForm::hasRecentFiles()
