@@ -1609,8 +1609,13 @@ void MainForm::clearRecentFilesMenu()
     int ret = msgBox.exec();
 
     if (ret == QMessageBox::Yes) {
-        // TODO: Implement...
-        qDebug() << "Clear recent files menu...";
+        // Remove all entries.
+        QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
+        settings.beginWriteArray(recentFilesKey());
+        settings.endArray();
+
+        // Hide the menu.
+        setRecentFilesVisible(false);
     }
 }
 
