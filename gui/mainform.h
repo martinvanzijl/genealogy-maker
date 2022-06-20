@@ -158,6 +158,7 @@ private slots:
     void onPreferencesChanged();
     void updateRecentFileActions();
     void openRecentFile();
+    void clearRecentFilesMenu();
 
     void showHelpContents();
 

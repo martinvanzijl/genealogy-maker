@@ -183,6 +183,9 @@ MainForm::MainForm(QWidget *parent) :
         recentFileActs[i]->setVisible(false);
     }
 
+    recentMenu->addSeparator();
+    recentMenu->addAction(tr("&Clear"), this, SLOT(clearRecentFilesMenu()));
+
     setRecentFilesVisible(hasRecentFiles());
 }
 
@@ -1594,6 +1597,26 @@ void MainForm::openRecentFile()
 {
     if (const QAction *action = qobject_cast<const QAction *>(sender()))
         open(action->data().toString());
+}
+
+void MainForm::clearRecentFilesMenu()
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Confirm");
+    msgBox.setText("Really clear the recent files menu?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+
+    if (ret == QMessageBox::Yes) {
+        // Remove all entries.
+        QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
+        settings.beginWriteArray(recentFilesKey());
+        settings.endArray();
+
+        // Hide the menu.
+        setRecentFilesVisible(false);
+    }
 }
 
 bool MainForm::hasRecentFiles()
