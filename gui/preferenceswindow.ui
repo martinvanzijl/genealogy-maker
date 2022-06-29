@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>327</width>
-    <height>192</height>
+    <width>465</width>
+    <height>272</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,44 +26,98 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QFormLayout" name="formLayout">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::ExpandingFieldsGrow</enum>
-       </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="topMargin">
         <number>6</number>
        </property>
        <property name="bottomMargin">
         <number>6</number>
        </property>
-       <item row="0" column="0">
-        <widget class="QLabel" name="labelArrowLineThickness">
-         <property name="text">
-          <string>Arrow line thickness:</string>
+       <item>
+        <widget class="QFrame" name="frameArrowThickness">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
          </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetDefaultConstraint</enum>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="labelArrowLineThickness">
+            <property name="text">
+             <string>Arrow line thickness:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="spinBoxArrowLineThickness">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2">
+       <item>
         <widget class="QCheckBox" name="checkBoxShowTumbnail">
          <property name="text">
           <string>Show thumbnail photos in diagram</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0" colspan="2">
+       <item>
         <widget class="QCheckBox" name="checkBoxShowCollapseButton">
          <property name="text">
           <string>Show sidebar collapse/expand button</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QSpinBox" name="spinBoxArrowLineThickness"/>
-       </item>
-       <item row="4" column="0" colspan="2">
+       <item>
         <widget class="QCheckBox" name="checkBoxFindWindowTransparent">
          <property name="text">
           <string>Make &quot;Find&quot; window partly transparent</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBoxRemoveInvalidFiles">
+         <property name="text">
+          <string>Remove invalid files from &quot;Recent Files&quot; menu</string>
          </property>
         </widget>
        </item>
