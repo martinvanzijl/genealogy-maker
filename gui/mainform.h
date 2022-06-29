@@ -234,6 +234,8 @@ private:
     void openExampleDiagram();
     QString exampleFileDir() const;
 
+    bool shouldRemoveInvalidFiles() const;
+
     enum { MaxRecentFiles = 5 };
 
     QAction *recentFileActs[MaxRecentFiles];

@@ -967,6 +967,12 @@ QString MainForm::exampleFileDir() const
     return QDir("examples").path();
 }
 
+bool MainForm::shouldRemoveInvalidFiles() const
+{
+    QSettings settings;
+    return settings.value("interface/removeInvalidFiles", false).toBool();
+}
+
 void MainForm::viewSelectedItemDetails()
 {
     auto selectedItems = scene->selectedItems();
@@ -1522,7 +1528,7 @@ void MainForm::open(const QString &fileName)
                              tr("Cannot read file %1:\n%2.")
                              .arg(fileName)
                              .arg(file.errorString()));
-        if (m_openingRecentFile) {
+        if (m_openingRecentFile && shouldRemoveInvalidFiles()) {
             removeFromRecentFiles(fileName);
         }
         return;
@@ -1532,9 +1538,9 @@ void MainForm::open(const QString &fileName)
 
     // Exit if not opened OK.
     if (!openedOK) {
-        if (m_openingRecentFile) {
-            removeFromRecentFiles(fileName);
-        }
+//        if (m_openingRecentFile) {
+//            removeFromRecentFiles(fileName);
+//        }
         return;
     }
 
