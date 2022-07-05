@@ -44,6 +44,10 @@ void PreferencesWindow::loadPreferences()
     // Load "Find" window transparency setting.
     bool findWindowTransparent = settings.value("interface/findWindowTransparent", false).toBool();
     ui->checkBoxFindWindowTransparent->setChecked(findWindowTransparent);
+
+    // Load "remove invalid files" setting.
+    bool removeInvalidFiles = settings.value("interface/removeInvalidFiles", false).toBool();
+    ui->checkBoxRemoveInvalidFiles->setChecked(removeInvalidFiles);
 }
 
 void PreferencesWindow::on_pushButtonApply_clicked()
@@ -70,6 +74,10 @@ void PreferencesWindow::apply()
     // Store the "Find" window transparency setting.
     bool findWindowTransparent =  ui->checkBoxFindWindowTransparent->isChecked();
     settings.setValue("interface/findWindowTransparent", findWindowTransparent);
+
+    // Store the "remove invalid files" setting.
+    bool removeInvalidFiles =  ui->checkBoxRemoveInvalidFiles->isChecked();
+    settings.setValue("interface/removeInvalidFiles", removeInvalidFiles);
 
     // Send signal.
     emit preferencesChanged();

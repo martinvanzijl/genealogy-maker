@@ -217,6 +217,7 @@ private:
     static bool hasRecentFiles();
     void prependToRecentFiles(const QString &fileName);
     void setRecentFilesVisible(bool visible);
+    void removeFromRecentFiles(const QString &fileName);
 
     // Search.
     bool searchCheckPerson(QList<QGraphicsItem *> &items, int index, const QString &text);
@@ -232,6 +233,8 @@ private:
 
     void openExampleDiagram();
     QString exampleFileDir() const;
+
+    bool shouldRemoveInvalidFiles() const;
 
     enum { MaxRecentFiles = 5 };
 
@@ -340,6 +343,9 @@ private:
 
     QString m_lastDiagramOpenFolder;
     QString m_lastGedcomImportFolder;
+
+    // Flag for opening recent file.
+    bool m_openingRecentFile;
 };
 
 #endif // MAINFORM_H

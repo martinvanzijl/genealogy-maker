@@ -91,7 +91,8 @@ MainForm::MainForm(QWidget *parent) :
     ui(new Ui::MainForm),
     m_beingDestroyed(false),
     m_gedcomWasImported(false),
-    treeFocusedItem(nullptr)
+    treeFocusedItem(nullptr),
+    m_openingRecentFile(false)
 {
     ui->setupUi(this);
 
@@ -966,6 +967,12 @@ QString MainForm::exampleFileDir() const
     return QDir("examples").path();
 }
 
+bool MainForm::shouldRemoveInvalidFiles() const
+{
+    QSettings settings;
+    return settings.value("interface/removeInvalidFiles", false).toBool();
+}
+
 void MainForm::viewSelectedItemDetails()
 {
     auto selectedItems = scene->selectedItems();
@@ -1521,6 +1528,9 @@ void MainForm::open(const QString &fileName)
                              tr("Cannot read file %1:\n%2.")
                              .arg(fileName)
                              .arg(file.errorString()));
+        if (m_openingRecentFile && shouldRemoveInvalidFiles()) {
+            removeFromRecentFiles(fileName);
+        }
         return;
     }
 
@@ -1528,6 +1538,9 @@ void MainForm::open(const QString &fileName)
 
     // Exit if not opened OK.
     if (!openedOK) {
+//        if (m_openingRecentFile) {
+//            removeFromRecentFiles(fileName);
+//        }
         return;
     }
 
@@ -1596,7 +1609,11 @@ void MainForm::updateRecentFileActions()
 void MainForm::openRecentFile()
 {
     if (const QAction *action = qobject_cast<const QAction *>(sender()))
+    {
+        m_openingRecentFile = true;
         open(action->data().toString());
+        m_openingRecentFile = false;
+    }
 }
 
 void MainForm::clearRecentFilesMenu()
@@ -1644,6 +1661,19 @@ void MainForm::prependToRecentFiles(const QString &fileName)
 void MainForm::setRecentFilesVisible(bool visible)
 {
     recentFileSubMenuAct->setVisible(visible);
+}
+
+void MainForm::removeFromRecentFiles(const QString &fileName)
+{
+    QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
+
+    const QStringList oldRecentFiles = readRecentFiles(settings);
+    QStringList recentFiles = oldRecentFiles;
+    recentFiles.removeAll(fileName);
+    if (oldRecentFiles != recentFiles)
+        writeRecentFiles(recentFiles, settings);
+
+    setRecentFilesVisible(!recentFiles.isEmpty());
 }
 
 QWidget *MainForm::createCellWidget(const QString &text, DiagramItem::DiagramType type, QKeySequence shortcut)
