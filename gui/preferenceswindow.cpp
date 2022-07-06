@@ -19,6 +19,9 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) :
         QPoint offset(halfSize.width(), halfSize.height());
         move(geometry.center() - offset);
     }
+
+    // Use the minimum size.
+    adjustSize();
 }
 
 PreferencesWindow::~PreferencesWindow()
