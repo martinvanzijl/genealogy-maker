@@ -1389,8 +1389,8 @@ void MainForm::createToolbars()
 
     editToolBar = addToolBar(tr("Edit"));
     editToolBar->addAction(ui->deleteAction);
-    editToolBar->addAction(ui->toFrontAction);
-    editToolBar->addAction(ui->sendBackAction);
+//    editToolBar->addAction(ui->toFrontAction);
+//    editToolBar->addAction(ui->sendBackAction);
 
 //    fontCombo = new QFontComboBox();
 //    connect(fontCombo, SIGNAL(currentFontChanged(QFont)),
