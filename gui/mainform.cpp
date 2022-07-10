@@ -219,12 +219,16 @@ void MainForm::backgroundButtonGroupClicked(QAbstractButton *button)
 
 void MainForm::buttonGroupClicked(int id)
 {
+    // Highlight the correct button.
     QList<QAbstractButton *> buttons = buttonGroup->buttons();
     foreach (QAbstractButton *button, buttons) {
         button->setChecked(buttonGroup->button(id) == button);
     }
+
+    // Set the diagram mode.
     if (id == InsertArrowButton)  {
-        linePointerButton->click();
+//        linePointerButton->click();
+        scene->setMode(DiagramScene::InsertLine);
     }
     else {
         scene->setItemType(DiagramItem::DiagramType(id));
@@ -272,13 +276,18 @@ void MainForm::deleteItem()
 
 void MainForm::pointerGroupClicked(int)
 {
+    // Set the diagram mode.
     scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
 
-    // Update button group.
+    // Update button group in side bar.
     QList<QAbstractButton *> buttons = buttonGroup->buttons();
+
+    // 1) Deselect all buttons.
     foreach (QAbstractButton *button, buttons) {
         button->setChecked(false);
     }
+
+    // 2) Select the arrow button if required.
     if (pointerTypeGroup->checkedButton() == linePointerButton) {
         arrowButton->setChecked(true);
     }
@@ -1474,9 +1483,16 @@ void MainForm::createToolbars()
     connect(sceneScaleCombo->lineEdit(), SIGNAL(textEdited(QString)),
             this, SLOT(sceneScaleTextEdited(QString)));
 
+    // Does not work. The "pointer" button is always pressed.
+    // I must not have a button group at all, but rather a panel.
+//    linePointerButton->setVisible(false);
+
+    // This does not work, either.
+//    pointerTypeGroup->setExclusive(false);
+
     pointerToolbar = addToolBar(tr("Pointer type"));
     pointerToolbar->addWidget(pointerButton);
-    pointerToolbar->addWidget(linePointerButton);
+//    pointerToolbar->addWidget(linePointerButton);
     pointerToolbar->addWidget(sceneScaleCombo);
 }
 
