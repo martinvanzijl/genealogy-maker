@@ -234,6 +234,9 @@ void MainForm::buttonGroupClicked(int id)
         scene->setItemType(DiagramItem::DiagramType(id));
         scene->setMode(DiagramScene::InsertItem);
     }
+
+    // Deselet the "pointer" button.
+    pointerButton->setChecked(false);
 }
 
 void MainForm::deleteItem()
@@ -276,6 +279,10 @@ void MainForm::deleteItem()
 
 void MainForm::pointerGroupClicked(int)
 {
+    // Hack: Ensure the pointer button is checked, since it is the
+    // only button in the group.
+    pointerButton->setChecked(true);
+
     // Set the diagram mode.
     scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
 
@@ -1453,7 +1460,7 @@ void MainForm::createToolbars()
     colorToolBar->addWidget(fillColorToolButton);
     colorToolBar->addWidget(lineColorToolButton);
 
-    QToolButton *pointerButton = new QToolButton;
+    pointerButton = new QToolButton;
     pointerButton->setCheckable(true);
     pointerButton->setChecked(true);
     pointerButton->setShortcut(tr(" "));
@@ -1487,8 +1494,8 @@ void MainForm::createToolbars()
     // I must not have a button group at all, but rather a panel.
 //    linePointerButton->setVisible(false);
 
-    // This does not work, either.
-//    pointerTypeGroup->setExclusive(false);
+    // Allow pointer button to be deselected.
+    pointerTypeGroup->setExclusive(false);
 
     pointerToolbar = addToolBar(tr("Pointer type"));
     pointerToolbar->addWidget(pointerButton);
