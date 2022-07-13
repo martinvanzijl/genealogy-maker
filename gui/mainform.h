@@ -295,6 +295,7 @@ private:
     QToolButton *fillColorToolButton;
     QToolButton *lineColorToolButton;
     QToolButton *linePointerButton;
+    QToolButton *pointerButton;
     QToolButton *arrowButton;
 //    QAction *boldAction;
 //    QAction *underlineAction;

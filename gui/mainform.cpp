@@ -219,17 +219,24 @@ void MainForm::backgroundButtonGroupClicked(QAbstractButton *button)
 
 void MainForm::buttonGroupClicked(int id)
 {
+    // Highlight the correct button.
     QList<QAbstractButton *> buttons = buttonGroup->buttons();
     foreach (QAbstractButton *button, buttons) {
         button->setChecked(buttonGroup->button(id) == button);
     }
+
+    // Set the diagram mode.
     if (id == InsertArrowButton)  {
-        linePointerButton->click();
+//        linePointerButton->click();
+        scene->setMode(DiagramScene::InsertLine);
     }
     else {
         scene->setItemType(DiagramItem::DiagramType(id));
         scene->setMode(DiagramScene::InsertItem);
     }
+
+    // Deselet the "pointer" button.
+    pointerButton->setChecked(false);
 }
 
 void MainForm::deleteItem()
@@ -272,13 +279,22 @@ void MainForm::deleteItem()
 
 void MainForm::pointerGroupClicked(int)
 {
+    // Hack: Ensure the pointer button is checked, since it is the
+    // only button in the group.
+    pointerButton->setChecked(true);
+
+    // Set the diagram mode.
     scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
 
-    // Update button group.
+    // Update button group in side bar.
     QList<QAbstractButton *> buttons = buttonGroup->buttons();
+
+    // 1) Deselect all buttons.
     foreach (QAbstractButton *button, buttons) {
         button->setChecked(false);
     }
+
+    // 2) Select the arrow button if required.
     if (pointerTypeGroup->checkedButton() == linePointerButton) {
         arrowButton->setChecked(true);
     }
@@ -1444,7 +1460,7 @@ void MainForm::createToolbars()
     colorToolBar->addWidget(fillColorToolButton);
     colorToolBar->addWidget(lineColorToolButton);
 
-    QToolButton *pointerButton = new QToolButton;
+    pointerButton = new QToolButton;
     pointerButton->setCheckable(true);
     pointerButton->setChecked(true);
     pointerButton->setShortcut(tr(" "));
@@ -1474,9 +1490,12 @@ void MainForm::createToolbars()
     connect(sceneScaleCombo->lineEdit(), SIGNAL(textEdited(QString)),
             this, SLOT(sceneScaleTextEdited(QString)));
 
+    // Allow pointer button to be deselected.
+    pointerTypeGroup->setExclusive(false);
+
     pointerToolbar = addToolBar(tr("Pointer type"));
     pointerToolbar->addWidget(pointerButton);
-    pointerToolbar->addWidget(linePointerButton);
+//    pointerToolbar->addWidget(linePointerButton);
     pointerToolbar->addWidget(sceneScaleCombo);
 }
 
