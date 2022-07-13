@@ -81,6 +81,7 @@
 #include <QPrinter>
 #include <QPrintDialog>
 #include <QUndoStack>
+#include <QSlider>
 
 const int InsertArrowButton = 11;
 
@@ -1475,6 +1476,10 @@ void MainForm::createToolbars()
     connect(pointerTypeGroup, SIGNAL(buttonClicked(int)),
             this, SLOT(pointerGroupClicked(int)));
 
+    // Define zoom limits.
+    const int ZOOM_MIN = 25;
+    const int ZOOM_MAX = 200;
+
     sceneScaleCombo = new QComboBox;
     QStringList scales;
     scales << tr("50%") << tr("75%") << tr("100%") << tr("125%") << tr("150%");
@@ -1483,12 +1488,19 @@ void MainForm::createToolbars()
     connect(sceneScaleCombo, SIGNAL(activated(QString)),
             this, SLOT(sceneScaleActivated(QString)));
     sceneScaleCombo->setEditable(true);
-    sceneScaleCombo->setValidator(new PercentValidator(25, 200, this));
+    sceneScaleCombo->setValidator(new PercentValidator(ZOOM_MIN, ZOOM_MAX, this));
     sceneScaleCombo->setInsertPolicy(QComboBox::NoInsert);
     connect(sceneScaleCombo->lineEdit(), SIGNAL(editingFinished()),
             this, SLOT(sceneScaleEditingFinished()));
     connect(sceneScaleCombo->lineEdit(), SIGNAL(textEdited(QString)),
             this, SLOT(sceneScaleTextEdited(QString)));
+
+    // Add slider for zoom.
+    QSlider *zoomSlider = new QSlider(Qt::Horizontal);
+    zoomSlider->setMaximumWidth(100);
+    zoomSlider->setRange(ZOOM_MIN, ZOOM_MAX);
+    zoomSlider->setValue(100);
+    // TODO: Connect signal.
 
     // Allow pointer button to be deselected.
     pointerTypeGroup->setExclusive(false);
@@ -1497,6 +1509,7 @@ void MainForm::createToolbars()
     pointerToolbar->addWidget(pointerButton);
 //    pointerToolbar->addWidget(linePointerButton);
     pointerToolbar->addWidget(sceneScaleCombo);
+    pointerToolbar->addWidget(zoomSlider);
 }
 
 QWidget *MainForm::createBackgroundCellWidget(const QString &text, const QString &image)
