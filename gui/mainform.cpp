@@ -1490,10 +1490,6 @@ void MainForm::createToolbars()
     connect(sceneScaleCombo->lineEdit(), SIGNAL(textEdited(QString)),
             this, SLOT(sceneScaleTextEdited(QString)));
 
-    // Does not work. The "pointer" button is always pressed.
-    // I must not have a button group at all, but rather a panel.
-//    linePointerButton->setVisible(false);
-
     // Allow pointer button to be deselected.
     pointerTypeGroup->setExclusive(false);
 
