@@ -374,10 +374,7 @@ void MainForm::fontSizeChanged(const QString &)
 void MainForm::sceneScaleActivated(const QString &scale)
 {
     double newScale = scale.left(scale.indexOf(tr("%"))).toDouble() / 100.0;
-    QMatrix oldMatrix = view->matrix();
-    view->resetMatrix();
-    view->translate(oldMatrix.dx(), oldMatrix.dy());
-    view->scale(newScale, newScale);
+    setSceneScale(newScale);
 }
 
 void MainForm::sceneScaleEditingFinished()
@@ -393,6 +390,12 @@ void MainForm::sceneScaleTextEdited(const QString &scale)
     Q_UNUSED(scale);
 
     scaleTextEditedByUser = true;
+}
+
+void MainForm::zoomSliderValueChanged(int value)
+{
+    double scale = static_cast<double> (value) / 100.0;
+    setSceneScale(scale);
 }
 
 void MainForm::textColorChanged()
@@ -990,6 +993,14 @@ bool MainForm::shouldRemoveInvalidFiles() const
     return settings.value("interface/removeInvalidFiles", false).toBool();
 }
 
+void MainForm::setSceneScale(double scale)
+{
+    QMatrix oldMatrix = view->matrix();
+    view->resetMatrix();
+    view->translate(oldMatrix.dx(), oldMatrix.dy());
+    view->scale(scale, scale);
+}
+
 void MainForm::viewSelectedItemDetails()
 {
     auto selectedItems = scene->selectedItems();
@@ -1500,7 +1511,8 @@ void MainForm::createToolbars()
     zoomSlider->setMaximumWidth(100);
     zoomSlider->setRange(ZOOM_MIN, ZOOM_MAX);
     zoomSlider->setValue(100);
-    // TODO: Connect signal.
+    connect(zoomSlider, SIGNAL(valueChanged(int)),
+            this, SLOT(zoomSliderValueChanged(int)));
 
     // Allow pointer button to be deselected.
     pointerTypeGroup->setExclusive(false);

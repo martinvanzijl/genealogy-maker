@@ -121,6 +121,7 @@ private slots:
     void sceneScaleActivated(const QString &scale);
     void sceneScaleEditingFinished();
     void sceneScaleTextEdited(const QString &scale);
+    void zoomSliderValueChanged(int value);
     void textColorChanged();
     void itemColorChanged();
     void lineColorChanged();
@@ -235,6 +236,8 @@ private:
     QString exampleFileDir() const;
 
     bool shouldRemoveInvalidFiles() const;
+
+    void setSceneScale(double scale);
 
     enum { MaxRecentFiles = 5 };
 
