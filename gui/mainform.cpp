@@ -396,6 +396,9 @@ void MainForm::zoomSliderValueChanged(int value)
 {
     double scale = static_cast<double> (value) / 100.0;
     setSceneScale(scale);
+
+    // Update combo-box.
+    sceneScaleCombo->setCurrentText(QString::number(value) + tr("%"));
 }
 
 void MainForm::textColorChanged()
