@@ -93,7 +93,8 @@ MainForm::MainForm(QWidget *parent) :
     m_beingDestroyed(false),
     m_gedcomWasImported(false),
     treeFocusedItem(nullptr),
-    m_openingRecentFile(false)
+    m_openingRecentFile(false),
+    m_updatingZoomSliderFromComboBox(false)
 {
     ui->setupUi(this);
 
@@ -375,6 +376,11 @@ void MainForm::sceneScaleActivated(const QString &scale)
 {
     double newScale = scale.left(scale.indexOf(tr("%"))).toDouble() / 100.0;
     setSceneScale(newScale);
+
+    // Update slider.
+    m_updatingZoomSliderFromComboBox = true;
+    zoomSlider->setValue(newScale * 100);
+    m_updatingZoomSliderFromComboBox = false;
 }
 
 void MainForm::sceneScaleEditingFinished()
@@ -394,6 +400,12 @@ void MainForm::sceneScaleTextEdited(const QString &scale)
 
 void MainForm::zoomSliderValueChanged(int value)
 {
+    // Disable if updating from combo-box.
+    if (m_updatingZoomSliderFromComboBox) {
+        return;
+    }
+
+    // Set the zoom.
     double scale = static_cast<double> (value) / 100.0;
     setSceneScale(scale);
 
@@ -1510,7 +1522,7 @@ void MainForm::createToolbars()
             this, SLOT(sceneScaleTextEdited(QString)));
 
     // Add slider for zoom.
-    QSlider *zoomSlider = new QSlider(Qt::Horizontal);
+    zoomSlider = new QSlider(Qt::Horizontal);
     zoomSlider->setMaximumWidth(100);
     zoomSlider->setRange(ZOOM_MIN, ZOOM_MAX);
     zoomSlider->setValue(100);

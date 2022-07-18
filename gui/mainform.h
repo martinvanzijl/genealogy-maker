@@ -87,6 +87,7 @@ class PreferencesWindow;
 class QProcess;
 class QPushButton;
 class DialogFileProperties;
+class QSlider;
 QT_END_NAMESPACE
 
 //! [0]
@@ -290,6 +291,8 @@ private:
 //    QComboBox *fontSizeCombo;
 //    QFontComboBox *fontCombo;
 
+    QSlider *zoomSlider;
+
     QToolBox *toolBox;
     QButtonGroup *buttonGroup;
     QButtonGroup *pointerTypeGroup;
@@ -350,6 +353,9 @@ private:
 
     // Flag for opening recent file.
     bool m_openingRecentFile;
+
+    // Flag for updating slider from combo-box.
+    bool m_updatingZoomSliderFromComboBox;
 };
 
 #endif // MAINFORM_H
