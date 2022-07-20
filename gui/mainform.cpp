@@ -94,7 +94,7 @@ MainForm::MainForm(QWidget *parent) :
     m_gedcomWasImported(false),
     treeFocusedItem(nullptr),
     m_openingRecentFile(false),
-    m_updatingZoomSliderFromComboBox(false)
+    m_disableZoomSliderSignal(false)
 {
     ui->setupUi(this);
 
@@ -378,9 +378,9 @@ void MainForm::sceneScaleActivated(const QString &scale)
     setSceneScale(newScale);
 
     // Update slider.
-    m_updatingZoomSliderFromComboBox = true;
+    m_disableZoomSliderSignal = true;
     zoomSlider->setValue(newScale * 100);
-    m_updatingZoomSliderFromComboBox = false;
+    m_disableZoomSliderSignal = false;
 }
 
 void MainForm::sceneScaleEditingFinished()
@@ -401,7 +401,7 @@ void MainForm::sceneScaleTextEdited(const QString &scale)
 void MainForm::zoomSliderValueChanged(int value)
 {
     // Disable if updating from combo-box.
-    if (m_updatingZoomSliderFromComboBox) {
+    if (m_disableZoomSliderSignal) {
         return;
     }
 
@@ -751,6 +751,9 @@ void MainForm::onMouseWheelZoomed()
     QString text = QString::number((int)percent) + "%";
     sceneScaleCombo->setCurrentText(text);
 
+    m_disableZoomSliderSignal = true;
+    zoomSlider->setValue(percent);
+    m_disableZoomSliderSignal = false;
 }
 
 void MainForm::onArrowAdded(Arrow *arrow)

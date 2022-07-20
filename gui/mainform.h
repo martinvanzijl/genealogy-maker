@@ -355,7 +355,7 @@ private:
     bool m_openingRecentFile;
 
     // Flag for updating slider from combo-box.
-    bool m_updatingZoomSliderFromComboBox;
+    bool m_disableZoomSliderSignal;
 };
 
 #endif // MAINFORM_H
