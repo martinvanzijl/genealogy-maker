@@ -1510,6 +1510,7 @@ void MainForm::createToolbars()
     const int ZOOM_MAX = 200;
 
     sceneScaleCombo = new QComboBox;
+    sceneScaleCombo->setObjectName("zoomComboBox");
     QStringList scales;
     scales << tr("50%") << tr("75%") << tr("100%") << tr("125%") << tr("150%");
     sceneScaleCombo->addItems(scales);
@@ -1526,6 +1527,7 @@ void MainForm::createToolbars()
 
     // Add slider for zoom.
     zoomSlider = new QSlider(Qt::Horizontal);
+    zoomSlider->setObjectName("zoomSlider");
     zoomSlider->setMaximumWidth(100);
     zoomSlider->setRange(ZOOM_MIN, ZOOM_MAX);
     zoomSlider->setValue(100);
@@ -1911,6 +1913,11 @@ QString MainForm::getPythonPath() const
 DiagramScene *MainForm::getScene() const
 {
     return scene;
+}
+
+QGraphicsView *MainForm::getView() const
+{
+    return view;
 }
 //! [32]
 

@@ -101,6 +101,7 @@ public:
    void moveToCenter();
 
    DiagramScene *getScene() const;
+   QGraphicsView *getView() const; // For unit test cases.
 
    void updateGuiFromPreferences();
    void open(const QString &fileName);
