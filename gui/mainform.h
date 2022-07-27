@@ -87,6 +87,7 @@ class PreferencesWindow;
 class QProcess;
 class QPushButton;
 class DialogFileProperties;
+class QSlider;
 QT_END_NAMESPACE
 
 //! [0]
@@ -100,6 +101,7 @@ public:
    void moveToCenter();
 
    DiagramScene *getScene() const;
+   QGraphicsView *getView() const; // For unit test cases.
 
    void updateGuiFromPreferences();
    void open(const QString &fileName);
@@ -121,6 +123,7 @@ private slots:
     void sceneScaleActivated(const QString &scale);
     void sceneScaleEditingFinished();
     void sceneScaleTextEdited(const QString &scale);
+    void zoomSliderValueChanged(int value);
     void textColorChanged();
     void itemColorChanged();
     void lineColorChanged();
@@ -236,6 +239,8 @@ private:
 
     bool shouldRemoveInvalidFiles() const;
 
+    void setSceneScale(double scale);
+
     enum { MaxRecentFiles = 5 };
 
     QAction *recentFileActs[MaxRecentFiles];
@@ -286,6 +291,8 @@ private:
 //    QComboBox *textColorCombo;
 //    QComboBox *fontSizeCombo;
 //    QFontComboBox *fontCombo;
+
+    QSlider *zoomSlider;
 
     QToolBox *toolBox;
     QButtonGroup *buttonGroup;
@@ -347,6 +354,9 @@ private:
 
     // Flag for opening recent file.
     bool m_openingRecentFile;
+
+    // Flag for updating slider from combo-box.
+    bool m_disableZoomSliderSignal;
 };
 
 #endif // MAINFORM_H

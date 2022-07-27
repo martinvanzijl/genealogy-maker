@@ -81,6 +81,7 @@
 #include <QPrinter>
 #include <QPrintDialog>
 #include <QUndoStack>
+#include <QSlider>
 
 const int InsertArrowButton = 11;
 
@@ -92,7 +93,8 @@ MainForm::MainForm(QWidget *parent) :
     m_beingDestroyed(false),
     m_gedcomWasImported(false),
     treeFocusedItem(nullptr),
-    m_openingRecentFile(false)
+    m_openingRecentFile(false),
+    m_disableZoomSliderSignal(false)
 {
     ui->setupUi(this);
 
@@ -373,10 +375,12 @@ void MainForm::fontSizeChanged(const QString &)
 void MainForm::sceneScaleActivated(const QString &scale)
 {
     double newScale = scale.left(scale.indexOf(tr("%"))).toDouble() / 100.0;
-    QMatrix oldMatrix = view->matrix();
-    view->resetMatrix();
-    view->translate(oldMatrix.dx(), oldMatrix.dy());
-    view->scale(newScale, newScale);
+    setSceneScale(newScale);
+
+    // Update slider.
+    m_disableZoomSliderSignal = true;
+    zoomSlider->setValue(newScale * 100);
+    m_disableZoomSliderSignal = false;
 }
 
 void MainForm::sceneScaleEditingFinished()
@@ -392,6 +396,21 @@ void MainForm::sceneScaleTextEdited(const QString &scale)
     Q_UNUSED(scale);
 
     scaleTextEditedByUser = true;
+}
+
+void MainForm::zoomSliderValueChanged(int value)
+{
+    // Disable if updating from combo-box.
+    if (m_disableZoomSliderSignal) {
+        return;
+    }
+
+    // Set the zoom.
+    double scale = static_cast<double> (value) / 100.0;
+    setSceneScale(scale);
+
+    // Update combo-box.
+    sceneScaleCombo->setCurrentText(QString::number(value) + tr("%"));
 }
 
 void MainForm::textColorChanged()
@@ -732,6 +751,9 @@ void MainForm::onMouseWheelZoomed()
     QString text = QString::number((int)percent) + "%";
     sceneScaleCombo->setCurrentText(text);
 
+    m_disableZoomSliderSignal = true;
+    zoomSlider->setValue(percent);
+    m_disableZoomSliderSignal = false;
 }
 
 void MainForm::onArrowAdded(Arrow *arrow)
@@ -987,6 +1009,14 @@ bool MainForm::shouldRemoveInvalidFiles() const
 {
     QSettings settings;
     return settings.value("interface/removeInvalidFiles", false).toBool();
+}
+
+void MainForm::setSceneScale(double scale)
+{
+    QMatrix oldMatrix = view->matrix();
+    view->resetMatrix();
+    view->translate(oldMatrix.dx(), oldMatrix.dy());
+    view->scale(scale, scale);
 }
 
 void MainForm::viewSelectedItemDetails()
@@ -1475,7 +1505,12 @@ void MainForm::createToolbars()
     connect(pointerTypeGroup, SIGNAL(buttonClicked(int)),
             this, SLOT(pointerGroupClicked(int)));
 
+    // Define zoom limits.
+    const int ZOOM_MIN = 25;
+    const int ZOOM_MAX = 200;
+
     sceneScaleCombo = new QComboBox;
+    sceneScaleCombo->setObjectName("zoomComboBox");
     QStringList scales;
     scales << tr("50%") << tr("75%") << tr("100%") << tr("125%") << tr("150%");
     sceneScaleCombo->addItems(scales);
@@ -1483,12 +1518,21 @@ void MainForm::createToolbars()
     connect(sceneScaleCombo, SIGNAL(activated(QString)),
             this, SLOT(sceneScaleActivated(QString)));
     sceneScaleCombo->setEditable(true);
-    sceneScaleCombo->setValidator(new PercentValidator(25, 200, this));
+    sceneScaleCombo->setValidator(new PercentValidator(ZOOM_MIN, ZOOM_MAX, this));
     sceneScaleCombo->setInsertPolicy(QComboBox::NoInsert);
     connect(sceneScaleCombo->lineEdit(), SIGNAL(editingFinished()),
             this, SLOT(sceneScaleEditingFinished()));
     connect(sceneScaleCombo->lineEdit(), SIGNAL(textEdited(QString)),
             this, SLOT(sceneScaleTextEdited(QString)));
+
+    // Add slider for zoom.
+    zoomSlider = new QSlider(Qt::Horizontal);
+    zoomSlider->setObjectName("zoomSlider");
+    zoomSlider->setMaximumWidth(100);
+    zoomSlider->setRange(ZOOM_MIN, ZOOM_MAX);
+    zoomSlider->setValue(100);
+    connect(zoomSlider, SIGNAL(valueChanged(int)),
+            this, SLOT(zoomSliderValueChanged(int)));
 
     // Allow pointer button to be deselected.
     pointerTypeGroup->setExclusive(false);
@@ -1497,6 +1541,7 @@ void MainForm::createToolbars()
     pointerToolbar->addWidget(pointerButton);
 //    pointerToolbar->addWidget(linePointerButton);
     pointerToolbar->addWidget(sceneScaleCombo);
+    pointerToolbar->addWidget(zoomSlider);
 }
 
 QWidget *MainForm::createBackgroundCellWidget(const QString &text, const QString &image)
@@ -1868,6 +1913,11 @@ QString MainForm::getPythonPath() const
 DiagramScene *MainForm::getScene() const
 {
     return scene;
+}
+
+QGraphicsView *MainForm::getView() const
+{
+    return view;
 }
 //! [32]
 

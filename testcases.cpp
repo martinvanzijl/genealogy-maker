@@ -426,7 +426,7 @@ private slots:
     void cleanup();
     void init();
 
-//private:
+private:
     void testNew();
     void testOpen();
     void testSave();
@@ -464,9 +464,11 @@ private slots:
     void timelineReportTest();
     void filePropertiesWindowTest();
     void autoLayoutTest();
+    void openExampleTest();
 
 private slots:
-    void openExampleTest();
+    void zoomComboBoxTest();
+    void zoomSliderTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -474,6 +476,7 @@ private:
 
     void addPhotoToSelectedPerson();
     DiagramItem *clickToAddPerson();
+    int getSceneScalePercent();
     void importGedcomFile(const QString &fileName);
 };
 
@@ -1366,6 +1369,14 @@ DiagramItem *TestCases::clickToAddPerson()
     return person;
 }
 
+int TestCases::getSceneScalePercent()
+{
+    double scale = m_mainWindow->getView()->matrix().m11(); // Assume X and Y scale are the same.
+    int percent = scale * 100;
+
+    return percent;
+}
+
 void TestCases::importGedcomFile(const QString &fileName)
 {
     // Get the action.
@@ -1869,6 +1880,60 @@ void TestCases::openExampleTest()
 
     // Check that the file opened OK.
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - example-genealogy.xml"));
+}
+
+void TestCases::zoomComboBoxTest()
+{
+    // Check default zoom.
+    QCOMPARE(getSceneScalePercent(), 100);
+
+    // Change the combo-box value.
+    QComboBox *zoomComboBox = m_mainWindow->findChild<QComboBox*>("zoomComboBox");
+    QVERIFY(zoomComboBox);
+
+    int itemIndex = zoomComboBox->findText("150%");
+    QVERIFY(itemIndex != -1);
+
+    zoomComboBox->setCurrentIndex(itemIndex);
+
+    // Debug.
+//    QTest::qWait(1000);
+
+    // TODO: Force the "editing finished" signal to fire.
+
+    // Press Enter in the combo-box. This does not work!
+    QTest::keyClick(zoomComboBox, Qt::Key_Return);
+
+    // Set the focus elsewhere. This does not work!
+    m_mainWindow->getView()->setFocus();
+
+    // Debug.
+//    QTest::qWait(1000);
+
+    // Check the scale has changed. Does not work yet!
+//    QCOMPARE(getSceneScalePercent(), 150);
+}
+
+void TestCases::zoomSliderTest()
+{
+    // Check default zoom.
+    QCOMPARE(getSceneScalePercent(), 100);
+
+    // Change the slider value.
+    QSlider *zoomSlider = m_mainWindow->findChild<QSlider*>("zoomSlider");
+    QVERIFY(zoomSlider);
+
+    int newValue = 150;
+    zoomSlider->setValue(newValue);
+
+    // Check the scale has changed.
+    QCOMPARE(getSceneScalePercent(), newValue);
+
+    // Check the combo-box value has also changed.
+    QComboBox *zoomComboBox = m_mainWindow->findChild<QComboBox*>("zoomComboBox");
+    QVERIFY(zoomComboBox);
+
+    QCOMPARE(zoomComboBox->currentText(), tr("150%"));
 }
 
 void TestCases::addPhotoToSelectedPerson()
