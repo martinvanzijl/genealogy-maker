@@ -1019,6 +1019,22 @@ void MainForm::setSceneScale(double scale)
     view->scale(scale, scale);
 }
 
+///
+/// \brief MainForm::selectCurrentItemDescendants Select descendants of the selected person.
+///
+void MainForm::selectCurrentItemDescendants()
+{
+    auto selectedItems = scene->selectedItems();
+    if (selectedItems.isEmpty())
+        return;
+
+    auto item = selectedItems.first();
+    if (item->type() == DiagramItem::Type) {
+        auto person = qgraphicsitem_cast<DiagramItem *>(item);
+        person->selectDescendants();
+    }
+}
+
 void MainForm::viewSelectedItemDetails()
 {
     auto selectedItems = scene->selectedItems();
@@ -2295,4 +2311,9 @@ void MainForm::on_actionAutoLayout_triggered()
 void MainForm::on_actionOpenExample_triggered()
 {
     openExampleDiagram();
+}
+
+void MainForm::on_actionSelectDescendants_triggered()
+{
+    selectCurrentItemDescendants();
 }

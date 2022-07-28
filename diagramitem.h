@@ -164,6 +164,11 @@ public:
     QColor getTextColor() const;
     void setTextColor(const QColor &color);
 
+    void selectDescendants();
+
+    QColor getBorderColor() const;
+    void setBorderColor(const QColor &color);
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -202,6 +207,8 @@ private:
     QString m_firstName;
     QString m_lastName;
     QString m_gender;
+
+    QColor m_borderColor;
 };
 
 #endif // DIAGRAMITEM_H

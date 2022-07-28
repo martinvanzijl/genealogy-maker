@@ -465,10 +465,11 @@ private slots:
     void filePropertiesWindowTest();
     void autoLayoutTest();
     void openExampleTest();
-
-private slots:
     void zoomComboBoxTest();
     void zoomSliderTest();
+
+private slots:
+    void testSelectDescendants();
 
 private:
     TestCaseHelper *m_helper;
@@ -476,6 +477,7 @@ private:
 
     void addPhotoToSelectedPerson();
     DiagramItem *clickToAddPerson();
+    DiagramItem *getPersonWithName(const QString &name);
     int getSceneScalePercent();
     void importGedcomFile(const QString &fileName);
 };
@@ -1369,6 +1371,26 @@ DiagramItem *TestCases::clickToAddPerson()
     return person;
 }
 
+DiagramItem *TestCases::getPersonWithName(const QString &name)
+{
+    DiagramScene *scene = m_mainWindow->getScene();
+    QList<QGraphicsItem *> items = scene->items();
+
+    for (auto item: items)
+    {
+        if (item->type() == DiagramItem::Type)
+        {
+            DiagramItem *person = qgraphicsitem_cast<DiagramItem *>(item);
+            if (person->name() == name)
+            {
+                return person;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
 int TestCases::getSceneScalePercent()
 {
     double scale = m_mainWindow->getView()->matrix().m11(); // Assume X and Y scale are the same.
@@ -1934,6 +1956,31 @@ void TestCases::zoomSliderTest()
     QVERIFY(zoomComboBox);
 
     QCOMPARE(zoomComboBox->currentText(), tr("150%"));
+}
+
+void TestCases::testSelectDescendants()
+{
+    // Open test file.
+    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+
+    // Find the person.
+    DiagramItem *ouma = getPersonWithName("Ouma");
+    QVERIFY(ouma);
+
+    // Select the person.
+    ouma->setSelected(true);
+
+    // Select all descendants.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionSelectDescendants");
+    QVERIFY(action);
+    action->trigger();
+
+    // Find the descendant.
+    DiagramItem *wouter = getPersonWithName("Wouter van Zijl");
+    QVERIFY(wouter);
+
+    // Check it is selected.
+    QVERIFY(wouter->isSelected());
 }
 
 void TestCases::addPhotoToSelectedPerson()
