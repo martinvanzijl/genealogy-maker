@@ -1556,8 +1556,11 @@ void MainForm::createToolbars()
     pointerToolbar = addToolBar(tr("Pointer type"));
     pointerToolbar->addWidget(pointerButton);
 //    pointerToolbar->addWidget(linePointerButton);
-    pointerToolbar->addWidget(sceneScaleCombo);
-    pointerToolbar->addWidget(zoomSlider);
+
+    QToolBar *zoomToolbar = addToolBar(tr("Zoom"));
+    zoomToolbar->addWidget(sceneScaleCombo);
+    zoomToolbar->addWidget(zoomSlider);
+    zoomToolbar->setStyleSheet("QToolBar { spacing: 8px; }");
 }
 
 QWidget *MainForm::createBackgroundCellWidget(const QString &text, const QString &image)
