@@ -1522,15 +1522,22 @@ void MainForm::createToolbars()
             this, SLOT(pointerGroupClicked(int)));
 
     // Define zoom limits.
-    const int ZOOM_MIN = 25;
-    const int ZOOM_MAX = 200;
+    const int ZOOM_MIN = 10;
+    const int ZOOM_MAX = 250;
 
     sceneScaleCombo = new QComboBox;
     sceneScaleCombo->setObjectName("zoomComboBox");
     QStringList scales;
-    scales << tr("50%") << tr("75%") << tr("100%") << tr("125%") << tr("150%");
+    scales << tr("10%")
+           << tr("25%")
+           << tr("50%")
+           << tr("75%")
+           << tr("100%")
+           << tr("150%")
+           << tr("200%")
+           << tr("250%");
     sceneScaleCombo->addItems(scales);
-    sceneScaleCombo->setCurrentIndex(2);
+    sceneScaleCombo->setCurrentIndex(sceneScaleCombo->findText(tr("100%")));
     connect(sceneScaleCombo, SIGNAL(activated(QString)),
             this, SLOT(sceneScaleActivated(QString)));
     sceneScaleCombo->setEditable(true);

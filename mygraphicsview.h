@@ -18,7 +18,11 @@ private:
     bool eventFilter(QObject* object, QEvent* event) override;
     void wheelEvent(QWheelEvent *event) override;
 
+    void zoomBy(qreal factor);
+
     DiagramScene *m_diagramScene;
+    double m_minScale;
+    double m_maxScale;
 
 signals:
     void mouseWheelZoomed();
