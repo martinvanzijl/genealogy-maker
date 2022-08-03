@@ -16,6 +16,8 @@ MyGraphicsView::MyGraphicsView(DiagramScene *scene, QWidget *owner) :
     installEventFilter(this);
 
     m_diagramScene = scene;
+    m_minScale = 0.10;  // 10%
+    m_maxScale = 2.50;  // 250%
 }
 
 void MyGraphicsView::onMouseReleased()
@@ -78,11 +80,30 @@ void MyGraphicsView::wheelEvent(QWheelEvent *event)
         } else {
             factor = 0.9;
         }
-        scale(factor, factor);
+        zoomBy(factor);
         setTransformationAnchor(anchor);
         emit mouseWheelZoomed();
     } else {
         // normal
         QGraphicsView::wheelEvent(event);
     }
+}
+
+void MyGraphicsView::zoomBy(qreal factor)
+{
+    // Ensure zoom limits are adhered to.
+    double currentScale = matrix().m11();
+    double newScale = currentScale * factor;
+
+    if (newScale > m_maxScale)
+    {
+        factor = m_maxScale / currentScale;
+    }
+    else if (newScale < m_minScale)
+    {
+        factor = m_minScale / currentScale;
+    }
+
+    // Scale the view.
+    scale(factor, factor);
 }
