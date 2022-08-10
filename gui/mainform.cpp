@@ -76,6 +76,7 @@
 #include "gui/reportwindow.h"
 #include "gui/timelinereportwindow.h"
 #include "gui/dialogfileproperties.h"
+#include "undo/changediagramsizeundo.h"
 
 #include <QtWidgets>
 #include <QPrinter>
@@ -1963,6 +1964,7 @@ void MainForm::on_actionChangeSize_triggered()
 
     // Process result.
     if (result == QDialog::Accepted) {
+        UndoManager::add(new ChangeDiagramSizeUndo(scene, dialog->getNewWidth(), dialog->getNewHeight()));
         scene->setSceneRect(0, 0, dialog->getNewWidth(), dialog->getNewHeight());
     }
 }

@@ -5,6 +5,7 @@
 #include "diagramscene.h"
 #include "fileutils.h"
 #include "marriageitem.h"
+#include "gui/dialogchangesize.h"
 #include "gui/dialogpersondetails.h"
 #include "gui/mainform.h"
 #include "viewphotowindow.h"
@@ -335,6 +336,69 @@ void DetailsWindowHelper::viewPhotosTest()
 }
 
 // =============================================================================
+// DiagramSizeDialogHelper
+// =============================================================================
+
+class DiagramSizeDialogHelper : public QObject
+{
+    Q_OBJECT
+
+public:
+    DiagramSizeDialogHelper();
+    virtual ~DiagramSizeDialogHelper();
+
+    bool isFinished() const;
+
+public slots:
+    void changeDiagramSize();
+
+private:
+    bool m_finished;
+};
+
+DiagramSizeDialogHelper::DiagramSizeDialogHelper() :
+    m_finished(false)
+{
+
+}
+
+DiagramSizeDialogHelper::~DiagramSizeDialogHelper()
+{
+    // Avoid compiler error.
+}
+
+bool DiagramSizeDialogHelper::isFinished() const
+{
+    return m_finished;
+}
+
+void DiagramSizeDialogHelper::changeDiagramSize()
+{
+    // Get the window.
+    QWidget *widget = QApplication::activeWindow();
+    DialogChangeSize *dialog = dynamic_cast<DialogChangeSize *>(widget);
+    QVERIFY(dialog);
+
+    // Set the size.
+    QSpinBox *spinBoxHorizontal = dialog->findChild<QSpinBox*>("spinBoxHorizontal");
+    QSpinBox *spinBoxVertical = dialog->findChild<QSpinBox*>("spinBoxVertical");
+
+    QVERIFY(spinBoxHorizontal);
+    QVERIFY(spinBoxVertical);
+
+    spinBoxHorizontal->setValue(2500);
+    spinBoxVertical->setValue(2500);
+
+    // Apply the changes.
+    QPushButton *pushButtonOK = dialog->findChild<QPushButton*>("pushButtonOK");
+    QVERIFY(pushButtonOK);
+    pushButtonOK->click();
+
+    // Set flag.
+    m_finished = true;
+}
+
+// =============================================================================
 // TestCaseHelper
 // =============================================================================
 
@@ -467,9 +531,10 @@ private slots:
     void openExampleTest();
     void zoomComboBoxTest();
     void zoomSliderTest();
+    void testSelectDescendants();
 
 private slots:
-    void testSelectDescendants();
+    void testUndoChangeDiagramSize();
 
 private:
     TestCaseHelper *m_helper;
@@ -1981,6 +2046,40 @@ void TestCases::testSelectDescendants()
 
     // Check it is selected.
     QVERIFY(wouter->isSelected());
+}
+
+void TestCases::testUndoChangeDiagramSize()
+{
+    // Store original size.
+    auto sizeBefore = m_mainWindow->getScene()->sceneRect().size();
+
+    // Create helper.
+    auto helper = new DiagramSizeDialogHelper();
+    QTimer::singleShot(1000, helper, SLOT(changeDiagramSize()));
+
+    // Trigger the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionChangeSize");
+    QVERIFY(action);
+    action->trigger();
+
+    // Store new size.
+    auto sizeAfter = m_mainWindow->getScene()->sceneRect().size();
+
+    // Undo.
+    action = m_mainWindow->findChild<QAction*>("undoAction");
+    QVERIFY(action);
+    QVERIFY(action->isEnabled());
+    action->trigger();
+
+    QCOMPARE(m_mainWindow->getScene()->sceneRect().size(), sizeBefore);
+
+    // Redo.
+    action = m_mainWindow->findChild<QAction*>("redoAction");
+    QVERIFY(action);
+    QVERIFY(action->isEnabled());
+    action->trigger();
+
+    QCOMPARE(m_mainWindow->getScene()->sceneRect().size(), sizeAfter);
 }
 
 void TestCases::addPhotoToSelectedPerson()
