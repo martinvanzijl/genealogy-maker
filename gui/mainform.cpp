@@ -1215,7 +1215,7 @@ void MainForm::createToolBox()
     buttonGroup->addButton(arrowButton, InsertArrowButton);
     arrowButton->setIcon(QIcon(QPixmap(":/images/linepointer.png")));
     arrowButton->setIconSize(QSize(50, 50));
-    arrowButton->setToolTip("Add Relationship");
+    arrowButton->setToolTip("Add Relationship (R)");
     arrowButton->setShortcut(tr("R"));
     styleToolButton(arrowButton);
     QGridLayout *textLayout = new QGridLayout;
@@ -1775,7 +1775,7 @@ QWidget *MainForm::createCellWidget(const QString &text, DiagramItem::DiagramTyp
     button->setIcon(icon);
     button->setIconSize(QSize(50, 50));
     button->setCheckable(true);
-    button->setToolTip(QString("Add ") + text);
+    button->setToolTip(QString("Add ") + text + " (" + shortcut.toString() + ")");
     button->setShortcut(shortcut);
     buttonGroup->addButton(button, int(type));
     connect(button, SIGNAL(dragDropFinished()), this, SLOT(onItemDragDropFinished()));
