@@ -1474,6 +1474,7 @@ void MainForm::createToolbars()
     textAction = fontColorToolButton->menu()->defaultAction();
     fontColorToolButton->setIcon(createColorToolButtonIcon(":/images/textpointer.png", Qt::black));
     fontColorToolButton->setAutoFillBackground(true);
+    fontColorToolButton->setToolTip("Set text color");
     connect(fontColorToolButton, SIGNAL(clicked()),
             this, SLOT(textButtonTriggered()));
 
@@ -1483,6 +1484,7 @@ void MainForm::createToolbars()
     fillAction = fillColorToolButton->menu()->defaultAction();
     fillColorToolButton->setIcon(createColorToolButtonIcon(
                                      ":/images/floodfill.png", Qt::white));
+    fillColorToolButton->setToolTip("Set fill color");
     connect(fillColorToolButton, SIGNAL(clicked()),
             this, SLOT(fillButtonTriggered()));
 
@@ -1492,6 +1494,7 @@ void MainForm::createToolbars()
     lineAction = lineColorToolButton->menu()->defaultAction();
     lineColorToolButton->setIcon(createColorToolButtonIcon(
                                      ":/images/linecolor.png", Qt::black));
+    lineColorToolButton->setToolTip("Set line color");
     connect(lineColorToolButton, SIGNAL(clicked()),
             this, SLOT(lineButtonTriggered()));
 
