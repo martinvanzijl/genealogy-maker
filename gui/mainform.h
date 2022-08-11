@@ -287,6 +287,7 @@ private:
     QToolBar *textToolBar;
     QToolBar *fileToolBar;
     QToolBar *editToolBar;
+    QToolBar *alignmentToolBar;
     QToolBar *colorToolBar;
     QToolBar *pointerToolbar;
 
