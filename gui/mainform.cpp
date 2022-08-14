@@ -1455,6 +1455,10 @@ void MainForm::createToolbars()
 //    editToolBar->addAction(ui->toFrontAction);
 //    editToolBar->addAction(ui->sendBackAction);
 
+    alignmentToolBar = addToolBar(tr("Alignment"));
+    alignmentToolBar->addAction(ui->alignHorizontallyAction);
+    alignmentToolBar->addAction(ui->alignVerticallyAction);
+
 //    fontCombo = new QFontComboBox();
 //    connect(fontCombo, SIGNAL(currentFontChanged(QFont)),
 //            this, SLOT(currentFontChanged(QFont)));
