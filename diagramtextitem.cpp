@@ -132,5 +132,13 @@ void DiagramTextItem::keyPressEvent(QKeyEvent *event)
     }
     else {
         QGraphicsTextItem::keyPressEvent(event);
+
+        // Align to center of parent if currently editing.
+        if (textInteractionFlags() == Qt::TextEditorInteraction) {
+            auto parentRect = parentItem();
+            if (parentRect) {
+                setPos(parentRect->boundingRect().center().x() - boundingRect().width() / 2, y());
+            }
+        }
     }
 }
