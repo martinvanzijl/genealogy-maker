@@ -33,7 +33,7 @@ mkdir -p $BIN_DIR
 cp ~/Documents/build-genealogymaker-Desktop-Release/genealogymaker "$BIN_DIR/genealogy-maker"
 
 # Make the deployment directory.
-DEST_DIR="genealogy-maker-v25"
+DEST_DIR="genealogy-maker-v26"
 mkdir -p $DEST_DIR
 
 # Go to the deployment directory.
