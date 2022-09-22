@@ -489,6 +489,9 @@ void MainForm::about()
                          "open-source and you are welcome to contribute "
                          "to it."
                          "\n\n"
+                         "The code is available on GitHub here: "
+                         "https://github.com/martinvanzijl/genealogy-maker"
+                         "\n\n"
                          "Version: 26");
     QMessageBox::about(this, tr("About Genealogy Maker"), message);
 }
