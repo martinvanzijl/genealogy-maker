@@ -26,6 +26,9 @@ void DialogFileProperties::setDiagram(DiagramScene *&scene)
 
     QString relationshipCount = QString::number(scene->relationshipCount());
     ui->labelNumberOfRelationshipsValue->setText(relationshipCount);
+
+    QString marriageCount = QString::number(scene->marriageCount());
+    ui->labelNumberOfMarriagesValue->setText(marriageCount);
 }
 
 void DialogFileProperties::setFile(const QString &filePath)

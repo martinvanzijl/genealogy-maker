@@ -507,6 +507,24 @@ void DiagramScene::highlightForSearch(DiagramItem *item)
 }
 
 /**
+ * @brief DiagramScene::marriageCount Count the marriages in the diagram.
+ */
+int DiagramScene::marriageCount() const
+{
+    int count = 0;
+
+    for (auto item: items())
+    {
+        if (item->type() == MarriageItem::Type)
+        {
+            ++count;
+        }
+    }
+
+    return count;
+}
+
+/**
  * @brief DiagramScene::personCount Count the persons in the diagram.
  */
 int DiagramScene::personCount() const

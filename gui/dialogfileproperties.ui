@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>164</height>
+    <height>181</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,6 +98,20 @@
    </item>
    <item row="4" column="1">
     <widget class="QLabel" name="labelNumberOfRelationshipsValue">
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="labelNumberOfMarriages">
+     <property name="text">
+      <string>Number of marriages:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLabel" name="labelNumberOfMarriagesValue">
      <property name="text">
       <string>0</string>
      </property>
