@@ -103,6 +103,7 @@ public:
     int autoLayoutRow(const QList<DiagramItem *> &items, int startY);
     void highlightForSearch(DiagramItem *item);
     int personCount() const;
+    int relationshipCount() const;
 
     QWidget *window() const;
     void setWindow(QWidget *window);

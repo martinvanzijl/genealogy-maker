@@ -21,8 +21,11 @@ DialogFileProperties::~DialogFileProperties()
 void DialogFileProperties::setDiagram(DiagramScene *&scene)
 {
     // Populate.
-    QString count = QString::number(scene->personCount());
-    ui->labelNumberOfPeopleValue->setText(count);
+    QString personCount = QString::number(scene->personCount());
+    ui->labelNumberOfPeopleValue->setText(personCount);
+
+    QString relationshipCount = QString::number(scene->relationshipCount());
+    ui->labelNumberOfRelationshipsValue->setText(relationshipCount);
 }
 
 void DialogFileProperties::setFile(const QString &filePath)

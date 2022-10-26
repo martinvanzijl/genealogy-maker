@@ -515,8 +515,25 @@ int DiagramScene::personCount() const
 
     for (auto item: items())
     {
-        // Update count.
         if (item->type() == DiagramItem::Type)
+        {
+            ++count;
+        }
+    }
+
+    return count;
+}
+
+/**
+ * @brief DiagramScene::relationshipCount Count the parent/child relationships in the diagram.
+ */
+int DiagramScene::relationshipCount() const
+{
+    int count = 0;
+
+    for (auto item: items())
+    {
+        if (item->type() == Arrow::Type)
         {
             ++count;
         }
