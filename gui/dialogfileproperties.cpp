@@ -1,6 +1,7 @@
 #include "dialogfileproperties.h"
 #include "ui_dialogfileproperties.h"
 
+#include <diagramscene.h>
 #include <QDateTime>
 #include <QDir>
 #include <QFileInfo>
@@ -15,6 +16,19 @@ DialogFileProperties::DialogFileProperties(QWidget *parent) :
 DialogFileProperties::~DialogFileProperties()
 {
     delete ui;
+}
+
+void DialogFileProperties::setDiagram(DiagramScene *&scene)
+{
+    // Populate.
+    QString personCount = QString::number(scene->personCount());
+    ui->labelNumberOfPeopleValue->setText(personCount);
+
+    QString relationshipCount = QString::number(scene->relationshipCount());
+    ui->labelNumberOfRelationshipsValue->setText(relationshipCount);
+
+    QString marriageCount = QString::number(scene->marriageCount());
+    ui->labelNumberOfMarriagesValue->setText(marriageCount);
 }
 
 void DialogFileProperties::setFile(const QString &filePath)

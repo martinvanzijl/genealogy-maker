@@ -6,6 +6,7 @@
 #include "fileutils.h"
 #include "marriageitem.h"
 #include "gui/dialogchangesize.h"
+#include "gui/dialogfileproperties.h"
 #include "gui/dialogpersondetails.h"
 #include "gui/mainform.h"
 #include "viewphotowindow.h"
@@ -393,6 +394,68 @@ void DiagramSizeDialogHelper::changeDiagramSize()
     QPushButton *pushButtonOK = dialog->findChild<QPushButton*>("pushButtonOK");
     QVERIFY(pushButtonOK);
     pushButtonOK->click();
+
+    // Set flag.
+    m_finished = true;
+}
+
+// =============================================================================
+// FilePropertiesDialogHelper
+// =============================================================================
+
+class FilePropertiesDialogHelper : public QObject
+{
+    Q_OBJECT
+
+public:
+    FilePropertiesDialogHelper();
+    virtual ~FilePropertiesDialogHelper();
+
+    bool isFinished() const;
+
+public slots:
+    void checkLabelsCorrect();
+
+private:
+    bool m_finished;
+};
+
+FilePropertiesDialogHelper::FilePropertiesDialogHelper() :
+    m_finished(false)
+{
+
+}
+
+FilePropertiesDialogHelper::~FilePropertiesDialogHelper()
+{
+    // Avoid compiler error.
+}
+
+bool FilePropertiesDialogHelper::isFinished() const
+{
+    return m_finished;
+}
+
+void FilePropertiesDialogHelper::checkLabelsCorrect()
+{
+    // Get the window.
+    QWidget *widget = QApplication::activeWindow();
+    DialogFileProperties *dialog = dynamic_cast<DialogFileProperties *>(widget);
+    QVERIFY(dialog);
+
+    // Get the components.
+    QLabel *marriageCountLabel = dialog->findChild<QLabel*>("labelNumberOfMarriagesValue");
+    QLabel *personCountLabel = dialog->findChild<QLabel*>("labelNumberOfPeopleValue");
+    QLabel *relationshipCountLabel = dialog->findChild<QLabel*>("labelNumberOfRelationshipsValue");
+
+    QCOMPARE(marriageCountLabel->text().toInt(), 1);
+    QCOMPARE(personCountLabel->text().toInt(), 7);
+    QCOMPARE(relationshipCountLabel->text().toInt(), 3);
+
+    // Close the dialog.
+    QPushButton *pushButtonClose = dialog->findChild<QPushButton*>("pushButtonClose");
+    QVERIFY(pushButtonClose);
+    pushButtonClose->click();
 
     // Set flag.
     m_finished = true;
@@ -1915,13 +1978,20 @@ void TestCases::filePropertiesWindowTest()
     // Open test file.
     openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
 
+    // Set up helper to check the window labels.
+    auto helper = new FilePropertiesDialogHelper();
+    QTimer::singleShot(1000, helper, SLOT(checkLabelsCorrect()));
+
     // Show the window.
     QAction *action = m_mainWindow->findChild<QAction*>("actionFileProperties");
     QVERIFY(action);
     action->trigger();
 
-    // Debug.
-    QTest::qWait(1000);
+    // Wait till helper is done.
+    while (!helper->isFinished())
+    {
+        QTest::qWait(1000);
+    }
 }
 
 void TestCases::autoLayoutTest()

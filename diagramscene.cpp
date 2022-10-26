@@ -506,6 +506,60 @@ void DiagramScene::highlightForSearch(DiagramItem *item)
     m_searchHighlightTimer->start(1000);
 }
 
+/**
+ * @brief DiagramScene::marriageCount Count the marriages in the diagram.
+ */
+int DiagramScene::marriageCount() const
+{
+    int count = 0;
+
+    for (auto item: items())
+    {
+        if (item->type() == MarriageItem::Type)
+        {
+            ++count;
+        }
+    }
+
+    return count;
+}
+
+/**
+ * @brief DiagramScene::personCount Count the persons in the diagram.
+ */
+int DiagramScene::personCount() const
+{
+    int count = 0;
+
+    for (auto item: items())
+    {
+        if (item->type() == DiagramItem::Type)
+        {
+            ++count;
+        }
+    }
+
+    return count;
+}
+
+/**
+ * @brief DiagramScene::relationshipCount Count the parent/child relationships in the diagram.
+ */
+int DiagramScene::relationshipCount() const
+{
+    int count = 0;
+
+    for (auto item: items())
+    {
+        if (item->type() == Arrow::Type)
+        {
+            ++count;
+        }
+    }
+
+    return count;
+}
+
 // A temporary map to store the depth of each person.
 static QMap<DiagramItem *, int> m_depthMap;
 
