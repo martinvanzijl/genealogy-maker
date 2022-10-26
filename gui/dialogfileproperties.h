@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+class DiagramScene;
+
 namespace Ui {
 class DialogFileProperties;
 }
@@ -15,6 +17,7 @@ public:
     explicit DialogFileProperties(QWidget *parent = 0);
     ~DialogFileProperties();
 
+    void setDiagram(DiagramScene * &scene);
     void setFile(const QString &filePath);
 
 private slots:

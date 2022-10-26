@@ -506,6 +506,25 @@ void DiagramScene::highlightForSearch(DiagramItem *item)
     m_searchHighlightTimer->start(1000);
 }
 
+/**
+ * @brief DiagramScene::personCount Count the persons in the diagram.
+ */
+int DiagramScene::personCount() const
+{
+    int count = 0;
+
+    for (auto item: items())
+    {
+        // Update count.
+        if (item->type() == DiagramItem::Type)
+        {
+            ++count;
+        }
+    }
+
+    return count;
+}
+
 // A temporary map to store the depth of each person.
 static QMap<DiagramItem *, int> m_depthMap;
 

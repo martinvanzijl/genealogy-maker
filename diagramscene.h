@@ -102,6 +102,7 @@ public:
     void autoLayout();
     int autoLayoutRow(const QList<DiagramItem *> &items, int startY);
     void highlightForSearch(DiagramItem *item);
+    int personCount() const;
 
     QWidget *window() const;
     void setWindow(QWidget *window);

@@ -965,6 +965,7 @@ void MainForm::showFileProperties()
         dialogFileProperties = new DialogFileProperties(this);
     }
     dialogFileProperties->setFile(m_saveFileName);
+    dialogFileProperties->setDiagram(scene);
     dialogFileProperties->show();
 }
 
