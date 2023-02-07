@@ -223,6 +223,14 @@ void DiagramItem::marryTo(DiagramItem *spouse)
     m_spouse->updateArrowPositions();
 }
 
+bool DiagramItem::canMarry(DiagramItem *potentialSpouse) const
+{
+    return  !isMarried() &&
+            !potentialSpouse->isMarried()  &&
+            !getChildren().contains(potentialSpouse) &&
+            !getParents().contains(potentialSpouse);
+}
+
 QUuid DiagramItem::id() const
 {
     return m_id;
