@@ -192,6 +192,8 @@ private slots:
 
     void on_actionSelectDescendants_triggered();
 
+    void on_showSideBarAction_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

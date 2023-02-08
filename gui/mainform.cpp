@@ -2271,6 +2271,9 @@ void MainForm::onCollapseButtonClicked(bool checked)
     else {
         collapseButton->setText(">>");
     }
+
+    // Update action.
+    ui->showSideBarAction->setChecked(checked);
 }
 
 void MainForm::onTreeViewContextMenuRequested(const QPoint &pos)
@@ -2337,4 +2340,9 @@ void MainForm::on_actionOpenExample_triggered()
 void MainForm::on_actionSelectDescendants_triggered()
 {
     selectCurrentItemDescendants();
+}
+
+void MainForm::on_showSideBarAction_triggered()
+{
+    onCollapseButtonClicked(ui->showSideBarAction->isChecked());
 }
