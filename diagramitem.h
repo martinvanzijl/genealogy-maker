@@ -95,6 +95,7 @@ public:
     void setName(QString value);
     void setHighlighted(bool value);
     void marryTo(DiagramItem *spouse);
+    bool canMarry(DiagramItem *potentialSpouse) const;
     QUuid id() const;
     void setId(const QUuid& value);
     DiagramTextItem *textItem();

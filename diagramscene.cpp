@@ -880,42 +880,37 @@ void DiagramScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
         }
 
         // Check for marriage.
-        bool checkForMarriage = false;
         if (draggedItem && draggedItem->type() == DiagramItem::Type)
         {
             auto draggedDiagramItem = qgraphicsitem_cast<DiagramItem *>(draggedItem);
-            if (!draggedDiagramItem->isMarried()) {
-                checkForMarriage = true;
-            }
-        }
 
-        if (checkForMarriage) {
-//            auto pos = mouseEvent->scenePos();
-//            QList<QGraphicsItem *> list = items(pos);
-            QList<QGraphicsItem *> list = draggedItem->collidingItems();
+            if (!draggedDiagramItem->isMarried())
+            {
+                QList<QGraphicsItem *> list = draggedItem->collidingItems();
 
-            bool found = false;
-            for (auto item: list) {
-                if (item != draggedItem) {
-                    if (item->type() == DiagramItem::Type) {
+                bool found = false;
+                for (auto item: list)
+                {
+                    if (item != draggedItem && item->type() == DiagramItem::Type)
+                    {
                         auto diagramItem = qgraphicsitem_cast<DiagramItem *>(item);
-                        if (!diagramItem->isMarried()) {
+                        if (draggedDiagramItem->canMarry(diagramItem))
+                        {
                             found = true;
                             highlight(diagramItem);
                             break;
                         }
                     }
                 }
-            }
 
-            // Nothing found, so unlighlight all.
-            if (!found) {
-                unHighlightAll();
+                // Nothing found, so unlighlight all.
+                if (!found) {
+                    unHighlightAll();
+                }
             }
         }
     }
 }
-//! [10]
 
 void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
