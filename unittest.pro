@@ -88,3 +88,18 @@ FORMS += \
     gui/reportwindow.ui \
     gui/timelinereportwindow.ui \
     gui/dialogfileproperties.ui
+
+# Copy example files. Does not work!
+win32 {
+    # Windows.
+} else {
+    # Linux.
+    example_files.target = $$OUT_PWD/examples
+    example_files.commands = cp -R $$PWD/examples $$OUT_PWD
+
+    QMAKE_EXTRA_TARGETS += example_files
+
+    message("Extra targets: $$QMAKE_EXTRA_TARGETS")
+    message("Target: $$OUT_PWD/examples")
+    message("Command: cp -R $$PWD/examples $$OUT_PWD")
+}

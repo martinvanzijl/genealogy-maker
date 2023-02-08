@@ -662,16 +662,16 @@ private slots:
     void timelineReportTest();
     void filePropertiesWindowTest();
     void autoLayoutTest();
-    void openExampleTest();
     void zoomComboBoxTest();
     void zoomSliderTest();
     void testSelectDescendants();
     void testUndoChangeDiagramSize();
     void testShowAndHideSidebar();
     void testFindDialogLabel();
+    void exportImageTest();
 
 private slots:
-    void exportImageTest();
+    void openExampleTest();
 
 private:
     TestCaseHelper *m_helper;
