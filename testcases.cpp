@@ -7,6 +7,7 @@
 #include "marriageitem.h"
 #include "gui/dialogchangesize.h"
 #include "gui/dialogfileproperties.h"
+#include "gui/dialogfind.h"
 #include "gui/dialogpersondetails.h"
 #include "gui/mainform.h"
 #include "viewphotowindow.h"
@@ -462,6 +463,64 @@ void FilePropertiesDialogHelper::checkLabelsCorrect()
 }
 
 // =============================================================================
+// FindDialogHelper
+// =============================================================================
+
+class FindDialogHelper : public QObject
+{
+    Q_OBJECT
+
+public:
+    FindDialogHelper();
+    virtual ~FindDialogHelper();
+
+    bool isFinished() const;
+
+public slots:
+    void testLabel();
+
+private:
+    bool m_finished;
+};
+
+FindDialogHelper::FindDialogHelper() :
+    m_finished(false)
+{
+
+}
+
+FindDialogHelper::~FindDialogHelper()
+{
+    // Avoid compiler error.
+}
+
+bool FindDialogHelper::isFinished() const
+{
+    return m_finished;
+}
+
+void FindDialogHelper::testLabel()
+{
+    // Get the window.
+    QWidget *widget = QApplication::activeWindow();
+    DialogFind *dialog = dynamic_cast<DialogFind *>(widget);
+    QVERIFY(dialog);
+
+    // Get the components.
+    QLabel *statusLabel = dialog->findChild<QLabel*>("labelStatus");
+
+    QCOMPARE(statusLabel->text(), QString("Enter the person's name and click \"Find\"."));
+
+    // Close the dialog.
+    QPushButton *pushButtonClose = dialog->findChild<QPushButton*>("pushButtonClose");
+    QVERIFY(pushButtonClose);
+    pushButtonClose->click();
+
+    // Set flag.
+    m_finished = true;
+}
+
+// =============================================================================
 // TestCaseHelper
 // =============================================================================
 
@@ -553,7 +612,7 @@ private slots:
     void cleanup();
     void init();
 
-//private:
+private:
     void testNew();
     void testOpen();
     void testSave();
@@ -596,9 +655,10 @@ private slots:
     void zoomSliderTest();
     void testSelectDescendants();
     void testUndoChangeDiagramSize();
+    void testShowAndHideSidebar();
 
 private slots:
-    void testShowAndHideSidebar();
+    void testFindDialogLabel();
 
 private:
     TestCaseHelper *m_helper;
@@ -2169,6 +2229,24 @@ void TestCases::testShowAndHideSidebar()
     // Show.
     action->trigger();
     QVERIFY(toolBox->isVisible());
+}
+
+void TestCases::testFindDialogLabel()
+{
+    // Set up helper to check the window labels.
+    auto helper = new FindDialogHelper();
+    QTimer::singleShot(1000, helper, SLOT(testLabel()));
+
+    // Show "Find" dialog.
+    QAction *action = m_mainWindow->findChild<QAction*>("findAction");
+    QVERIFY(action);
+    action->trigger();
+
+    // Wait till helper is done.
+    while (!helper->isFinished())
+    {
+        QTest::qWait(1000);
+    }
 }
 
 void TestCases::addPhotoToSelectedPerson()
