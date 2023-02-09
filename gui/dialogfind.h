@@ -29,6 +29,8 @@ private slots:
     void on_pushButtonFind_clicked();
     void setFullOpacity();
 
+    void on_lineEditText_textChanged(const QString &newText);
+
 private:
     Ui::DialogFind *ui;
 
