@@ -1274,6 +1274,7 @@ void MainForm::createToolBox()
     tree->setObjectName("treeViewPersons");
 
     toolBox = new QToolBox;
+    toolBox->setObjectName("toolBox");;
     toolBox->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Ignored));
     toolBox->setMinimumWidth(itemWidget->sizeHint().width());
     toolBox->addItem(itemWidget, tr("Add Items"));
