@@ -595,9 +595,10 @@ private slots:
     void zoomComboBoxTest();
     void zoomSliderTest();
     void testSelectDescendants();
+    void testUndoChangeDiagramSize();
 
 private slots:
-    void testUndoChangeDiagramSize();
+    void testShowAndHideSidebar();
 
 private:
     TestCaseHelper *m_helper;
@@ -2150,6 +2151,24 @@ void TestCases::testUndoChangeDiagramSize()
     action->trigger();
 
     QCOMPARE(m_mainWindow->getScene()->sceneRect().size(), sizeAfter);
+}
+
+void TestCases::testShowAndHideSidebar()
+{
+    // Check sidebar is visible.
+    QToolBox *toolBox = m_mainWindow->findChild<QToolBox*>("toolBox");
+    QVERIFY(toolBox);
+    QVERIFY(toolBox->isVisible());
+
+    // Hide.
+    QAction *action = m_mainWindow->findChild<QAction*>("showSideBarAction");
+    QVERIFY(action);
+    action->trigger();
+    QVERIFY(!toolBox->isVisible());
+
+    // Show.
+    action->trigger();
+    QVERIFY(toolBox->isVisible());
 }
 
 void TestCases::addPhotoToSelectedPerson()

@@ -113,6 +113,12 @@
     <addaction name="actionPersonListReport"/>
     <addaction name="actionTimelineReport"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="showSideBarAction"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="itemMenu"/>
@@ -120,6 +126,7 @@
    <addaction name="menuAlign"/>
    <addaction name="menuDiagram"/>
    <addaction name="menu_Reports"/>
+   <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -422,6 +429,17 @@
   <action name="actionSelectDescendants">
    <property name="text">
     <string>&amp;Select Descendants</string>
+   </property>
+  </action>
+  <action name="showSideBarAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Show Sidebar</string>
    </property>
   </action>
  </widget>

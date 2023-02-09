@@ -1274,6 +1274,7 @@ void MainForm::createToolBox()
     tree->setObjectName("treeViewPersons");
 
     toolBox = new QToolBox;
+    toolBox->setObjectName("toolBox");;
     toolBox->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Ignored));
     toolBox->setMinimumWidth(itemWidget->sizeHint().width());
     toolBox->addItem(itemWidget, tr("Add Items"));
@@ -2271,6 +2272,9 @@ void MainForm::onCollapseButtonClicked(bool checked)
     else {
         collapseButton->setText(">>");
     }
+
+    // Update action.
+    ui->showSideBarAction->setChecked(checked);
 }
 
 void MainForm::onTreeViewContextMenuRequested(const QPoint &pos)
@@ -2337,4 +2341,9 @@ void MainForm::on_actionOpenExample_triggered()
 void MainForm::on_actionSelectDescendants_triggered()
 {
     selectCurrentItemDescendants();
+}
+
+void MainForm::on_showSideBarAction_triggered()
+{
+    onCollapseButtonClicked(ui->showSideBarAction->isChecked());
 }
