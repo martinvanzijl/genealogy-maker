@@ -511,6 +511,18 @@ void FindDialogHelper::testLabel()
 
     QCOMPARE(statusLabel->text(), QString("Enter the person's name and click \"Find\"."));
 
+    // Enter a non-existent name.
+    QLineEdit *lineEditText = dialog->findChild<QLineEdit*>("lineEditText");
+    QVERIFY(lineEditText);
+    QTest::keyClicks(lineEditText, "XYZ");
+
+    // Push the "Find" button.
+    QPushButton *pushButtonFind = dialog->findChild<QPushButton*>("pushButtonFind");
+    QVERIFY(pushButtonFind);
+    pushButtonFind->click();
+
+    QCOMPARE(statusLabel->text(), QString("Person not found."));
+
     // Close the dialog.
     QPushButton *pushButtonClose = dialog->findChild<QPushButton*>("pushButtonClose");
     QVERIFY(pushButtonClose);
@@ -612,7 +624,7 @@ private slots:
     void cleanup();
     void init();
 
-private:
+//private:
     void testNew();
     void testOpen();
     void testSave();
