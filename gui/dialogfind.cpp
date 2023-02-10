@@ -82,3 +82,14 @@ void DialogFind::setFullOpacity()
 {
     setWindowOpacity(1.0);
 }
+
+void DialogFind::on_lineEditText_textChanged(const QString &newText)
+{
+    Q_UNUSED(newText);
+
+    QString labelText = ui->labelStatus->text();
+
+    if (labelText == "Person found." || labelText == "Person not found.") {
+        ui->labelStatus->clear();
+    }
+}
