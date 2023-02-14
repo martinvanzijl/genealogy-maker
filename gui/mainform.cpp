@@ -492,7 +492,7 @@ void MainForm::about()
                          "The code is available on GitHub here: "
                          "https://github.com/martinvanzijl/genealogy-maker"
                          "\n\n"
-                         "Version: 26");
+                         "Version: 27");
     QMessageBox::about(this, tr("About Genealogy Maker"), message);
 }
 
