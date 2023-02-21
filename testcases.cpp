@@ -978,7 +978,7 @@ void TestCases::exportGedcomTest()
     action->trigger();
 
     // Check that the exported file exists.
-    QFile file(QString("save-files/") + saveFileName);
+    QFile file(getTestInputFilePathFor(saveFileName));
     QVERIFY(file.exists());
 }
 
