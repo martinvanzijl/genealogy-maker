@@ -2347,3 +2347,8 @@ void MainForm::on_showSideBarAction_triggered()
 {
     onCollapseButtonClicked(ui->showSideBarAction->isChecked());
 }
+
+void MainForm::on_actionFileExportImage_triggered()
+{
+    exportImage();
+}
