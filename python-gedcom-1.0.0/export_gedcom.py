@@ -297,7 +297,14 @@ def test_parse_file():
         root.add_child_element(element)
 
         # Add name.
-        root.add_child_element(Element(level=1, pointer="", tag=gedcom.tags.GEDCOM_TAG_NAME, value=person.name))
+        gedcomName = person.name
+
+        # Use first-name + last-name if display name is empty.
+        if len(gedcomName) == 0:
+            gedcomName = person.firstName + " " + person.lastName
+            gedcomName = gedcomName.strip()
+
+        root.add_child_element(Element(level=1, pointer="", tag=gedcom.tags.GEDCOM_TAG_NAME, value=gedcomName))
 
         # Add last name.
         if len(person.lastName) > 0:
