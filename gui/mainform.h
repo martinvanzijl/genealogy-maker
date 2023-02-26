@@ -194,6 +194,8 @@ private slots:
 
     void on_showSideBarAction_triggered();
 
+    void on_actionFileExportImage_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

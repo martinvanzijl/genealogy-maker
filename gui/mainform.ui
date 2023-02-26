@@ -41,6 +41,7 @@
     <addaction name="actionImportGedcomFile"/>
     <addaction name="separator"/>
     <addaction name="actionExportGedcomFile"/>
+    <addaction name="actionFileExportImage"/>
     <addaction name="separator"/>
     <addaction name="printAction"/>
     <addaction name="separator"/>
@@ -440,6 +441,11 @@
    </property>
    <property name="text">
     <string>&amp;Show Sidebar</string>
+   </property>
+  </action>
+  <action name="actionFileExportImage">
+   <property name="text">
+    <string>Export I&amp;mage...</string>
    </property>
   </action>
  </widget>
