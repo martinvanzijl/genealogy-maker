@@ -624,7 +624,7 @@ private slots:
     void cleanup();
     void init();
 
-//private:
+private:
     void testNew();
     void testOpen();
     void testSave();
@@ -662,16 +662,16 @@ private slots:
     void timelineReportTest();
     void filePropertiesWindowTest();
     void autoLayoutTest();
-    void openExampleTest();
     void zoomComboBoxTest();
     void zoomSliderTest();
     void testSelectDescendants();
     void testUndoChangeDiagramSize();
     void testShowAndHideSidebar();
     void testFindDialogLabel();
+    void exportImageTest();
 
 private slots:
-    void exportImageTest();
+    void openExampleTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -2097,7 +2097,7 @@ void TestCases::openExampleTest()
     QSKIP("This test does not work on Windows yet.");
 #endif
 
-    QSKIP("There is an outstanding issue with this test. Skipping...");
+//    QSKIP("There is an outstanding issue with this test. Skipping...");
 
     // Get the action.
     QAction *action = m_mainWindow->findChild<QAction*>("actionOpenExample");
