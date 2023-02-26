@@ -57,6 +57,16 @@ void DialogFind::updateGuiFromPreferences()
     m_transparentDuringHighlight = value;
 }
 
+void DialogFind::onFound()
+{
+    if (m_transparentDuringHighlight) {
+        // Make partly transparent while highlighting found item.
+        setWindowOpacity(0.8);
+//            QTimer::singleShot(1000, this, SLOT(setFullOpacity()));
+        m_transparencyTimer->start(1000);
+    }
+}
+
 void DialogFind::on_pushButtonClose_clicked()
 {
     close();
@@ -68,13 +78,6 @@ void DialogFind::on_pushButtonFind_clicked()
     if (!text.isEmpty())
     {
         emit search(text);
-
-        if (m_transparentDuringHighlight) {
-            // Make partly transparent while highlighting found item.
-            setWindowOpacity(0.8);
-//            QTimer::singleShot(1000, this, SLOT(setFullOpacity()));
-            m_transparencyTimer->start(1000);
-        }
     }
 }
 

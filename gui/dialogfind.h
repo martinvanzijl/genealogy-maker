@@ -24,6 +24,9 @@ public:
 signals:
     void search(const QString &text);
 
+public slots:
+    void onFound();
+
 private slots:
     void on_pushButtonClose_clicked();
     void on_pushButtonFind_clicked();

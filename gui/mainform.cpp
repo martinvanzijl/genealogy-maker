@@ -852,6 +852,7 @@ bool MainForm::searchCheckPerson(QList<QGraphicsItem *> &items, int index, const
 
             // Update dialog.
             dialogFind->setStatus("Person found.");
+            dialogFind->onFound();
 
             // Save index for next search.
             m_searchFoundIndex = index;
