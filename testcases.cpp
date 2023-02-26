@@ -668,9 +668,10 @@ private slots:
     void testSelectDescendants();
     void testUndoChangeDiagramSize();
     void testShowAndHideSidebar();
+    void testFindDialogLabel();
 
 private slots:
-    void testFindDialogLabel();
+    void exportImageTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -2261,6 +2262,14 @@ void TestCases::testFindDialogLabel()
     {
         QTest::qWait(1000);
     }
+}
+
+void TestCases::exportImageTest()
+{
+    // Smoke test: just trigger the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionFileExportImage");
+    QVERIFY(action);
+//    action->trigger(); // TODO: The dialog does not close automatically. Must close manually.
 }
 
 void TestCases::addPhotoToSelectedPerson()
