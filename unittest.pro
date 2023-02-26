@@ -102,4 +102,6 @@ win32 {
     message("Extra targets: $$QMAKE_EXTRA_TARGETS")
     message("Target: $$OUT_PWD/examples")
     message("Command: cp -R $$PWD/examples $$OUT_PWD")
+
+    PRE_TARGETDEPS += $$OUT_PWD/examples
 }
