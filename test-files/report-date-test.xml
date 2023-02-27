@@ -1,0 +1,4 @@
+<genealogy width="5000" height="5000">
+    <item last_name="Smith" fill_color="#ffffff" name="John Smith" bio="" y="2558" place_of_birth="" country_of_birth="" first_name="John" place_of_death="" id="{d6b9ea70-d6a4-46a3-a66a-744b5403e267}" date_of_death="Tue Dec 1 2020" x="2484" date_of_birth="Mon Jan 1 1900" border_color="#000000" text_color="#000000"/>
+    <item last_name="Smith" fill_color="#ffffff" name="Mary Smith" bio="" y="2496" place_of_birth="" country_of_birth="" first_name="Mary" place_of_death="" id="{a0087227-082e-4bd6-a792-77dd02d1d2fc}" date_of_death="Fri Dec 31 7999" x="2404" date_of_birth="Wed Jan 31 1900" border_color="#000000" text_color="#000000"/>
+</genealogy>

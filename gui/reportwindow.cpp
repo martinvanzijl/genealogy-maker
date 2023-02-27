@@ -48,10 +48,20 @@ void ReportWindow::createReportFor(DiagramScene *scene)
         addCell(row, column++, person->getFirstName());
         addCell(row, column++, person->getLastName());
         addCell(row, column++, person->name());
-        addCell(row, column++, person->getDateOfBirth());
+        if (person->getDateOfBirth() == DiagramItem::defaultDateOfBirth()) {
+            addCell(row, column++, "");
+        }
+        else {
+            addCell(row, column++, person->getDateOfBirth());
+        }
         addCell(row, column++, person->getPlaceOfBirth());
         addCell(row, column++, person->getCountryOfBirth());
-        addCell(row, column++, person->getDateOfDeath());
+        if (person->getDateOfDeath() == DiagramItem::defaultDateOfDeath()) {
+            addCell(row, column++, "");
+        }
+        else {
+            addCell(row, column++, person->getDateOfDeath());
+        }
         addCell(row, column++, person->getPlaceOfDeath());
         addCell(row, column++, person->getGender());
 
