@@ -10,10 +10,12 @@
 #include "gui/dialogfind.h"
 #include "gui/dialogpersondetails.h"
 #include "gui/mainform.h"
+#include "gui/reportwindow.h"
 #include "viewphotowindow.h"
 
 #include <QDebug>
 #include <QObject>
+#include <QTableWidget>
 
 //
 // Functions.
@@ -533,6 +535,79 @@ void FindDialogHelper::testLabel()
 }
 
 // =============================================================================
+// ReportWindowHelper
+// =============================================================================
+
+class ReportWindowHelper : public QObject
+{
+    Q_OBJECT
+
+public:
+    ReportWindowHelper();
+    virtual ~ReportWindowHelper();
+
+    bool isFinished() const;
+
+public slots:
+    void testDefaultDates();
+
+private:
+    bool m_finished;
+};
+
+ReportWindowHelper::ReportWindowHelper() :
+    m_finished(false)
+{
+
+}
+
+ReportWindowHelper::~ReportWindowHelper()
+{
+    // Avoid compiler error.
+}
+
+bool ReportWindowHelper::isFinished() const
+{
+    return m_finished;
+}
+
+void ReportWindowHelper::testDefaultDates()
+{
+    // Get the window.
+    QWidget *widget = QApplication::activeWindow();
+    ReportWindow *window = dynamic_cast<ReportWindow *>(widget);
+    QVERIFY(window);
+
+    // Get the components.
+    QTableWidget *tableWidgetReport = window->findChild<QTableWidget*>("tableWidgetReport");
+    QVERIFY(tableWidgetReport);
+
+    // Check values.
+
+    // Date of birth populated.
+    auto toDate = QDate::fromString(tableWidgetReport->item(0, 3)->data(Qt::DisplayRole).toString());
+    QCOMPARE(toDate, QDate(1900, 1, 31));
+
+    // Date of death empty.
+    QCOMPARE(tableWidgetReport->item(0, 6)->data(Qt::DisplayRole).toString(), QString(""));
+
+    // Date of death populated.
+    toDate = QDate::fromString(tableWidgetReport->item(1, 6)->data(Qt::DisplayRole).toString());
+    QCOMPARE(toDate, QDate(2020, 12, 1));
+
+    // Date of birth empty.
+    QCOMPARE(tableWidgetReport->item(1, 3)->data(Qt::DisplayRole).toString(), QString(""));
+
+    // Close the dialog.
+    QPushButton *pushButtonClose = window->findChild<QPushButton*>("pushButtonClose");
+    QVERIFY(pushButtonClose);
+    pushButtonClose->click();
+
+    // Set flag.
+    m_finished = true;
+}
+
+// =============================================================================
 // TestCaseHelper
 // =============================================================================
 
@@ -624,7 +699,7 @@ private slots:
     void cleanup();
     void init();
 
-private:
+//private:
     void testNew();
     void testOpen();
     void testSave();
@@ -669,9 +744,10 @@ private:
     void testShowAndHideSidebar();
     void testFindDialogLabel();
     void exportImageTest();
+    void openExampleTest();
 
 private slots:
-    void openExampleTest();
+    void personListReportDefaultDateTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -2113,6 +2189,23 @@ void TestCases::openExampleTest()
 
     // Check that the file opened OK.
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - example-genealogy.xml"));
+}
+
+void TestCases::personListReportDefaultDateTest()
+{
+    // Open test file.
+    openTestFile(getTestInputFilePathFor("report-date-test.xml"));
+
+    // Get the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionPersonListReport");
+    QVERIFY(action);
+
+    // Create the helper.
+    auto helper = new ReportWindowHelper();
+    QTimer::singleShot(1000, helper, SLOT(testDefaultDates()));
+
+    // Run the report.
+    action->trigger();
 }
 
 void TestCases::zoomComboBoxTest()
