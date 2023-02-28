@@ -37,7 +37,7 @@ void PreferencesWindow::loadPreferences()
     ui->spinBoxArrowLineThickness->setValue(arrowLineWidth);
 
     // Load thumbnail setting.
-    bool showThumbnails = settings.value("diagram/showThumbnails", false).toBool();
+    bool showThumbnails = settings.value("diagram/showThumbnails", true).toBool();
     ui->checkBoxShowTumbnail->setChecked(showThumbnails);
 
     // Load sidebar button setting.

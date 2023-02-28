@@ -443,7 +443,7 @@ void DiagramScene::loadPreferences()
     QSettings settings;
 
     int arrowLineWidth = settings.value("diagram/arrowLineWidth", 2).toInt();
-    bool showThumbnails = settings.value("diagram/showThumbnails", false).toBool();
+    bool showThumbnails = settings.value("diagram/showThumbnails", true).toBool();
     for (auto item: items()) {
         if (item->type() == Arrow::Type) {
             Arrow *arrow = qgraphicsitem_cast<Arrow*> (item);
