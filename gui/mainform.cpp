@@ -1220,12 +1220,12 @@ void MainForm::createToolBox()
     buttonGroup->addButton(arrowButton, InsertArrowButton);
     arrowButton->setIcon(QIcon(QPixmap(":/images/linepointer.png")));
     arrowButton->setIconSize(QSize(50, 50));
-    arrowButton->setToolTip("Add Relationship (R)");
+    arrowButton->setToolTip("Add Parent/Child Relationship (R)");
     arrowButton->setShortcut(tr("R"));
     styleToolButton(arrowButton);
     QGridLayout *textLayout = new QGridLayout;
     textLayout->addWidget(arrowButton, 0, 0, Qt::AlignHCenter);
-    textLayout->addWidget(new QLabel(tr("Relationship")), 1, 0, Qt::AlignCenter);
+    textLayout->addWidget(new QLabel(tr("Parent/Child\nRelationship")), 1, 0, Qt::AlignCenter);
     QWidget *textWidget = new QWidget;
     textWidget->setLayout(textLayout);
     layout->addWidget(textWidget, 0, 1);
