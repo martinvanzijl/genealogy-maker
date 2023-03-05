@@ -415,7 +415,12 @@ void MainForm::textButtonTriggered()
 
 void MainForm::fillButtonTriggered()
 {
-    scene->setItemColor(qvariant_cast<QColor>(fillAction->data()));
+    const QColor color = QColorDialog::getColor(Qt::green, this, "Select Fill Color");
+
+    if (color.isValid()) {
+        scene->setItemColor(color);
+        fillColorToolButton->setIcon(createColorToolButtonIcon(":/images/floodfill.png", color));
+    }
 }
 
 void MainForm::lineButtonTriggered()
@@ -1456,9 +1461,9 @@ void MainForm::createToolbars()
             this, SLOT(textButtonTriggered()));
 
     fillColorToolButton = new QToolButton;
-    fillColorToolButton->setPopupMode(QToolButton::MenuButtonPopup);
-    fillColorToolButton->setMenu(createColorMenu(SLOT(itemColorChanged()), Qt::white));
-    fillAction = fillColorToolButton->menu()->defaultAction();
+//    fillColorToolButton->setPopupMode(QToolButton::MenuButtonPopup);
+//    fillColorToolButton->setMenu(createColorMenu(SLOT(itemColorChanged()), Qt::white));
+//    fillAction = fillColorToolButton->menu()->defaultAction();
     fillColorToolButton->setIcon(createColorToolButtonIcon(
                                      ":/images/floodfill.png", Qt::white));
     fillColorToolButton->setToolTip("Set fill color");
