@@ -22,6 +22,13 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) :
 
     // Use the minimum size.
     adjustSize();
+
+    // Load font size combo-box items.
+    ui->comboBoxDiagramFontSize->clear();
+    const QList<int> standardSizes = QFontDatabase::standardSizes();
+    foreach (int size, standardSizes)
+        ui->comboBoxDiagramFontSize->addItem(QString::number(size));
+    ui->comboBoxDiagramFontSize->setCurrentIndex(standardSizes.indexOf(QApplication::font().pointSize()));
 }
 
 PreferencesWindow::~PreferencesWindow()
