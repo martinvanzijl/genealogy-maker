@@ -58,6 +58,12 @@ void PreferencesWindow::loadPreferences()
     // Load "remove invalid files" setting.
     bool removeInvalidFiles = settings.value("interface/removeInvalidFiles", false).toBool();
     ui->checkBoxRemoveInvalidFiles->setChecked(removeInvalidFiles);
+
+    // Load "diagram font size" setting.
+    QString fontFamily = settings.value("diagram/fontFamily", "Arial").toString();
+    ui->fontComboBoxDiagramFont->setCurrentText(fontFamily);
+    qreal fontSize = settings.value("diagram/fontSize", 11).toReal();
+    ui->comboBoxDiagramFontSize->setCurrentText(QString::number(fontSize));
 }
 
 void PreferencesWindow::on_pushButtonApply_clicked()
@@ -88,6 +94,14 @@ void PreferencesWindow::apply()
     // Store the "remove invalid files" setting.
     bool removeInvalidFiles =  ui->checkBoxRemoveInvalidFiles->isChecked();
     settings.setValue("interface/removeInvalidFiles", removeInvalidFiles);
+
+    // Store the font setting.
+    QFont font = ui->fontComboBoxDiagramFont->currentFont();
+    settings.setValue("diagram/fontFamily", font.family());
+    qreal pointSize = ui->comboBoxDiagramFontSize->currentText().toFloat();
+    if (pointSize > 0) {
+        settings.setValue("diagram/fontSize", pointSize);
+    }
 
     // Send signal.
     emit preferencesChanged();
