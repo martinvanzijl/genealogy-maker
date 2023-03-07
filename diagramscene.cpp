@@ -463,6 +463,7 @@ void DiagramScene::loadPreferences()
 
             if (fontIsValid) {
                 person->textItem()->setFont(font);
+                person->fitToText();
             }
         }
     }
