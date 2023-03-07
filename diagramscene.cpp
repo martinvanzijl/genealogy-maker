@@ -444,6 +444,13 @@ void DiagramScene::loadPreferences()
 
     int arrowLineWidth = settings.value("diagram/arrowLineWidth", 2).toInt();
     bool showThumbnails = settings.value("diagram/showThumbnails", true).toBool();
+
+    QString fontFamily = settings.value("diagram/fontFamily", "").toString();
+    qreal fontSize = settings.value("diagram/fontSize", 0).toReal();
+    QFont font;
+    font.setFamily(fontFamily);
+    font.setPointSizeF(fontSize);
+
     for (auto item: items()) {
         if (item->type() == Arrow::Type) {
             Arrow *arrow = qgraphicsitem_cast<Arrow*> (item);
@@ -452,6 +459,10 @@ void DiagramScene::loadPreferences()
         else if (item->type() == DiagramItem::Type) {
             DiagramItem *person= qgraphicsitem_cast<DiagramItem*> (item);
             person->setShowThumbnail(showThumbnails);
+
+            if (!fontFamily.isEmpty() && fontSize > 0) {
+                person->textItem()->setFont(font);
+            }
         }
     }
 
