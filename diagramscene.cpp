@@ -450,6 +450,7 @@ void DiagramScene::loadPreferences()
     QFont font;
     font.setFamily(fontFamily);
     font.setPointSizeF(fontSize);
+    bool fontIsValid = (!fontFamily.isEmpty() && fontSize > 0);
 
     for (auto item: items()) {
         if (item->type() == Arrow::Type) {
@@ -460,7 +461,7 @@ void DiagramScene::loadPreferences()
             DiagramItem *person= qgraphicsitem_cast<DiagramItem*> (item);
             person->setShowThumbnail(showThumbnails);
 
-            if (!fontFamily.isEmpty() && fontSize > 0) {
+            if (fontIsValid) {
                 person->textItem()->setFont(font);
             }
         }
@@ -468,6 +469,10 @@ void DiagramScene::loadPreferences()
 
     Arrow::setDefaultLineWidth(arrowLineWidth);
     DiagramItem::setShowThumbnailByDefault(showThumbnails);
+
+    if (fontIsValid) {
+        DiagramTextItem::setDefaultFont(font);
+    }
 }
 
 int DiagramScene::autoLayoutRow(const QList<DiagramItem *> &items, int startY) {
