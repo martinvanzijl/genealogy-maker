@@ -1,0 +1,38 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Install Qt and dependencies
+        run: |
+          sudo apt-get update
+          sudo apt install qt5-default qtdeclarative5-dev-tools
+
+      - name: Build
+        run: |
+          export CC=gcc
+          qmake -r genealogymaker.pro CONFIG+=debug_and_release PREFIX=/usr
+          make release -j$(nproc)
+
+      - name: Create AppImage
+        run: |
+          ./ci/build-linux-app-image.sh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: assets
+          path: genealogymaker*.AppImage
+          retention-days: 2
