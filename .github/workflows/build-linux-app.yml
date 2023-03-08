@@ -19,7 +19,7 @@ jobs:
       - name: Install Qt and dependencies
         run: |
           sudo apt-get update
-          sudo apt install qtbase5-dev qt5-default qtdeclarative5-dev qtdeclarative5-dev-tools
+          sudo apt install qtcreator qtbase5-dev qt5-default qtdeclarative5-dev qtdeclarative5-dev-tools
 
       - name: Build
         run: |
