@@ -10,6 +10,7 @@
 #include "gui/dialogfind.h"
 #include "gui/dialogpersondetails.h"
 #include "gui/mainform.h"
+#include "gui/preferenceswindow.h"
 #include "gui/reportwindow.h"
 #include "viewphotowindow.h"
 
@@ -608,6 +609,75 @@ void ReportWindowHelper::testDefaultDates()
 }
 
 // =============================================================================
+// PreferencesWindowHelper
+// =============================================================================
+
+class PreferencesWindowHelper : public QObject
+{
+    Q_OBJECT
+
+public:
+    PreferencesWindowHelper();
+    virtual ~PreferencesWindowHelper();
+
+    bool isFinished() const;
+
+public slots:
+    void testSetDiagramFont();
+
+private:
+    bool m_finished;
+};
+
+PreferencesWindowHelper::PreferencesWindowHelper() :
+    m_finished(false)
+{
+
+}
+
+PreferencesWindowHelper::~PreferencesWindowHelper()
+{
+    // Avoid compiler error.
+}
+
+bool PreferencesWindowHelper::isFinished() const
+{
+    return m_finished;
+}
+
+void PreferencesWindowHelper::testSetDiagramFont()
+{
+    // Get the window.
+    QWidget *widget = QApplication::activeWindow();
+    PreferencesWindow *window = dynamic_cast<PreferencesWindow *>(widget);
+    QVERIFY(window);
+
+    // Get the components.
+    QFontComboBox *fontComboBoxDiagramFont = window->findChild<QFontComboBox*>("fontComboBoxDiagramFont");
+    QVERIFY(fontComboBoxDiagramFont);
+
+    QComboBox *comboBoxDiagramFontSize = window->findChild<QComboBox*>("comboBoxDiagramFontSize");
+    QVERIFY(comboBoxDiagramFontSize);
+
+    // Set values.
+    fontComboBoxDiagramFont->setCurrentText("Serif");
+    comboBoxDiagramFontSize->setCurrentText("10");
+
+    // Apply the changes.
+    QPushButton *pushButtonApply = window->findChild<QPushButton*>("pushButtonApply");
+    QVERIFY(pushButtonApply);
+    pushButtonApply->click();
+
+    // Close the dialog.
+    QPushButton *pushButtonClose = window->findChild<QPushButton*>("pushButtonClose");
+    QVERIFY(pushButtonClose);
+    pushButtonClose->click();
+
+    // Set flag.
+    m_finished = true;
+}
+
+// =============================================================================
 // TestCaseHelper
 // =============================================================================
 
@@ -745,9 +815,10 @@ private slots:
     void testFindDialogLabel();
     void exportImageTest();
     void openExampleTest();
+    void personListReportDefaultDateTest();
 
 private slots:
-    void personListReportDefaultDateTest();
+    void setDiagramFontTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -816,17 +887,16 @@ DiagramItem *TestCases::getFirstPerson() const
     }
 
     // Get the person.
-    QGraphicsItem *graphicsItem = items.last();
-    DiagramItem *person = qgraphicsitem_cast<DiagramItem *>(graphicsItem);
-
-//    QVERIFY(person); // Can only use inside test function.
-    if (!person)
-    {
-        qDebug() << "Person is null.";
+    for (QGraphicsItem *item: items) {
+        DiagramItem *person = qgraphicsitem_cast<DiagramItem *>(item);
+        if (person) {
+            return person;
+        }
     }
 
     // Return.
-    return person;
+    qDebug() << "No person found.";
+    return nullptr;
 }
 
 void TestCases::cleanup()
@@ -2206,6 +2276,36 @@ void TestCases::personListReportDefaultDateTest()
 
     // Run the report.
     action->trigger();
+}
+
+void TestCases::setDiagramFontTest()
+{
+    QSKIP("This does not correctly set the font preference. Skipping...");
+
+    // Open example file.
+    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+
+    // Get the action.
+    QAction *action = m_mainWindow->findChild<QAction*>("actionPreferences");
+    QVERIFY(action);
+
+    // Create the helper.
+    auto helper = new PreferencesWindowHelper();
+    QTimer::singleShot(1000, helper, SLOT(testSetDiagramFont()));
+
+    // Show the dialog.
+    action->trigger();
+
+    // Wait till helper is done.
+    while (!helper->isFinished())
+    {
+        QTest::qWait(1000);
+    }
+
+    // Check values.
+    QFont font = getFirstPerson()->textItem()->font();
+    QCOMPARE(font.family(), QString("Serif"));
+    QCOMPARE(font.pointSize(), 10);
 }
 
 void TestCases::zoomComboBoxTest()
