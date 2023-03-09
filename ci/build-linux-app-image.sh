@@ -34,7 +34,7 @@ cp linux-deploy-files/genealogy-maker.desktop $DESKTOP_DIR
 BIN_DIR="$APP_DIR/usr/bin"
 mkdir -p $BIN_DIR
 
-cp /home/runner/work/genealogy-maker/genealogy-maker/genealogy-maker $BIN_DIR
+cp /home/runner/work/genealogy-maker/genealogy-maker/genealogymaker $BIN_DIR/genealogy-maker
 
 # Using linuxdeployqt.
 wget -c https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
