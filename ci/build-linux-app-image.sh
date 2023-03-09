@@ -42,4 +42,4 @@ wget -c https://github.com/probonopd/linuxdeployqt/releases/download/continuous/
 chmod +x linuxdeployqt-*.AppImage
 
 # Run the program.
-./linuxdeployqt-*.AppImage $DESKTOP_DIR/ping_viewer.desktop -verbose=2 -appimage -qmldir=/home/runner/work/genealogy-maker/genealogy-maker/
+./linuxdeployqt-*.AppImage $DESKTOP_DIR/genealogy-maker.desktop -verbose=2 -appimage -qmldir=/home/runner/work/genealogy-maker/genealogy-maker/
