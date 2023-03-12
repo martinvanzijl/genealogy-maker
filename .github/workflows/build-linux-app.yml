@@ -36,5 +36,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: assets
-          path: genealogy-maker*.AppImage
+          path: Genealogy_Maker-*.AppImage
           retention-days: 2
