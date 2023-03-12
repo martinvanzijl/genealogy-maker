@@ -55,6 +55,8 @@
 #include <QTextCursor>
 #include <QKeyEvent>
 
+static QFont m_defaultFont;
+
 DiagramTextItem::DiagramTextItem(DiagramItem *parent)
     : QGraphicsTextItem(parent)
 {
@@ -62,6 +64,7 @@ DiagramTextItem::DiagramTextItem(DiagramItem *parent)
     //setFlag(QGraphicsItem::ItemIsSelectable);
 
     m_person = parent;
+    setFont(m_defaultFont);
 }
 
 QString DiagramTextItem::text() const
@@ -84,6 +87,11 @@ void DiagramTextItem::startEditing()
 void DiagramTextItem::emitChangedSignal()
 {
     emit textEdited(this);
+}
+
+void DiagramTextItem::setDefaultFont(const QFont &font)
+{
+    m_defaultFont = font;
 }
 
 QVariant DiagramTextItem::itemChange(GraphicsItemChange change,

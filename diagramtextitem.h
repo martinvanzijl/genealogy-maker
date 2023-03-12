@@ -76,6 +76,7 @@ public:
     QString text() const;
     void startEditing();
     void emitChangedSignal();
+    static void setDefaultFont(const QFont &font);
 
 signals:
     void lostFocus(DiagramTextItem *item);

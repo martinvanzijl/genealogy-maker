@@ -67,6 +67,7 @@ DiagramItem *DiagramItem::m_doubleClickedItem = nullptr;
 static bool m_showThumbnailByDefault = false;
 
 static int DEFAULT_WIDTH = 200;
+static int DEFAULT_HEIGHT = 50;
 
 DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
              QGraphicsItem *parent)
@@ -633,12 +634,16 @@ void DiagramItem::fitToText()
     int margin = 16;
     int minWidth = m_textItem->boundingRect().width() + (margin * 2);
 
+    int verticalMargin = 8;
+    int minHeight = m_textItem->boundingRect().height() + (verticalMargin * 2);
+
     // Calculate best size.
     int bestWidth = qMax(DEFAULT_WIDTH, minWidth);
+    int bestHeight = qMax(DEFAULT_HEIGHT, minHeight);
 
     // Expand box if required.
-    if (boundingRect().width() != bestWidth) {
-        int height = 25;
+    if (boundingRect().width() != bestWidth || boundingRect().height() != bestHeight) {
+        int height = bestHeight / 2;
         int width = bestWidth / 2;
 
         myPolygon.clear();
