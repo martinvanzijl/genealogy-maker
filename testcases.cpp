@@ -2380,11 +2380,11 @@ void TestCases::testSelectDescendants()
     action->trigger();
 
     // Find the descendant.
-    DiagramItem *wouter = getPersonWithName("Wouter van Zijl");
-    QVERIFY(wouter);
+    DiagramItem *walter = getPersonWithName("Walter Smith");
+    QVERIFY(walter);
 
     // Check it is selected.
-    QVERIFY(wouter->isSelected());
+    QVERIFY(walter->isSelected());
 }
 
 void TestCases::testUndoChangeDiagramSize()
