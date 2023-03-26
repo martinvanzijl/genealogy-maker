@@ -749,6 +749,61 @@ bool TestCaseHelper::isFinished() const
 }
 
 // =============================================================================
+// FillColorDialogHelper
+// =============================================================================
+
+class FillColorDialogHelper : public QObject
+{
+    Q_OBJECT
+
+public:
+    FillColorDialogHelper();
+    virtual ~FillColorDialogHelper();
+
+    bool isFinished() const;
+
+public slots:
+    void setFillColor();
+
+private:
+    bool m_finished;
+};
+
+FillColorDialogHelper::FillColorDialogHelper() :
+    m_finished(false)
+{
+
+}
+
+FillColorDialogHelper::~FillColorDialogHelper()
+{
+    // Avoid compiler error.
+}
+
+bool FillColorDialogHelper::isFinished() const
+{
+    return m_finished;
+}
+
+void FillColorDialogHelper::setFillColor()
+{
+    // Get the window.
+    QWidget *widget = QApplication::activeWindow();
+    QColorDialog *dialog = dynamic_cast<QColorDialog *>(widget);
+    QVERIFY(dialog);
+
+    // Set the color.
+    dialog->setCurrentColor(Qt::blue);
+
+    // Apply the changes.
+    dialog->accept();
+    dialog->close();
+
+    // Set flag.
+    m_finished = true;
+}
+
+// =============================================================================
 // TestCases
 // =============================================================================
 
@@ -816,9 +871,10 @@ private slots:
     void exportImageTest();
     void openExampleTest();
     void personListReportDefaultDateTest();
+    void setDiagramFontTest();
 
 private slots:
-    void setDiagramFontTest();
+    void setFillColorTest();
 
 private:
     TestCaseHelper *m_helper;
@@ -2306,6 +2362,35 @@ void TestCases::setDiagramFontTest()
     QFont font = getFirstPerson()->textItem()->font();
     QCOMPARE(font.family(), QString("Serif"));
     QCOMPARE(font.pointSize(), 10);
+}
+
+void TestCases::setFillColorTest()
+{
+    // Skip this test for now.
+    QSKIP("Cannot seem to access the color dialog popup.");
+
+    // Add a person to the diagram.
+    DiagramItem *person = clickToAddPerson();
+
+    // Create the helper.
+    auto helper = new FillColorDialogHelper();
+    QTimer::singleShot(2000, helper, SLOT(setFillColor()));
+
+    // Person should be selected. Click fill color button.
+    QToolButton *fillColorToolButton = m_mainWindow->findChild<QToolButton*>("fillColorToolButton");
+    fillColorToolButton->click();
+
+    // Wait till helper is done.
+    while (!helper->isFinished())
+    {
+        QTest::qWait(1000);
+    }
+
+    // Check fill color is set.
+    QCOMPARE(person->brush().color(), QColor(Qt::blue));
+
+    // Debug.
+    QTest::qWait(3000);
 }
 
 void TestCases::zoomComboBoxTest()

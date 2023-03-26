@@ -1461,6 +1461,7 @@ void MainForm::createToolbars()
             this, SLOT(textButtonTriggered()));
 
     fillColorToolButton = new QToolButton;
+    fillColorToolButton->setObjectName("fillColorToolButton");
 //    fillColorToolButton->setPopupMode(QToolButton::MenuButtonPopup);
 //    fillColorToolButton->setMenu(createColorMenu(SLOT(itemColorChanged()), Qt::white));
 //    fillAction = fillColorToolButton->menu()->defaultAction();
