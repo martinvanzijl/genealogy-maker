@@ -941,9 +941,9 @@ void TestCases::testNew()
 
 void TestCases::testOpen()
 {
-    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+    openTestFile(getTestInputFilePathFor("smith-new.xml"));
 
-    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - van-zijl-new.xml"));
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - smith-new.xml"));
 }
 
 void TestCases::testSave()
@@ -1521,10 +1521,10 @@ void TestCases::windowTitleTest()
     QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - New Diagram (Imported from GEDCOM)"));
 
     // Open another diagram.
-    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+    openTestFile(getTestInputFilePathFor("smith-new.xml"));
 
     // Check title.
-    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - van-zijl-new.xml"));
+    QCOMPARE(m_mainWindow->windowTitle(), QString("Genealogy Maker Qt - smith-new.xml"));
 }
 
 void TestCases::testLongName()
@@ -2168,7 +2168,7 @@ void TestCases::photoWindowTest()
 void TestCases::personListReportTest()
 {
     // Open test file.
-    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+    openTestFile(getTestInputFilePathFor("smith-new.xml"));
 
     // Create the report.
     QAction *action = m_mainWindow->findChild<QAction*>("actionPersonListReport");
@@ -2182,7 +2182,7 @@ void TestCases::personListReportTest()
 void TestCases::timelineReportTest()
 {
     // Open test file.
-    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+    openTestFile(getTestInputFilePathFor("smith-new.xml"));
 
     // Create the report.
     QAction *action = m_mainWindow->findChild<QAction*>("actionTimelineReport");
@@ -2196,7 +2196,7 @@ void TestCases::timelineReportTest()
 void TestCases::filePropertiesWindowTest()
 {
     // Open test file.
-    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+    openTestFile(getTestInputFilePathFor("smith-new.xml"));
 
     // Set up helper to check the window labels.
     auto helper = new FilePropertiesDialogHelper();
@@ -2217,7 +2217,7 @@ void TestCases::filePropertiesWindowTest()
 void TestCases::autoLayoutTest()
 {
     // Open test file.
-    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+    openTestFile(getTestInputFilePathFor("smith-new.xml"));
 
     // Trigger the action.
     QAction *action = m_mainWindow->findChild<QAction*>("actionAutoLayout");
@@ -2283,7 +2283,7 @@ void TestCases::setDiagramFontTest()
     QSKIP("This does not correctly set the font preference. Skipping...");
 
     // Open example file.
-    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+    openTestFile(getTestInputFilePathFor("smith-new.xml"));
 
     // Get the action.
     QAction *action = m_mainWindow->findChild<QAction*>("actionPreferences");
@@ -2365,7 +2365,7 @@ void TestCases::zoomSliderTest()
 void TestCases::testSelectDescendants()
 {
     // Open test file.
-    openTestFile(getTestInputFilePathFor("van-zijl-new.xml"));
+    openTestFile(getTestInputFilePathFor("smith-new.xml"));
 
     // Find the person.
     DiagramItem *ouma = getPersonWithName("Ouma");
@@ -2380,11 +2380,11 @@ void TestCases::testSelectDescendants()
     action->trigger();
 
     // Find the descendant.
-    DiagramItem *wouter = getPersonWithName("Wouter van Zijl");
-    QVERIFY(wouter);
+    DiagramItem *walter = getPersonWithName("Walter Smith");
+    QVERIFY(walter);
 
     // Check it is selected.
-    QVERIFY(wouter->isSelected());
+    QVERIFY(walter->isSelected());
 }
 
 void TestCases::testUndoChangeDiagramSize()
