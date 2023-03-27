@@ -31,7 +31,11 @@ DiagramTextItem::DiagramTextItem(DiagramItem *parent)
     //setFlag(QGraphicsItem::ItemIsSelectable);
 
     m_person = parent;
-    setFont(m_defaultFont);
+
+    // Apply default font if valid.
+    if(!m_defaultFont.family().isEmpty() && m_defaultFont.pointSize() >= 1) {
+        setFont(m_defaultFont);
+    }
 }
 
 QString DiagramTextItem::text() const

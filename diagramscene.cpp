@@ -415,9 +415,13 @@ void DiagramScene::loadPreferences()
     QString fontFamily = settings.value("diagram/fontFamily", "").toString();
     qreal fontSize = settings.value("diagram/fontSize", 0).toReal();
     QFont font;
-    font.setFamily(fontFamily);
-    font.setPointSizeF(fontSize);
     bool fontIsValid = (!fontFamily.isEmpty() && fontSize > 0);
+
+    if (fontIsValid) {
+        font.setFamily(fontFamily);
+        font.setPointSizeF(fontSize);
+        DiagramTextItem::setDefaultFont(font);
+    }
 
     for (auto item: items()) {
         if (item->type() == Arrow::Type) {
@@ -437,10 +441,6 @@ void DiagramScene::loadPreferences()
 
     Arrow::setDefaultLineWidth(arrowLineWidth);
     DiagramItem::setShowThumbnailByDefault(showThumbnails);
-
-    if (fontIsValid) {
-        DiagramTextItem::setDefaultFont(font);
-    }
 }
 
 int DiagramScene::autoLayoutRow(const QList<DiagramItem *> &items, int startY) {
