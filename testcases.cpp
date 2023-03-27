@@ -872,9 +872,10 @@ private slots:
     void openExampleTest();
     void personListReportDefaultDateTest();
     void setDiagramFontTest();
+    void setFillColorTest();
 
 private slots:
-    void setFillColorTest();
+    void testFontWarning();
 
 private:
     TestCaseHelper *m_helper;
@@ -2391,6 +2392,21 @@ void TestCases::setFillColorTest()
 
     // Debug.
     QTest::qWait(3000);
+}
+
+void TestCases::testFontWarning()
+{
+    // Test GitHub issue #72.
+    QSKIP("Skipping to avoid changing preferences.");
+
+    // Clear the default font settings.
+    QSettings settings;
+    settings.remove("diagram/fontFamily");
+    settings.remove("diagram/fontSize");
+    m_mainWindow->getScene()->loadPreferences();
+
+    // There should be no warning here.
+    clickToAddPerson();
 }
 
 void TestCases::zoomComboBoxTest()
