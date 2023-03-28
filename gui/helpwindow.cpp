@@ -1,27 +1,28 @@
-#include "dialoghelp.h"
-#include "ui_dialoghelp.h"
+#include "helpwindow.h"
+#include "ui_helpwindow.h"
 
 #include <QFile>
 #include <QMessageBox>
 
-DialogHelp::DialogHelp(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::DialogHelp)
+HelpWindow::HelpWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::HelpWindow)
 {
     ui->setupUi(this);
     loadHelpFile();
-
-    // Allow maximizing the window. Does not work!
-    setWindowFlag(Qt::WindowMaximizeButtonHint);
-    setWindowFlag(Qt::WindowMinimizeButtonHint);
 }
 
-DialogHelp::~DialogHelp()
+HelpWindow::~HelpWindow()
 {
     delete ui;
 }
 
-void DialogHelp::loadHelpFile()
+void HelpWindow::on_pushButtonClose_clicked()
+{
+    close();
+}
+
+void HelpWindow::loadHelpFile()
 {
     // Open file.
     QString fileName = "doc/genealogy-maker-manual.html";
@@ -37,9 +38,4 @@ void DialogHelp::loadHelpFile()
     // Show in form.
     QString html = file.readAll();
     ui->textBrowserMain->setHtml(html);
-}
-
-void DialogHelp::on_pushButtonClose_clicked()
-{
-    close();
 }

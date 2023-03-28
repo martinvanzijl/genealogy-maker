@@ -35,7 +35,8 @@
 #include "marriageitem.h"
 #include "gui/dialogmarriagedetails.h"
 #include "undo/removemarriageundo.h"
-#include "gui/dialoghelp.h"
+//#include "gui/dialoghelp.h"
+#include "gui/helpwindow.h"
 #include "gui/dialogchangesize.h"
 #include "undo/undomanager.h"
 #include "draggablebutton.h"
@@ -130,7 +131,8 @@ MainForm::MainForm(QWidget *parent) :
     dialogFind = nullptr;
     dialogPersonDetails = nullptr;
     dialogMarriageDetails = nullptr;
-    dialogHelp = nullptr;
+//    dialogHelp = nullptr;
+    helpWindow = nullptr;
     preferencesWindow = nullptr;
     dialogFileProperties = nullptr;
 
@@ -1934,11 +1936,17 @@ QGraphicsView *MainForm::getView() const
 
 void MainForm::showHelpContents()
 {
-    if (!dialogHelp) {
-        dialogHelp = new DialogHelp(this);
+//    if (!dialogHelp) {
+//        dialogHelp = new DialogHelp(this);
+//    }
+
+//    dialogHelp->show();
+
+    if (!helpWindow) {
+        helpWindow = new HelpWindow(this);
     }
 
-    dialogHelp->show();
+    helpWindow->show();
 }
 
 void MainForm::on_actionChangeSize_triggered()
