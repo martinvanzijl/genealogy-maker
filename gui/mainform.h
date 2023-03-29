@@ -49,7 +49,8 @@ class MoveItemsUndo;
 class DialogFind;
 class DialogPersonDetails;
 class DialogMarriageDetails;
-class DialogHelp;
+//class DialogHelp;
+class HelpWindow;
 class PreferencesWindow;
 class QProcess;
 class QPushButton;
@@ -301,7 +302,8 @@ private:
     DialogFind *dialogFind;
     DialogPersonDetails *dialogPersonDetails;
     DialogMarriageDetails *dialogMarriageDetails;
-    DialogHelp *dialogHelp;
+//    DialogHelp *dialogHelp;
+    HelpWindow *helpWindow;
     DialogFileProperties *dialogFileProperties;
 
     QString m_saveFileName;
