@@ -39,109 +39,6 @@
           <property name="fieldGrowthPolicy">
            <enum>QFormLayout::ExpandingFieldsGrow</enum>
           </property>
-          <item row="2" column="0">
-           <widget class="QLabel" name="labelName">
-            <property name="text">
-             <string>Display name:</string>
-            </property>
-            <property name="buddy">
-             <cstring>lineEditName</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="lineEditName"/>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="labelDateOfBirth">
-            <property name="text">
-             <string>Date of birth:</string>
-            </property>
-            <property name="buddy">
-             <cstring>dateEditBirth</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QDateEdit" name="dateEditBirth">
-            <property name="autoFillBackground">
-             <bool>false</bool>
-            </property>
-            <property name="calendarPopup">
-             <bool>true</bool>
-            </property>
-            <property name="date">
-             <date>
-              <year>1900</year>
-              <month>1</month>
-              <day>1</day>
-             </date>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="labelPlaceOfBirth">
-            <property name="text">
-             <string>Place of birth:</string>
-            </property>
-            <property name="buddy">
-             <cstring>lineEditPlaceOfBirth</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QLineEdit" name="lineEditPlaceOfBirth"/>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="labelCountryOfBirth">
-            <property name="text">
-             <string>Country of birth:</string>
-            </property>
-            <property name="buddy">
-             <cstring>lineEditCountryOfBirth</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="labelDateOfDeath">
-            <property name="text">
-             <string>Date of death:</string>
-            </property>
-            <property name="buddy">
-             <cstring>dateEditDeath</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <widget class="QDateEdit" name="dateEditDeath">
-            <property name="calendarPopup">
-             <bool>true</bool>
-            </property>
-            <property name="date">
-             <date>
-              <year>7999</year>
-              <month>12</month>
-              <day>31</day>
-             </date>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QLabel" name="labelPlaceOfDeath">
-            <property name="text">
-             <string>Place of death:</string>
-            </property>
-            <property name="buddy">
-             <cstring>lineEditPlaceOfDeath</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="1">
-           <widget class="QLineEdit" name="lineEditPlaceOfDeath"/>
-          </item>
-          <item row="6" column="1">
-           <widget class="QLineEdit" name="lineEditCountryOfBirth"/>
-          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="labelFirstName">
             <property name="text">
@@ -162,14 +59,113 @@
           <item row="1" column="1">
            <widget class="QLineEdit" name="lineEditLastName"/>
           </item>
-          <item row="9" column="0">
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelName">
+            <property name="text">
+             <string>Display name:</string>
+            </property>
+            <property name="buddy">
+             <cstring>lineEditName</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="lineEditName"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="labelDateOfBirth">
+            <property name="text">
+             <string>Date of birth:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="FormDatePicker" name="datePickerDateOfBirth" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="labelPlaceOfBirth">
+            <property name="text">
+             <string>Place of birth:</string>
+            </property>
+            <property name="buddy">
+             <cstring>lineEditPlaceOfBirth</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="lineEditPlaceOfBirth"/>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="labelCountryOfBirth">
+            <property name="text">
+             <string>Country of birth:</string>
+            </property>
+            <property name="buddy">
+             <cstring>lineEditCountryOfBirth</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLineEdit" name="lineEditCountryOfBirth"/>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="labelDateOfDeath">
+            <property name="text">
+             <string>Date of death:</string>
+            </property>
+            <property name="buddy">
+             <cstring>dateEditDeath</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QDateEdit" name="dateEditDeath">
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+            <property name="date">
+             <date>
+              <year>7999</year>
+              <month>12</month>
+              <day>31</day>
+             </date>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="labelPlaceOfDeath">
+            <property name="text">
+             <string>Place of death:</string>
+            </property>
+            <property name="buddy">
+             <cstring>lineEditPlaceOfDeath</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QLineEdit" name="lineEditPlaceOfDeath"/>
+          </item>
+          <item row="8" column="0">
            <widget class="QLabel" name="labelGender">
             <property name="text">
              <string>Gender:</string>
             </property>
            </widget>
           </item>
-          <item row="9" column="1">
+          <item row="8" column="1">
            <widget class="QComboBox" name="comboBoxGender">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -201,23 +197,6 @@
               <string>Unknown</string>
              </property>
             </item>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="labelTest">
-            <property name="text">
-             <string>Test:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="FormDatePicker" name="widgetTest" native="true">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
            </widget>
           </item>
          </layout>
@@ -399,7 +378,6 @@
  <tabstops>
   <tabstop>tabWidgetMain</tabstop>
   <tabstop>lineEditName</tabstop>
-  <tabstop>dateEditBirth</tabstop>
   <tabstop>lineEditPlaceOfBirth</tabstop>
   <tabstop>lineEditCountryOfBirth</tabstop>
   <tabstop>dateEditDeath</tabstop>

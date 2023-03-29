@@ -26,6 +26,11 @@ QDate FormDatePicker::getDate() const
     return m_calendarWidget->selectedDate();
 }
 
+void FormDatePicker::setDate(const QDate &date)
+{
+    ui->lineEditDate->setText(date.toString(Qt::ISODate));
+}
+
 void FormDatePicker::on_pushButtonCalendar_clicked()
 {
     // Show the calendar as a popup.

@@ -41,7 +41,8 @@ void DialogPersonDetails::setItem(DiagramItem *item)
     ui->lineEditLastName->setText(item->getLastName());
     ui->lineEditName->setText(item->name());
     ui->plainTextEditBio->setPlainText(item->bio());
-    ui->dateEditBirth->setDate(item->getDateOfBirth());
+//    ui->dateEditBirth->setDate(item->getDateOfBirth());
+    ui->datePickerDateOfBirth->setDate(item->getDateOfBirth());
 //    ui->checkBoxDateOfBirthUnknown->setChecked(item->getDateOfBirth().isNull());
     ui->dateEditDeath->setDate(item->getDateOfDeath());
 //    ui->checkBoxDateOfDeathUnknown->setChecked(item->getDateOfDeath().isNull());
@@ -128,7 +129,8 @@ void DialogPersonDetails::save()
 //        }
 //        else
 //        {
-            m_item->setDateOfBirth(ui->dateEditBirth->date());
+//            m_item->setDateOfBirth(ui->dateEditBirth->date());
+            m_item->setDateOfBirth(ui->datePickerDateOfBirth->getDate());
 //        }
 
 //        if (ui->checkBoxDateOfDeathUnknown->isChecked())

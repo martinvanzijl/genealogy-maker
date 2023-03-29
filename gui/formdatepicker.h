@@ -18,6 +18,7 @@ public:
     ~FormDatePicker();
 
     QDate getDate() const;
+    void setDate(const QDate &date);
 
 private slots:
     void on_pushButtonCalendar_clicked();
