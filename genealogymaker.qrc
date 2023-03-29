@@ -28,5 +28,7 @@
         <file>images/search.svg</file>
         <file>images/help-about.svg</file>
         <file>images/help-contents.svg</file>
+        <file>images/appointment-new.png</file>
+        <file>images/edit-clear.png</file>
     </qresource>
 </RCC>

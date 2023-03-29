@@ -36,7 +36,8 @@ HEADERS	    =   \
     undo/undoblock.h \
     undo/changebordercolorundo.h \
     undo/changediagramsizeundo.h \
-    gui/helpwindow.h
+    gui/helpwindow.h \
+    gui/formdatepicker.h
 SOURCES	    =   \
 		diagramitem.cpp \
 		main.cpp \
@@ -74,7 +75,8 @@ SOURCES	    =   \
     undo/undoblock.cpp \
     undo/changebordercolorundo.cpp \
     undo/changediagramsizeundo.cpp \
-    gui/helpwindow.cpp
+    gui/helpwindow.cpp \
+    gui/formdatepicker.cpp
 RESOURCES   =	genealogymaker.qrc
 
 FORMS += \
@@ -89,4 +91,5 @@ FORMS += \
     gui/reportwindow.ui \
     gui/timelinereportwindow.ui \
     gui/dialogfileproperties.ui \
-    gui/helpwindow.ui
+    gui/helpwindow.ui \
+    gui/formdatepicker.ui
