@@ -27,6 +27,8 @@ private slots:
 
     void on_pushButtonClear_clicked();
 
+    void on_lineEditDate_editingFinished();
+
 private:
     Ui::FormDatePicker *ui;
 

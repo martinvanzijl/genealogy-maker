@@ -2,6 +2,7 @@
 #include "ui_formdatepicker.h"
 
 #include <QCalendarWidget>
+#include <QDebug>
 
 FormDatePicker::FormDatePicker(QWidget *parent) :
     QWidget(parent),
@@ -29,6 +30,7 @@ QDate FormDatePicker::getDate() const
 void FormDatePicker::setDate(const QDate &date)
 {
     ui->lineEditDate->setText(date.toString(Qt::ISODate));
+    m_calendarWidget->setSelectedDate(date);
 }
 
 void FormDatePicker::on_pushButtonCalendar_clicked()
@@ -49,4 +51,21 @@ void FormDatePicker::onCalendarDatePicked(const QDate &date)
 void FormDatePicker::on_pushButtonClear_clicked()
 {
     ui->lineEditDate->clear();
+}
+
+void FormDatePicker::on_lineEditDate_editingFinished()
+{
+    // TODO: Set date from text. Parse every possible date format?
+    // Highlight in red if the date is invalid, perhaps?
+    // Simply set the date field regardless of date validity?
+    QDate date = QDate::fromString(ui->lineEditDate->text(), Qt::ISODate);
+
+    if (date.isValid())
+    {
+        m_calendarWidget->setSelectedDate(date);
+    }
+    else
+    {
+        qDebug() << "Invalid date.";
+    }
 }
