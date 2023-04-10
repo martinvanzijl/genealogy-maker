@@ -201,6 +201,11 @@ void MainForm::buttonGroupClicked(int id)
     if (id == InsertArrowButton)  {
 //        linePointerButton->click();
         scene->setMode(DiagramScene::InsertLine);
+
+        // Explain how to draw the relationship.
+        if (shouldShowAddRelationshipHint()) {
+            showAddRelationshipHint();
+        }
     }
     else {
         scene->setItemType(DiagramItem::DiagramType(id));
@@ -989,6 +994,23 @@ bool MainForm::shouldRemoveInvalidFiles() const
 {
     QSettings settings;
     return settings.value("interface/removeInvalidFiles", false).toBool();
+}
+
+bool MainForm::shouldShowAddRelationshipHint() const
+{
+    QSettings settings;
+    return settings.value("interface/showAddRelationshipHint", true).toBool();
+}
+
+void MainForm::showAddRelationshipHint()
+{
+    // Show hint.
+    QMessageBox::information(this, tr("Genealogy Maker"),
+                             tr("Click and drag from the parent to the child to add a relationship."));
+
+    // Set flag so that the hint is only shown once.
+    QSettings settings;
+    return settings.setValue("interface/showAddRelationshipHint", false);
 }
 
 void MainForm::setSceneScale(double scale)

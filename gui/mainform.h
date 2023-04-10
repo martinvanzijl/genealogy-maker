@@ -213,6 +213,9 @@ private:
 
     bool shouldRemoveInvalidFiles() const;
 
+    bool shouldShowAddRelationshipHint() const;
+    void showAddRelationshipHint();
+
     void setSceneScale(double scale);
 
     void selectCurrentItemDescendants();
